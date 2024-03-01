@@ -1,12 +1,8 @@
 
 import {NavLink, useLocation, Outlet} from 'react-router-dom';
-import {AuthorizationStatus} from '../../const.ts';
+import {AppRoute, AuthorizationStatus} from '../../const.ts';
 import HeaderLogin from '../header-login/header-login.tsx';
-import HeaderProfile from "../header-profile/header-profile.tsx";
-const getClassForNavLink = ({isActive}) =>
-  isActive
-    ? 'header__logo-link header__logo-link--active'
-    : 'header__logo-link';
+import HeaderProfile from '../header-profile/header-profile.tsx';
 
 function LayoutPageClass () {
 
@@ -38,7 +34,7 @@ function Layout ({authorizationStatus}: LayoutProps): JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <NavLink to='/' title='/' className={getClassForNavLink}>
+              <NavLink to={AppRoute.Root} title={AppRoute.Root} className={({ isActive }) => `header__logo-link${ isActive ? ' header__logo-link--active' : ''}`}>
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
               </NavLink >{' '}
             </div>
