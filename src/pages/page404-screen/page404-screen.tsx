@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 
-export default function Page404() {
+export default function Page404Screen() {
   return (
     <main className="page__main">
       <div className="container">

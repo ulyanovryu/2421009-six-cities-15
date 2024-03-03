@@ -1,4 +1,4 @@
-import OfferList from '../../components/offer-list/offer-list.tsx';
+import OfferList from '../../components/offer-list';
 
 type MainScreenProps = {
   offersCount: number;
