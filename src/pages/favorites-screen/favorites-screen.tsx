@@ -1,9 +1,20 @@
-function FavoritesScreen(): JSX.Element {
+import {Cities} from '../../types/cities.ts';
+import {Offers} from '../../types/offers.ts';
+import OffersList from '../../components/offers-list';
+
+type OffersParams = {
+  citiesList: Cities;
+  offersList: Offers;
+};
+
+function FavoritesScreen({citiesList, offersList}: OffersParams): JSX.Element {
   return (
     <main className="page__main page__main--favorites">
       <div className="page__favorites-container container">
         <section className="favorites">
           <h1 className="favorites__title">Saved listing</h1>
+          <OffersList offersList={offersList} citiesList={citiesList} offersListTemplate="favoritesScreen" />
+
           <ul className="favorites__list">
             <li className="favorites__locations-items">
               <div className="favorites__locations locations locations--current">
