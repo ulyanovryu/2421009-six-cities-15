@@ -1,10 +1,6 @@
-type CitiesList = {
-  name : string;
-  link : string;
-  id : number;
-};
+import {Cities} from '../types/cities.ts';
 
-const CitiesList: CitiesList[] = [
+const CitiesList: Cities = [
   {
     'name' : 'Paris',
     'link' : '',
@@ -31,5 +27,4 @@ const CitiesList: CitiesList[] = [
     'id' : 6
   },
 ];
-
 export default CitiesList;
