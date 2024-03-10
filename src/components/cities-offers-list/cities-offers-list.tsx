@@ -1,12 +1,15 @@
-import {City} from '../../types/cities.ts';
-
-import citiesList from '../../mocks/cities.ts';
-import offersList from '../../mocks/offers.ts';
+import {Cities, City} from '../../types/cities.ts';
 
 import CityOffersList from '../../components/city-offers-list';
 import {Fragment} from 'react';
+import {Offers} from '../../types/offers.ts';
 
-function CitiesOffersLlist (): JSX.Element {
+type CitiesOffersListProps = {
+  citiesList: Cities;
+  offersList: Offers;
+}
+
+function CitiesOffersList ({citiesList, offersList}: CitiesOffersListProps): JSX.Element {
   return (
     <ul className="favorites__list">
       {
@@ -20,4 +23,4 @@ function CitiesOffersLlist (): JSX.Element {
   );
 }
 
-export default CitiesOffersLlist;
+export default CitiesOffersList;
