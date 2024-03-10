@@ -1,3 +1,6 @@
+export enum ImgPath {
+  Logo = 'img/logo.svg',
+}
 
 export enum AppRoute {
   Root = '/',

@@ -1,11 +1,12 @@
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {Link} from 'react-router-dom';
+import getAuthorizationStatus from '../../utils/utils.ts';
 
-type HeaderLoginProps = {
-  authorizationStatus: AuthorizationStatus;
-}
 
-function HeaderLogin({authorizationStatus}:HeaderLoginProps): JSX.Element {
+function HeaderLogin(): JSX.Element {
+
+  const authorizationStatus = getAuthorizationStatus();
+
   return (
     authorizationStatus === AuthorizationStatus.Auth
       ?

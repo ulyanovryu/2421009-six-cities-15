@@ -1,35 +1,17 @@
 
-import {NavLink, useLocation, Outlet} from 'react-router-dom';
-import {AppRoute, AuthorizationStatus} from '../../const.ts';
-import HeaderLogin from '../header-login/header-login.tsx';
-import HeaderProfile from '../header-profile/header-profile.tsx';
+import {NavLink, useLocation, Outlet, Link} from 'react-router-dom';
+import {AppRoute, ImgPath} from '../../const.ts';
+import getLayoutParams from './utils.ts';
+import HeaderLogin from '../header-login';
+import HeaderProfile from '../header-profile';
 
-function LayoutPageClass () {
+function Layout (): JSX.Element {
 
   const {pathname} = useLocation();
+  const {pageClass, showFooter, showHeaderUserInfo} = getLayoutParams(pathname as AppRoute);
 
-  let className:string = 'page';
-  switch (pathname) {
-    case '/' : className = 'page page--gray page--main';
-      break;
-    case '/favorites' : className = 'page';
-      break;
-    case '/login' : className = 'page page--gray page--login';
-      break;
-    case '/offer' : className = 'page';
-      break;
-  }
-
-  return className;
-}
-
-type LayoutProps = {
-  authorizationStatus: AuthorizationStatus;
-}
-
-function Layout ({authorizationStatus}: LayoutProps): JSX.Element {
   return (
-    <div className={LayoutPageClass()}>
+    <div className={pageClass}>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
@@ -40,14 +22,29 @@ function Layout ({authorizationStatus}: LayoutProps): JSX.Element {
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <HeaderProfile authorizationStatus={authorizationStatus} />
-                <HeaderLogin authorizationStatus={authorizationStatus} />
+                {
+                  showHeaderUserInfo ? (
+                    <>
+                      <HeaderProfile />
+                      <HeaderLogin />
+                    </>
+                  ) : null
+                }
               </ul>
             </nav>
           </div>
         </div>
       </header>
       <Outlet />
+      {
+        showFooter ? (
+          <footer className="footer container">
+            <Link to={AppRoute.Root} className="footer__logo-link">
+              <img className="footer__logo" src={ImgPath.Logo} alt="6 cities logo" width="64" height="33" />
+            </Link>
+          </footer>
+        ) : null
+      }
     </div>
   );
 }
