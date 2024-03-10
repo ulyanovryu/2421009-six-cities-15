@@ -1,30 +1,31 @@
 import {Cities} from '../types/cities.ts';
+import {AppRoute} from '../const.ts';
 
-const CitiesList: Cities = [
+const citiesList: Cities = [
   {
     'name' : 'Paris',
-    'link' : '',
+    'link' : AppRoute.Root,
     'id' : 1
   },{
     'name' : 'Cologne',
-    'link' : '',
+    'link' : AppRoute.Root,
     'id' : 2
   },{
     'name' : 'Brussels',
-    'link' : '',
+    'link' : AppRoute.Root,
     'id' : 3
   },{
     'name' : 'Amsterdam',
-    'link' : '',
+    'link' : AppRoute.Root,
     'id' : 4
   },{
     'name' : 'Hamburg',
-    'link' : '',
+    'link' : AppRoute.Root,
     'id' : 5
   },{
     'name' : 'Dusseldorf',
-    'link' : '',
+    'link' : AppRoute.Root,
     'id' : 6
   },
 ];
-export default CitiesList;
+export default citiesList;
