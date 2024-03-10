@@ -1,16 +1,62 @@
-import OffersList from '../../mocks/offers-list.ts';
-import {Link} from 'react-router-dom';
+import {Offer, OffersListTemplate} from '../../types/offers.ts';
 
-function OfferList({id, isPremium, isFavorite, title, price, rating, type, previewImage}: OffersList): JSX.Element {
+import {Link} from 'react-router-dom';
+import {upperString} from '../../utils/utils.ts';
+
+type OfferProps = {
+  offerParams: Offer;
+  onMouseOver: (activeOffer: string) => void;
+  offersListTemplate: OffersListTemplate;
+}
+
+type OffelListClassesType = {
+  'article' : string;
+  'image' : string;
+}
+
+const offerListClasses = (template:string): OffelListClassesType => {
+
+  let classNames: OffelListClassesType = {'article' : '', 'image' : ''};
+
+  switch (template) {
+    case 'mainScreen':
+      classNames = {'article' : 'cities__card place-card', 'image' : 'cities__image-wrapper place-card__image-wrapper'};
+      break;
+    case 'offerScreen':
+      classNames = {'article' : 'near-places__card place-card', 'image' : 'near-places__image-wrapper place-card__image-wrapper'};
+      break;
+    case 'favoriteScreen':
+      classNames = {'article' : 'favorites__card place-card', 'image' : 'favorites__image-wrapper place-card__image-wrapper'};
+      break;
+    default :
+      classNames = {'article' : 'place-card', 'image' : 'place-card__image-wrapper'};
+  }
+
+  return classNames;
+};
+
+function OfferList({offerParams, offersListTemplate, onMouseOver}: OfferProps): JSX.Element {
+
+  const {id, isPremium, isFavorite, title, price, rating, type, previewImage} = offerParams;
 
   const ratingWidth : number = 20 * rating;
   const linkDetail : string = `/offer/${id}`;
   const bookmarkClass : string = !isFavorite ? 'place-card__bookmark-button button' : 'place-card__bookmark-button place-card__bookmark-button--active button';
   const bookmarkState : string = !isFavorite ? 'To bookmarks' : 'In bookmarks';
-  const upperType : string = type.charAt(0).toUpperCase() + type.slice(1);
+  const upperType = upperString(type);
+
+  const mouseOver = () => {
+    onMouseOver(id);
+  };
+
+  const mouseOut = () => {
+    onMouseOver('');
+  };
+
+  const classesTemplate = offerListClasses(offersListTemplate);
 
   return (
-    <article className="cities__card place-card">
+    <article className={classesTemplate.article} onMouseOver={mouseOver} onMouseOut={mouseOut}>
       {
         isPremium ?
           <div className="place-card__mark">
