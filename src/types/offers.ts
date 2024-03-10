@@ -20,9 +20,25 @@ export type Offer = {
   isPremium: boolean;
   rating: number;
   previewImage: string;
+  description?: string;
+  bedrooms?: number;
+  goods?: string[];
+  host?: {
+    name: string;
+    avatarUrl: string;
+    isPro: boolean;
+  };
+  images?: string[];
+  maxAdults?: number;
 };
+
+// "description": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
+// "bedrooms": 3,
+// "goods": [
+// "Heating"
+// ],
 
 export type Offers = Offer[];
 
 
-export type OffersListTemplate = 'mainScreen' | 'favoritesScreen';
+export type OffersListTemplate = 'mainScreen' | 'favoritesScreen' | 'offerScreen';
