@@ -1,17 +1,14 @@
 import {useParams} from 'react-router-dom';
 
-//import {AuthorizationStatus} from '../../const.ts';
+import {AuthorizationStatus} from '../../const.ts';
 import {Offer} from '../../types/offers.ts';
-import {Reviews, Review} from '../../types/reviews.ts';
 
 import offersListMocks from '../../mocks/offers.ts';
-import ReviewsListData from '../../mocks/reviews.ts';
 
-//import getAuthorizationStatus, {upperString} from '../../utils/utils.ts';
-import {upperString} from '../../utils/utils.ts';
+import getAuthorizationStatus, {upperString} from '../../utils/utils.ts';
 
 import Page404Screen from '../page404-screen';
-import ReviewsList from '../../components/reviews-list';
+import Reviews from '../../components/reviews';
 import OffersList from '../../components/offers-list';
 
 type OfferGalleryImagesType = {
@@ -41,15 +38,15 @@ function GoogListItem ({good}:GoogsType): JSX.Element {
 
 function OfferScreen(): JSX.Element {
 
-  //const authorizationStatus = getAuthorizationStatus();
+  const authorizationStatus = getAuthorizationStatus();
   const {id} = useParams();
   const currentOffer: Offer | undefined = offersListMocks.find((offer: Offer) => offer.id === id);
+  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
-  if (!currentOffer) {
+  if (!currentOffer || id === undefined) {
     return <Page404Screen />;
   }
 
-  const reviews: Reviews = ReviewsListData.filter((review: Review) => review.id === currentOffer.id);
   const ratingStarsStyle = currentOffer.rating * 20;
   const upperType = upperString(currentOffer.type);
 
@@ -143,7 +140,7 @@ function OfferScreen(): JSX.Element {
               <div className="offer__description">{currentOffer.description}</div>
             </div>
             <section className="offer__reviews reviews">
-              <ReviewsList reviews={reviews}/>
+              <Reviews offerId={id} isAuth={isAuth} />
             </section>
           </div>
         </div>

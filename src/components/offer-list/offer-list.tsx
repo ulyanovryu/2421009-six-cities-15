@@ -5,7 +5,7 @@ import {upperString} from '../../utils/utils.ts';
 
 type OfferProps = {
   offerParams: Offer;
-  onMouseOver: (activeOffer: string) => void;
+  onMouseOver: (offer?: Offer) => void;
   offersListTemplate: OffersListTemplate;
 }
 
@@ -46,17 +46,17 @@ function OfferList({offerParams, offersListTemplate, onMouseOver}: OfferProps): 
   const upperType = upperString(type);
 
   const mouseOver = () => {
-    onMouseOver(id);
+    onMouseOver(offerParams);
   };
 
   const mouseOut = () => {
-    onMouseOver('');
+    onMouseOver();
   };
 
   const classesTemplate = offerListClasses(offersListTemplate);
 
   return (
-    <article className={classesTemplate.article} onMouseOver={mouseOver} onMouseOut={mouseOut}>
+    <article className={classesTemplate.article} onMouseEnter={mouseOver} onMouseOut={mouseOut}>
       {
         isPremium ?
           <div className="place-card__mark">
@@ -64,7 +64,7 @@ function OfferList({offerParams, offersListTemplate, onMouseOver}: OfferProps): 
           </div>
           : null
       }
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={classesTemplate.image}>
         <Link to={linkDetail}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt={title} />
         </Link>

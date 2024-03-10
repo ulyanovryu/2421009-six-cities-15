@@ -41,4 +41,4 @@ export type Offer = {
 export type Offers = Offer[];
 
 
-export type OffersListTemplate = 'mainScreen' | 'favoritesScreen' | 'offerScreen';
+export type OffersListTemplate = 'mainScreen' | 'favoriteScreen' | 'offerScreen';
