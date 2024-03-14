@@ -9,6 +9,7 @@ import Page404Screen from '../page404-screen';
 import Reviews from '../../components/reviews';
 import OffersList from '../../components/offers-list';
 import {Ratings} from '../../types/rating.ts';
+import Map from '../../components/map';
 
 type OfferGalleryImagesType = {
   src: string;
@@ -149,13 +150,13 @@ function OfferScreen({offersList, reviewsList, ratingsList}: OfferScreenProps): 
             </section>
           </div>
         </div>
-        <section className="offer__map map"></section>
+        <Map offers={offersList.slice(0,3)} className={'offer__map map'} />
       </section>
       <div className="container">
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            <OffersList offersList={offersList} offersListTemplate="offerScreen" />
+            <OffersList offersList={offersList.slice(0,3)} offersListTemplate="offerScreen" />
           </div>
         </section>
       </div>

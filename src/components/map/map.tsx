@@ -15,8 +15,9 @@ type OfferCity = {
 
 type MapProps = {
   offers: Offers;
+  className: string;
 };
-function Map ({offers}: MapProps): JSX.Element {
+function Map ({offers, className}: MapProps): JSX.Element {
 
   const mapRef = useRef(null);
   const city: OfferCity = offers[0]['city'];
@@ -41,7 +42,7 @@ function Map ({offers}: MapProps): JSX.Element {
     }
   }, [map, offers]);
 
-  return <section style={{height: '600px'}} className="cities__map map" ref={mapRef}></section>;
+  return <section style={{height: '600px'}} className={className} ref={mapRef}></section>;
 }
 
 export default Map;
