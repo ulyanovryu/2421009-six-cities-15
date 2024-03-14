@@ -1,15 +1,14 @@
 import {useParams} from 'react-router-dom';
 
 import {AuthorizationStatus} from '../../const.ts';
-import {Offer} from '../../types/offers.ts';
-
-import offersListMocks from '../../mocks/offers.ts';
+import {Offers, Offer} from '../../types/offers.ts';
+import {ReviewsType} from '../../types/reviews.ts';
 
 import getAuthorizationStatus, {upperString} from '../../utils/utils.ts';
-
 import Page404Screen from '../page404-screen';
 import Reviews from '../../components/reviews';
 import OffersList from '../../components/offers-list';
+import {Ratings} from '../../types/rating.ts';
 
 type OfferGalleryImagesType = {
   src: string;
@@ -36,11 +35,17 @@ function GoogListItem ({good}:GoogsType): JSX.Element {
   );
 }
 
-function OfferScreen(): JSX.Element {
+type OfferScreenProps = {
+  offersList: Offers;
+  reviewsList: ReviewsType;
+  ratingsList: Ratings;
+};
+
+function OfferScreen({offersList, reviewsList, ratingsList}: OfferScreenProps): JSX.Element {
 
   const authorizationStatus = getAuthorizationStatus();
   const {id} = useParams();
-  const currentOffer: Offer | undefined = offersListMocks.find((offer: Offer) => offer.id === id);
+  const currentOffer: Offer | undefined = offersList.find((offer: Offer) => offer.id === id);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
   if (!currentOffer || id === undefined) {
@@ -140,7 +145,7 @@ function OfferScreen(): JSX.Element {
               <div className="offer__description">{currentOffer.description}</div>
             </div>
             <section className="offer__reviews reviews">
-              <Reviews offerId={id} isAuth={isAuth} />
+              <Reviews reviewsListData={reviewsList} offerId={id} isAuth={isAuth} ratingsList={ratingsList} />
             </section>
           </div>
         </div>
@@ -150,7 +155,7 @@ function OfferScreen(): JSX.Element {
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            <OffersList offersList={offersListMocks} offersListTemplate="offerScreen" />
+            <OffersList offersList={offersList} offersListTemplate="offerScreen" />
           </div>
         </section>
       </div>

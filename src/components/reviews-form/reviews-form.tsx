@@ -1,11 +1,13 @@
 import {Fragment, ReactEventHandler, useState} from 'react';
 
-import {Rating} from '../../types/rating.ts';
-import {ratingsList} from '../../mocks/rating.ts';
+import {Ratings, Rating} from '../../types/rating.ts';
 
 type THandleFormChange = ReactEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+type ReviewsFormProps = {
+  ratingsList: Ratings;
+}
 
-function ReviewsForm (): JSX.Element {
+function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
 
   const [review, setReview] = useState({rating: 0, review: ''});
   const handleFormChange: THandleFormChange = (event) => {

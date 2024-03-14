@@ -1,10 +1,6 @@
-type SortingList = {
-  name : string;
-  link : string;
-  id : number;
-};
+import {SortingsList} from '../types/sorting.ts';
 
-const SortingList: SortingList[] = [
+const sortingsList: SortingsList = [
   {
     'name' : 'Popular',
     'link' : '',
@@ -24,4 +20,4 @@ const SortingList: SortingList[] = [
   },
 ];
 
-export default SortingList;
+export default sortingsList;
