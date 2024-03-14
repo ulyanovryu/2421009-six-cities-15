@@ -5,6 +5,9 @@ import Settings from './components/settings/settings.tsx';
 
 import citiesList from './mocks/cities.ts';
 import offersList from './mocks/offers.ts';
+import sortingsList from './mocks/sortings.ts';
+import reviewsListData from './mocks/reviews.ts';
+import ratingsList from './mocks/rating.ts';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,6 +15,13 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App offersCount={Settings.OffersCount} offersList={offersList} citiesList={citiesList} />
+    <App
+      offersCount={Settings.OffersCount}
+      offersList={offersList}
+      citiesList={citiesList}
+      sortingsList={sortingsList}
+      reviewsListData={reviewsListData}
+      ratingsList={ratingsList}
+    />
   </React.StrictMode>
 );

@@ -13,7 +13,6 @@ function OffersList ({offersList, offersListTemplate}: OffersParams): JSX.Elemen
 
   const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
 
-
   // eslint-disable-next-line no-console
   console.log(activeOffer);
 

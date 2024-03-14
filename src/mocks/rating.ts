@@ -1,6 +1,6 @@
 import {Ratings} from '../types/rating.ts';
 
-export const ratingsList: Ratings = [
+const ratingsList: Ratings = [
   {
     'title': 'perfect',
     'value' : 5,
@@ -18,3 +18,5 @@ export const ratingsList: Ratings = [
     'value' : 1,
   },
 ];
+
+export default ratingsList;

@@ -1,6 +1,10 @@
-import SortingList from '../../mocks/sorting-list.ts';
+import {SortingsList} from '../../types/sorting.ts';
 
-function SortingForm (): JSX.Element {
+type SortingProps = {
+  sortingsList: SortingsList;
+}
+
+function SortingForm ({sortingsList}: SortingProps): JSX.Element {
   return (
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by</span>
@@ -11,7 +15,7 @@ function SortingForm (): JSX.Element {
         </svg>
       </span>
       <ul className="places__options places__options--custom places__options--opened">
-        {SortingList.map((sortingVariant) => (
+        {sortingsList.map((sortingVariant) => (
           <li className="places__option" key={sortingVariant.id} tabIndex={0}>
             {sortingVariant.name}
           </li>
