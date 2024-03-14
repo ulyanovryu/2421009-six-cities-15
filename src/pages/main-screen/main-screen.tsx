@@ -43,7 +43,7 @@ function MainScreen ({citiesList, offersCount, offersList, sortingsList}: MainSc
             </div>
           </section>
           <div className="cities__right-section">
-            <Map offers={offersList} />
+            <Map offers={offersList} className={'cities__map map'} />
           </div>
         </div>
       </div>
