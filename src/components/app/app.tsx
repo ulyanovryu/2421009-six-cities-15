@@ -46,7 +46,7 @@ function App({citiesList, offersCount, offersList, sortingsList, reviewsListData
           />
           <Route path={AppRoute.Login} element={(
             <PrivateRoute authorizationStatus={authorizationStatus} isReverse>
-              <LoginScreen />
+              <LoginScreen citiesList={citiesList} />
             </PrivateRoute>
           )}
           />
@@ -58,6 +58,7 @@ function App({citiesList, offersCount, offersList, sortingsList, reviewsListData
           />
           <Route path={AppRoute.Offer} element={
             <OfferScreen
+              citiesList={citiesList}
               offersList={offersList}
               reviewsList={reviewsListData}
               ratingsList={ratingsList}

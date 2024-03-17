@@ -10,6 +10,9 @@ import Reviews from '../../components/reviews';
 import OffersList from '../../components/offers-list';
 import {Ratings} from '../../types/rating.ts';
 import Map from '../../components/map';
+import {useState} from 'react';
+import {Nullable} from 'vitest';
+import {Cities, City} from '../../types/cities.ts';
 
 type OfferGalleryImagesType = {
   src: string;
@@ -37,21 +40,41 @@ function GoogListItem ({good}:GoogsType): JSX.Element {
 }
 
 type OfferScreenProps = {
+  citiesList: Cities;
   offersList: Offers;
   reviewsList: ReviewsType;
   ratingsList: Ratings;
 };
 
-function OfferScreen({offersList, reviewsList, ratingsList}: OfferScreenProps): JSX.Element {
+const getCurrentOfferCity = (offer:Offer, cities: Cities): City => {
+  let offerCity = null;
+
+  cities.map((city) => {
+    if (city.name === offer.city.name) {
+      offerCity = city;
+    }
+  });
+
+  if (offerCity === null || offerCity === undefined) {
+    offerCity = cities[0];
+  }
+
+  return offerCity;
+};
+
+function OfferScreen({citiesList, offersList, reviewsList, ratingsList}: OfferScreenProps): JSX.Element {
+
+  const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
 
   const authorizationStatus = getAuthorizationStatus();
   const {id} = useParams();
   const currentOffer: Offer | undefined = offersList.find((offer: Offer) => offer.id === id);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
-  if (!currentOffer || id === undefined) {
+  if (currentOffer === null || currentOffer === undefined || id === undefined) {
     return <Page404Screen />;
   }
+  const activeOfferCity = getCurrentOfferCity(currentOffer, citiesList);
 
   const ratingStarsStyle = currentOffer.rating * 20;
   const upperType = upperString(currentOffer.type);
@@ -150,13 +173,19 @@ function OfferScreen({offersList, reviewsList, ratingsList}: OfferScreenProps): 
             </section>
           </div>
         </div>
-        <Map offers={offersList.slice(0,3)} className={'offer__map map'} />
+        <Map offers={offersList.slice(0,3)} className={'offer__map map'} selectedPoint={activeOffer} selectedCity={activeOfferCity} />
       </section>
       <div className="container">
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            <OffersList offersList={offersList.slice(0,3)} offersListTemplate="offerScreen" />
+            <OffersList
+              offersList={offersList.slice(0,3)}
+              offersListTemplate="offerScreen"
+              onMouseOffer={(activeOfferParams) => {
+                setActiveOffer(activeOfferParams || null);
+              }}
+            />
           </div>
         </section>
       </div>

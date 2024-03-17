@@ -1,4 +1,14 @@
-function LoginScreen (): JSX.Element {
+import {Link} from 'react-router-dom';
+
+import {Cities, City} from '../../types/cities.ts';
+
+type LoginScreenProps = {
+  citiesList: Cities;
+}
+function LoginScreen ({citiesList}: LoginScreenProps): JSX.Element {
+
+  const defaultLoginCityName: string = 'Amsterdam';
+
   return (
     <main className="page__main page__main--login">
       <div className="page__login-container container">
@@ -18,9 +28,13 @@ function LoginScreen (): JSX.Element {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="#">
-              <span>Amsterdam</span>
-            </a>
+            {
+              citiesList.map((city: City) => (
+                city.name === defaultLoginCityName ?
+                  <Link key={city.name} to={city.link} className={'locations__item-link'}><span>{city.name}</span></Link>
+                  : null
+              ))
+            }
           </div>
         </section>
       </div>

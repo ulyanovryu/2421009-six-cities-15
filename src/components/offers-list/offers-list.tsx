@@ -7,14 +7,16 @@ import {Nullable} from 'vitest';
 type OffersParams = {
   offersList: Offers;
   offersListTemplate: OffersListTemplate;
+  onMouseOffer: (offer?: Offer) => void;
 };
 
-function OffersList ({offersList, offersListTemplate}: OffersParams): JSX.Element {
+function OffersList ({offersList, offersListTemplate, onMouseOffer}: OffersParams): JSX.Element {
 
   const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
 
-  // eslint-disable-next-line no-console
-  console.log(activeOffer);
+  if (activeOffer !== undefined && activeOffer !== null) {
+    onMouseOffer(activeOffer);
+  }
 
   return (
     <>
