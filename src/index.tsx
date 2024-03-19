@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app.tsx';
+
+import {Provider} from 'react-redux';
+import {store} from './store';
+
 import Settings from './components/settings/settings.tsx';
 
 import citiesList from './mocks/cities.ts';
@@ -15,13 +19,15 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App
-      offersCount={Settings.OffersCount}
-      offersList={offersList}
-      citiesList={citiesList}
-      sortingsList={sortingsList}
-      reviewsListData={reviewsListData}
-      ratingsList={ratingsList}
-    />
+    <Provider store={store}>
+      <App
+        offersCount={Settings.OffersCount}
+        offersList={offersList}
+        citiesList={citiesList}
+        sortingsList={sortingsList}
+        reviewsListData={reviewsListData}
+        ratingsList={ratingsList}
+      />
+    </Provider>
   </React.StrictMode>
 );
