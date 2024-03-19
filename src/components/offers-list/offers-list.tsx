@@ -1,6 +1,6 @@
 import {Offer, Offers, OffersListTemplate} from '../../types/offers.ts';
 
-import OfferList from '../offer-list';
+import OfferCard from '../offer-card';
 import {useState} from 'react';
 import {Nullable} from 'vitest';
 
@@ -22,7 +22,7 @@ function OffersList ({offersList, offersListTemplate, onMouseOffer}: OffersParam
     <>
       {
         offersList.map((offer: Offer): JSX.Element => (
-          <OfferList
+          <OfferCard
             key={offer.id}
             offerParams={offer}
             offersListTemplate={offersListTemplate}

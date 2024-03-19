@@ -9,14 +9,14 @@ import {City} from '../../types/cities.ts';
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40]
+  iconSize: [27, 39],
+  iconAnchor: [27, 39]
 });
 
 const currentCustomIcon = new Icon({
   iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40]
+  iconSize: [27, 39],
+  iconAnchor: [27, 39]
 });
 
 type MapProps = {
@@ -67,7 +67,7 @@ function Map ({offers, className, selectedPoint, selectedCity}: MapProps): JSX.E
     }
   }, [map, offers, selectedPoint]);
 
-  return <section style={{height: '500px'}} className={className} ref={mapRef}></section>;
+  return <section style={{height: '600px'}} className={className} ref={mapRef}></section>;
 }
 
 export default Map;

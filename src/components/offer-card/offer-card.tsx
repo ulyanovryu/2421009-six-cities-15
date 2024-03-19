@@ -35,7 +35,7 @@ const offerListClasses = (template:string): OffelListClassesType => {
   return classNames;
 };
 
-function OfferList({offerParams, offersListTemplate, onMouseOver}: OfferProps): JSX.Element {
+function OfferCard({offerParams, offersListTemplate, onMouseOver}: OfferProps): JSX.Element {
 
   const {id, isPremium, isFavorite, title, price, rating, type, previewImage} = offerParams;
 
@@ -97,4 +97,4 @@ function OfferList({offerParams, offersListTemplate, onMouseOver}: OfferProps): 
   );
 }
 
-export default OfferList;
+export default OfferCard;
