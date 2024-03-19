@@ -5,7 +5,7 @@ import {upperString} from '../../utils/utils.ts';
 
 type OfferProps = {
   offerParams: Offer;
-  onMouseOver: (offer?: Offer) => void;
+  getMouseOverOffer: (offer?: Offer) => void;
   offersListTemplate: OffersListTemplate;
 }
 
@@ -35,7 +35,7 @@ const offerListClasses = (template:string): OffelListClassesType => {
   return classNames;
 };
 
-function OfferCard({offerParams, offersListTemplate, onMouseOver}: OfferProps): JSX.Element {
+function OfferCard({offerParams, offersListTemplate, getMouseOverOffer}: OfferProps): JSX.Element {
 
   const {id, isPremium, isFavorite, title, price, rating, type, previewImage} = offerParams;
 
@@ -45,18 +45,18 @@ function OfferCard({offerParams, offersListTemplate, onMouseOver}: OfferProps): 
   const bookmarkState : string = !isFavorite ? 'To bookmarks' : 'In bookmarks';
   const upperType = upperString(type);
 
-  const mouseOver = () => {
-    onMouseOver(offerParams);
+  const mouseOverHandler = () => {
+    getMouseOverOffer(offerParams);
   };
 
-  const mouseOut = () => {
-    onMouseOver();
+  const mouseOutHandler = () => {
+    getMouseOverOffer();
   };
 
   const classesTemplate = offerListClasses(offersListTemplate);
 
   return (
-    <article className={classesTemplate.article} onMouseEnter={mouseOver} onMouseOut={mouseOut}>
+    <article className={classesTemplate.article} onMouseEnter={mouseOverHandler} onMouseOut={mouseOutHandler}>
       {
         isPremium ?
           <div className="place-card__mark">

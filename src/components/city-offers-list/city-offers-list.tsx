@@ -36,7 +36,7 @@ function CityOffersList ({city, offersList}: CityOffersListParams): JSX.Element 
           <OffersList
             offersList={offersListFiltered}
             offersListTemplate="favoriteScreen"
-            onMouseOffer={(activeOfferParams) => {
+            getMouseOverOfferList={(activeOfferParams) => {
               setActiveOffer(activeOfferParams || null);
             }}
           />

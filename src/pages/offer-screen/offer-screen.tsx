@@ -182,7 +182,7 @@ function OfferScreen({citiesList, offersList, reviewsList, ratingsList}: OfferSc
             <OffersList
               offersList={offersList.slice(0,3)}
               offersListTemplate="offerScreen"
-              onMouseOffer={(activeOfferParams) => {
+              getMouseOverOfferList={(activeOfferParams) => {
                 setActiveOffer(activeOfferParams || null);
               }}
             />

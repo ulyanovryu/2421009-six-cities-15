@@ -72,7 +72,7 @@ function MainScreen ({citiesList, offersCount, offersList, sortingsList}: MainSc
               <OffersList
                 offersList={cityOffersList}
                 offersListTemplate="mainScreen"
-                onMouseOffer={(activeOfferParams) => {
+                getMouseOverOfferList={(activeOfferParams) => {
                   setActiveOffer(activeOfferParams);
                 }}
               />
