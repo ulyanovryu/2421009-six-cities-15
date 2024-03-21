@@ -7,7 +7,6 @@ import './polyfills';
 import {store} from './store';
 
 //import Settings from './components/settings/settings.tsx';
-//import citiesList from './mocks/cities.ts';
 import {CITIES} from './const.ts';
 import offersList from './mocks/offers.ts';
 import reviewsListData from './mocks/reviews.ts';
