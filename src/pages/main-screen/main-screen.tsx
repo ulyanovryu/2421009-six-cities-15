@@ -34,7 +34,6 @@ function MainScreen ({city, citiesList}: MainScreenProps): JSX.Element {
   //const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
 
   const activeId = useAppSelector(offersSelectors.activeId);
-  //const activeOffer = (useAppSelector(offersSelectors.activeOffer)).shift();
   const activeOffer = (offers.filter((offer) => offer.id === activeId)).shift();
 
   const cityOffersCount = currentOffersByCity.length;
