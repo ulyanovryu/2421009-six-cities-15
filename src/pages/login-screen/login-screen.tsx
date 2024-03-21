@@ -1,13 +1,10 @@
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
-import {Cities, City} from '../../types/cities.ts';
+import {DEFAULT_CITY} from '../../const.ts';
 
-type LoginScreenProps = {
-  citiesList: Cities;
-}
-function LoginScreen ({citiesList}: LoginScreenProps): JSX.Element {
+function LoginScreen (): JSX.Element {
 
-  const defaultLoginCityName: string = 'Amsterdam';
+  const defaultCityParams = DEFAULT_CITY;
 
   return (
     <main className="page__main page__main--login">
@@ -28,13 +25,9 @@ function LoginScreen ({citiesList}: LoginScreenProps): JSX.Element {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            {
-              citiesList.map((city: City) => (
-                city.name === defaultLoginCityName ?
-                  <Link key={city.name} to={city.link} className={'locations__item-link'}><span>{city.name}</span></Link>
-                  : null
-              ))
-            }
+            <NavLink to={`/${defaultCityParams.id}`} className={'locations__item-link'}>
+              <span>{defaultCityParams.name}</span>
+            </NavLink>
           </div>
         </section>
       </div>
