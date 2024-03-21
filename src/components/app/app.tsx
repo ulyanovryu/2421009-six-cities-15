@@ -1,10 +1,9 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 
 import {AppRoute} from '../../const';
 
 import {Cities} from '../../types/cities.ts';
 import {Offers} from '../../types/offers.ts';
-import {SortingsList} from '../../types/sorting.ts';
 import {ReviewsType} from '../../types/reviews.ts';
 import {Ratings} from '../../types/rating.ts';
 
@@ -21,13 +20,11 @@ import getAuthorizationStatus from '../../utils/utils.ts';
 type AppProps = {
   citiesList: Cities;
   offersList: Offers;
-  sortingsList: SortingsList;
   reviewsListData: ReviewsType;
   ratingsList: Ratings;
-  offersCount: number;
 }
 
-function App({citiesList, offersCount, offersList, sortingsList, reviewsListData, ratingsList}: AppProps): JSX.Element {
+function App({citiesList, offersList, reviewsListData, ratingsList}: AppProps): JSX.Element {
 
   const authorizationStatus = getAuthorizationStatus();
 
@@ -35,15 +32,26 @@ function App({citiesList, offersCount, offersList, sortingsList, reviewsListData
     <BrowserRouter>
       <Routes>
         <Route path={AppRoute.Root} element={<Layout />}>
-          <Route index element={
-            <MainScreen
-              offersCount={offersCount}
-              citiesList={citiesList}
-              offersList={offersList}
-              sortingsList={sortingsList}
-            />
+
+          <Route path={AppRoute.Root} index element={
+            <Navigate to={`/${citiesList[0].id}`} />
           }
           />
+
+          {citiesList.map((city) => (
+            <Route
+              index
+              key={city.id}
+              path={`/${city.id}`}
+              element={
+                <MainScreen
+                  city={city.name}
+                  citiesList={citiesList}
+                />
+              }
+            />
+          ))}
+
           <Route path={AppRoute.Login} element={(
             <PrivateRoute authorizationStatus={authorizationStatus} isReverse>
               <LoginScreen />
@@ -58,6 +66,7 @@ function App({citiesList, offersCount, offersList, sortingsList, reviewsListData
           />
           <Route path={AppRoute.Offer} element={
             <OfferScreen
+              citiesList={citiesList}
               offersList={offersList}
               reviewsList={reviewsListData}
               ratingsList={ratingsList}

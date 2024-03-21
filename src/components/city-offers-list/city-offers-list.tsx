@@ -1,33 +1,41 @@
-import {Link} from 'react-router-dom';
-
 import {Fragment} from 'react';
+import {NavLink} from 'react-router-dom';
+
 import {Offers} from '../../types/offers.ts';
-import {City} from '../../types/cities.ts';
+import {Cities, City} from '../../types/cities.ts';
 
 import OffersList from '../offers-list';
+import {getActiveCityParams} from '../../utils/utils.ts';
 
 type CityOffersListParams = {
+  citiesList: Cities;
   city: City;
   offersList: Offers;
 };
 
-function CityOffersList ({city, offersList}: CityOffersListParams): JSX.Element {
-  const {id, link, name} = city;
-  const offersListFiltered = city !== undefined ?
-    offersList.filter((offer) => offer.city.name === name) : [];
+function CityOffersList ({citiesList, city, offersList}: CityOffersListParams): JSX.Element {
 
-  return offersListFiltered.length > 0 ? (
-    <Fragment key={id}>
+  const activeCityParams = getActiveCityParams(citiesList, city.name);
+
+  const offersByCity = Object.groupBy(offersList, (offer) => offer.city.name);
+
+  const currentOffersByCity:Offers = offersByCity[city.name] || [];
+
+  return currentOffersByCity.length > 0 ? (
+    <Fragment key={activeCityParams.id}>
       <li className="favorites__locations-items">
         <div className="favorites__locations locations locations--current">
           <div className="locations__item">
-            <Link className="locations__item-link" to={link}>
-              <span>{name}</span>
-            </Link>
+            <NavLink to={`/${activeCityParams.id}`} className={'locations__item-link'}>
+              <span>{city.name}</span>
+            </NavLink>
           </div>
         </div>
         <div className="favorites__places">
-          <OffersList offersList={offersListFiltered} offersListTemplate="favoriteScreen"/>
+          <OffersList
+            offersList={currentOffersByCity}
+            offersListTemplate="favoriteScreen"
+          />
         </div>
       </li>
     </Fragment>

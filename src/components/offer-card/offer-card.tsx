@@ -2,10 +2,11 @@ import {Offer, OffersListTemplate} from '../../types/offers.ts';
 
 import {Link} from 'react-router-dom';
 import {upperString} from '../../utils/utils.ts';
+import {useActionCreators} from '../../hooks';
+import {offersActions} from '../../store/slices/offers.ts';
 
 type OfferProps = {
   offerParams: Offer;
-  onMouseOver: (offer?: Offer) => void;
   offersListTemplate: OffersListTemplate;
 }
 
@@ -35,7 +36,9 @@ const offerListClasses = (template:string): OffelListClassesType => {
   return classNames;
 };
 
-function OfferList({offerParams, offersListTemplate, onMouseOver}: OfferProps): JSX.Element {
+function OfferCard({offerParams, offersListTemplate}: OfferProps): JSX.Element {
+
+  const {setActiveId} = useActionCreators(offersActions);
 
   const {id, isPremium, isFavorite, title, price, rating, type, previewImage} = offerParams;
 
@@ -45,18 +48,18 @@ function OfferList({offerParams, offersListTemplate, onMouseOver}: OfferProps): 
   const bookmarkState : string = !isFavorite ? 'To bookmarks' : 'In bookmarks';
   const upperType = upperString(type);
 
-  const mouseOver = () => {
-    onMouseOver(offerParams);
+  const mouseOverHandler = () => {
+    setActiveId(offerParams.id);
   };
 
-  const mouseOut = () => {
-    onMouseOver();
+  const mouseOutHandler = () => {
+    //setActiveId();
   };
 
   const classesTemplate = offerListClasses(offersListTemplate);
 
   return (
-    <article className={classesTemplate.article} onMouseEnter={mouseOver} onMouseOut={mouseOut}>
+    <article className={classesTemplate.article} onMouseEnter={mouseOverHandler} onMouseOut={mouseOutHandler}>
       {
         isPremium ?
           <div className="place-card__mark">
@@ -97,4 +100,4 @@ function OfferList({offerParams, offersListTemplate, onMouseOver}: OfferProps): 
   );
 }
 
-export default OfferList;
+export default OfferCard;

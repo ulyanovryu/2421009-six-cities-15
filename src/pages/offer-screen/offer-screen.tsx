@@ -1,15 +1,20 @@
 import {useParams} from 'react-router-dom';
 
-import {AuthorizationStatus} from '../../const.ts';
+import {AuthorizationStatus, DEFAULT_CITY,} from '../../const.ts';
 import {Offers, Offer} from '../../types/offers.ts';
+import {Cities} from '../../types/cities.ts';
 import {ReviewsType} from '../../types/reviews.ts';
 
-import getAuthorizationStatus, {upperString} from '../../utils/utils.ts';
+import getAuthorizationStatus, {upperString, getActiveCityParams} from '../../utils/utils.ts';
 import Page404Screen from '../page404-screen';
 import Reviews from '../../components/reviews';
 import OffersList from '../../components/offers-list';
 import {Ratings} from '../../types/rating.ts';
 import Map from '../../components/map';
+// import {useState} from 'react';
+// import {Nullable} from 'vitest';
+import {useAppSelector} from '../../hooks';
+import {offersSelectors} from '../../store/slices/offers.ts';
 
 type OfferGalleryImagesType = {
   src: string;
@@ -37,21 +42,29 @@ function GoogListItem ({good}:GoogsType): JSX.Element {
 }
 
 type OfferScreenProps = {
+  citiesList: Cities;
   offersList: Offers;
   reviewsList: ReviewsType;
   ratingsList: Ratings;
 };
 
-function OfferScreen({offersList, reviewsList, ratingsList}: OfferScreenProps): JSX.Element {
+function OfferScreen({citiesList, offersList, reviewsList, ratingsList}: OfferScreenProps): JSX.Element {
+
+  const {name:activeCity} = DEFAULT_CITY;
+
+  const activeId = useAppSelector(offersSelectors.activeId);
+  const activeOffer = (offersList.filter((offer) => offer.id === activeId)).shift();
 
   const authorizationStatus = getAuthorizationStatus();
   const {id} = useParams();
   const currentOffer: Offer | undefined = offersList.find((offer: Offer) => offer.id === id);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
-  if (!currentOffer || id === undefined) {
+  if (currentOffer === null || currentOffer === undefined || id === undefined) {
     return <Page404Screen />;
   }
+
+  const activeCityParams = getActiveCityParams(citiesList, activeCity);
 
   const ratingStarsStyle = currentOffer.rating * 20;
   const upperType = upperString(currentOffer.type);
@@ -150,13 +163,16 @@ function OfferScreen({offersList, reviewsList, ratingsList}: OfferScreenProps): 
             </section>
           </div>
         </div>
-        <Map offers={offersList.slice(0,3)} className={'offer__map map'} />
+        <Map offers={offersList.slice(0,3)} className={'offer__map map'} selectedPoint={activeOffer} selectedCity={activeCityParams} />
       </section>
       <div className="container">
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            <OffersList offersList={offersList.slice(0,3)} offersListTemplate="offerScreen" />
+            <OffersList
+              offersList={offersList.slice(0,3)}
+              offersListTemplate="offerScreen"
+            />
           </div>
         </section>
       </div>

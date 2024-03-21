@@ -1,8 +1,6 @@
 import {Offer, Offers, OffersListTemplate} from '../../types/offers.ts';
 
-import OfferList from '../offer-list';
-import {useState} from 'react';
-import {Nullable} from 'vitest';
+import OfferCard from '../offer-card';
 
 type OffersParams = {
   offersList: Offers;
@@ -10,23 +8,14 @@ type OffersParams = {
 };
 
 function OffersList ({offersList, offersListTemplate}: OffersParams): JSX.Element {
-
-  const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
-
-  // eslint-disable-next-line no-console
-  console.log(activeOffer);
-
   return (
     <>
       {
         offersList.map((offer: Offer): JSX.Element => (
-          <OfferList
+          <OfferCard
             key={offer.id}
             offerParams={offer}
             offersListTemplate={offersListTemplate}
-            onMouseOver={(activeOfferParams) => {
-              setActiveOffer(activeOfferParams || null);
-            }}
           />
         ))
       }

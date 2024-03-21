@@ -18,9 +18,13 @@ function Reviews ({offerId, isAuth, reviewsListData, ratingsList}: ReviewsProps)
 
   return (
     <>
-      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsAmount}</span></h2>
-      <ReviewsList reviews={reviews} />
-      {isAuth && <ReviewsForm ratingsList={ratingsList} />}
+      {(reviewsAmount > 0) &&
+        <>
+          <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsAmount}</span></h2>
+          <ReviewsList reviews={reviews}/>
+        </>}
+
+      {isAuth && <ReviewsForm ratingsList={ratingsList}/>}
     </>
   );
 }

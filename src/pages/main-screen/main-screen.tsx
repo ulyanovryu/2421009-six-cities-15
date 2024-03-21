@@ -1,49 +1,76 @@
-import {Offers} from '../../types/offers.ts';
-import {Cities, City} from '../../types/cities.ts';
+import {useState} from 'react';
 
-import SortingForm from '../../components/sorting-form';
+import {Offers} from '../../types/offers.ts';
+import {Cities, CityName} from '../../types/cities.ts';
+
+import {getActiveCityParams, plural} from '../../utils/utils.ts';
+
+import {useAppSelector} from '../../hooks';
+
+import CitiesList from '../../components/cities-list';
 import OffersList from '../../components/offers-list';
+import SortingForm from '../../components/sorting-form';
 import Map from '../../components/map';
-import {Link} from 'react-router-dom';
-import {AppRoute} from '../../const.ts';
-import {SortingsList} from '../../types/sorting.ts';
+import {offersSelectors} from '../../store/slices/offers.ts';
+
+import {SortOption} from '../../const.ts';
 
 type MainScreenProps = {
+  city: CityName;
   citiesList: Cities;
-  offersCount: number;
-  offersList: Offers;
-  sortingsList: SortingsList;
 }
 
-function MainScreen ({citiesList, offersCount, offersList, sortingsList}: MainScreenProps): JSX.Element {
+function MainScreen ({city, citiesList}: MainScreenProps): JSX.Element {
+
+  const [activeSort, setActiveSort] = useState(SortOption.Popular);
+
+  const activeCityParams = getActiveCityParams(citiesList, city);
+  const offers:Offers = useAppSelector(offersSelectors.offers);
+
+  const offersByCity = Object.groupBy(offers, (offer) => offer.city.name);
+
+  const currentOffersByCity:Offers = offersByCity[city] || [];
+
+  //const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
+
+  const activeId = useAppSelector(offersSelectors.activeId);
+  //const activeOffer = (useAppSelector(offersSelectors.activeOffer)).shift();
+  const activeOffer = (offers.filter((offer) => offer.id === activeId)).shift();
+
+  const cityOffersCount = currentOffersByCity.length;
+
+  let sortedOffers = currentOffersByCity;
+  if (activeSort === SortOption.PriceLowToHigh) {
+    sortedOffers = currentOffersByCity.toSorted((a, b) => a.price - b.price);
+  } else if (activeSort === SortOption.PriceHighToLow) {
+    sortedOffers = currentOffersByCity.toSorted((a, b) => b.price - a.price);
+  } else if (activeSort === SortOption.TopRatedFirst) {
+    sortedOffers = [...currentOffersByCity].sort((a, b) => b.rating - a.rating);
+  }
+
   return (
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
-          <ul className="locations__list tabs__list">
-            {citiesList.map((city: City) => (
-              <li className="locations__item" key={city.id}>
-                <Link className="locations__item-link tabs__item" to={AppRoute.Root}>
-                  <span>{city.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <CitiesList citiesList={citiesList} />
         </section>
       </div>
       <div className="cities">
         <div className="cities__places-container container">
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">{offersCount} places to stay in Amsterdam</b>
-            <SortingForm sortingsList={sortingsList} />
+            <b className="places__found">{cityOffersCount} {plural(cityOffersCount, ['place', 'places', 'places'])} to stay in {city}</b>
+            <SortingForm current={activeSort} setter={setActiveSort} />
             <div className="cities__places-list places__list tabs__content">
-              <OffersList offersList={offersList} offersListTemplate="mainScreen" />
+              <OffersList
+                offersList={sortedOffers}
+                offersListTemplate="mainScreen"
+              />
             </div>
           </section>
           <div className="cities__right-section">
-            <Map offers={offersList} className={'cities__map map'} />
+            <Map offers={currentOffersByCity} className={'cities__map map'} selectedPoint={activeOffer} selectedCity={activeCityParams} />
           </div>
         </div>
       </div>

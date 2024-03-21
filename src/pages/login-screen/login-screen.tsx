@@ -1,4 +1,11 @@
+import {NavLink} from 'react-router-dom';
+
+import {DEFAULT_CITY} from '../../const.ts';
+
 function LoginScreen (): JSX.Element {
+
+  const defaultCityParams = DEFAULT_CITY;
+
   return (
     <main className="page__main page__main--login">
       <div className="page__login-container container">
@@ -18,9 +25,9 @@ function LoginScreen (): JSX.Element {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="#">
-              <span>Amsterdam</span>
-            </a>
+            <NavLink to={`/${defaultCityParams.id}`} className={'locations__item-link'}>
+              <span>{defaultCityParams.name}</span>
+            </NavLink>
           </div>
         </section>
       </div>
