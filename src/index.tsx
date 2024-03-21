@@ -6,7 +6,6 @@ import {Provider} from 'react-redux';
 import './polyfills';
 import {store} from './store';
 
-//import Settings from './components/settings/settings.tsx';
 import {CITIES} from './const.ts';
 import offersList from './mocks/offers.ts';
 import reviewsListData from './mocks/reviews.ts';
