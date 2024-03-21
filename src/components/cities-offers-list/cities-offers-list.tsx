@@ -15,7 +15,7 @@ function CitiesOffersList ({citiesList, offersList}: CitiesOffersListProps): JSX
       {
         citiesList.map((city: City): JSX.Element => (
           <Fragment key={city.id}>
-            <CityOffersList city={city} offersList={offersList} />
+            <CityOffersList citiesList={citiesList} city={city} offersList={offersList} />
           </Fragment>
         ))
       }

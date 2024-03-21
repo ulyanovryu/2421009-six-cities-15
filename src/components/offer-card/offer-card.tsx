@@ -2,10 +2,11 @@ import {Offer, OffersListTemplate} from '../../types/offers.ts';
 
 import {Link} from 'react-router-dom';
 import {upperString} from '../../utils/utils.ts';
+import {useActionCreators} from '../../hooks';
+import {offersActions} from '../../store/slices/offers.ts';
 
 type OfferProps = {
   offerParams: Offer;
-  getMouseOverOffer: (offer?: Offer) => void;
   offersListTemplate: OffersListTemplate;
 }
 
@@ -35,7 +36,9 @@ const offerListClasses = (template:string): OffelListClassesType => {
   return classNames;
 };
 
-function OfferCard({offerParams, offersListTemplate, getMouseOverOffer}: OfferProps): JSX.Element {
+function OfferCard({offerParams, offersListTemplate}: OfferProps): JSX.Element {
+
+  const {setActiveId} = useActionCreators(offersActions);
 
   const {id, isPremium, isFavorite, title, price, rating, type, previewImage} = offerParams;
 
@@ -46,11 +49,11 @@ function OfferCard({offerParams, offersListTemplate, getMouseOverOffer}: OfferPr
   const upperType = upperString(type);
 
   const mouseOverHandler = () => {
-    getMouseOverOffer(offerParams);
+    setActiveId(offerParams.id);
   };
 
   const mouseOutHandler = () => {
-    getMouseOverOffer();
+    //setActiveId();
   };
 
   const classesTemplate = offerListClasses(offersListTemplate);

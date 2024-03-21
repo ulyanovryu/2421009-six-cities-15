@@ -1,18 +1,20 @@
 import {useParams} from 'react-router-dom';
 
-import {AuthorizationStatus} from '../../const.ts';
+import {AuthorizationStatus, DEFAULT_CITY,} from '../../const.ts';
 import {Offers, Offer} from '../../types/offers.ts';
+import {Cities} from '../../types/cities.ts';
 import {ReviewsType} from '../../types/reviews.ts';
 
-import getAuthorizationStatus, {upperString} from '../../utils/utils.ts';
+import getAuthorizationStatus, {upperString, getActiveCityParams} from '../../utils/utils.ts';
 import Page404Screen from '../page404-screen';
 import Reviews from '../../components/reviews';
 import OffersList from '../../components/offers-list';
 import {Ratings} from '../../types/rating.ts';
 import Map from '../../components/map';
-import {useState} from 'react';
-import {Nullable} from 'vitest';
-import {Cities, City} from '../../types/cities.ts';
+// import {useState} from 'react';
+// import {Nullable} from 'vitest';
+import {useAppSelector} from '../../hooks';
+import {offersSelectors} from '../../store/slices/offers.ts';
 
 type OfferGalleryImagesType = {
   src: string;
@@ -46,25 +48,12 @@ type OfferScreenProps = {
   ratingsList: Ratings;
 };
 
-const getCurrentOfferCity = (offer:Offer, cities: Cities): City => {
-  let offerCity = null;
-
-  cities.map((city) => {
-    if (city.name === offer.city.name) {
-      offerCity = city;
-    }
-  });
-
-  if (offerCity === null || offerCity === undefined) {
-    offerCity = cities[0];
-  }
-
-  return offerCity;
-};
-
 function OfferScreen({citiesList, offersList, reviewsList, ratingsList}: OfferScreenProps): JSX.Element {
 
-  const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
+  const {name:activeCity} = DEFAULT_CITY;
+
+  const activeId = useAppSelector(offersSelectors.activeId);
+  const activeOffer = (offersList.filter((offer) => offer.id === activeId)).shift();
 
   const authorizationStatus = getAuthorizationStatus();
   const {id} = useParams();
@@ -74,7 +63,8 @@ function OfferScreen({citiesList, offersList, reviewsList, ratingsList}: OfferSc
   if (currentOffer === null || currentOffer === undefined || id === undefined) {
     return <Page404Screen />;
   }
-  const activeOfferCity = getCurrentOfferCity(currentOffer, citiesList);
+
+  const activeCityParams = getActiveCityParams(citiesList, activeCity);
 
   const ratingStarsStyle = currentOffer.rating * 20;
   const upperType = upperString(currentOffer.type);
@@ -173,7 +163,7 @@ function OfferScreen({citiesList, offersList, reviewsList, ratingsList}: OfferSc
             </section>
           </div>
         </div>
-        <Map offers={offersList.slice(0,3)} className={'offer__map map'} selectedPoint={activeOffer} selectedCity={activeOfferCity} />
+        <Map offers={offersList.slice(0,3)} className={'offer__map map'} selectedPoint={activeOffer} selectedCity={activeCityParams} />
       </section>
       <div className="container">
         <section className="near-places places">
@@ -182,9 +172,6 @@ function OfferScreen({citiesList, offersList, reviewsList, ratingsList}: OfferSc
             <OffersList
               offersList={offersList.slice(0,3)}
               offersListTemplate="offerScreen"
-              getMouseOverOfferList={(activeOfferParams) => {
-                setActiveOffer(activeOfferParams || null);
-              }}
             />
           </div>
         </section>

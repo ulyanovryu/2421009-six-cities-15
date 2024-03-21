@@ -5,10 +5,9 @@ import OfferCard from '../offer-card';
 type OffersParams = {
   offersList: Offers;
   offersListTemplate: OffersListTemplate;
-  getMouseOverOfferList: (offer?: Offer) => void;
 };
 
-function OffersList ({offersList, offersListTemplate, getMouseOverOfferList}: OffersParams): JSX.Element {
+function OffersList ({offersList, offersListTemplate}: OffersParams): JSX.Element {
   return (
     <>
       {
@@ -17,9 +16,6 @@ function OffersList ({offersList, offersListTemplate, getMouseOverOfferList}: Of
             key={offer.id}
             offerParams={offer}
             offersListTemplate={offersListTemplate}
-            getMouseOverOffer={(activeOfferParams) => {
-              getMouseOverOfferList(activeOfferParams);
-            }}
           />
         ))
       }
