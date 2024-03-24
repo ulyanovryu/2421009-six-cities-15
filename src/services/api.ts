@@ -1,6 +1,7 @@
 import axios, {AxiosInstance, AxiosResponse, AxiosError} from 'axios';
 import {StatusCodes} from 'http-status-codes';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {getToken} from './token';
 
 import {BACKEND_URL, REQUEST_TIMEOUT} from '../const.ts';
