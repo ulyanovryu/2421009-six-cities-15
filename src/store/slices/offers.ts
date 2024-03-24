@@ -3,19 +3,21 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 // import {CITIES} from '../../const.ts';
 // import {CityName} from '../../types/cities.ts';
 import {Offers, Offer} from '../../types/offers.ts';
-import offersList from '../../mocks/offers.ts';
 
 interface OffersState {
  // city: CityName;
   activeId?: Offer['id'];
   offers: Offers;
+  isOffersDataLoading: boolean;
 }
 
 const initialState: OffersState = {
   //city: CITIES[0].name,
   activeId: undefined,
-  offers: offersList,
+  offers: [],
+  isOffersDataLoading: false,
 };
+
 
 const offersSlice = createSlice({
   initialState,
@@ -24,14 +26,18 @@ const offersSlice = createSlice({
     setActiveId: (state, action: PayloadAction<Offer['id'] | undefined>) => {
       state.activeId = action.payload;
     },
-    // setCity: (state, action: PayloadAction<CityName>) => {
-    //   state.city = action.payload;
-    // },
+    setOffers: (state, action: PayloadAction<Offers>) => {
+      state.offers = action.payload;
+    },
+    setOffersDataLoading: (state, action: PayloadAction<boolean>) => {
+      state.isOffersDataLoading = action.payload;
+    },
   },
   selectors: {
     //city: (state:OffersState) => state.city,
     activeId: (state:OffersState) => state.activeId,
     offers: (state:OffersState) => state.offers,
+    isOffersDataLoading: (state:OffersState) => state.isOffersDataLoading,
   }
 });
 

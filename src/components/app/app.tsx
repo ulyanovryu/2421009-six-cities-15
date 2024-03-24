@@ -16,6 +16,9 @@ import OfferScreen from '../../pages/offer-screen';
 import FavoritesScreen from '../../pages/favorites-screen';
 import Page404Screen from '../../pages/page404-screen';
 import getAuthorizationStatus from '../../utils/utils.ts';
+// import Loading from '../loading';
+// import {offersSelectors} from '../../store/slices/offers.ts';
+// import {useAppSelector} from '../../hooks';
 
 type AppProps = {
   citiesList: Cities;
@@ -27,6 +30,8 @@ type AppProps = {
 function App({citiesList, offersList, reviewsListData, ratingsList}: AppProps): JSX.Element {
 
   const authorizationStatus = getAuthorizationStatus();
+
+  //const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
   return (
     <BrowserRouter>
@@ -67,7 +72,6 @@ function App({citiesList, offersList, reviewsListData, ratingsList}: AppProps): 
           <Route path={AppRoute.Offer} element={
             <OfferScreen
               citiesList={citiesList}
-              offersList={offersList}
               reviewsList={reviewsListData}
               ratingsList={ratingsList}
             />

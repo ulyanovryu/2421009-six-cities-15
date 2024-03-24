@@ -1,5 +1,8 @@
 //import {Cities} from './types/cities.ts';
 
+export const BACKEND_URL = 'https://15.design.htmlacademy.pro';
+export const REQUEST_TIMEOUT = 5000;
+
 import {City} from './types/cities.ts';
 
 export enum ImgPath {
@@ -11,6 +14,12 @@ export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
   Offer = '/offer/:id',
+}
+
+export enum APIRoute {
+  Offers = '/six-cities/offers',
+  Login = '/six-cities/login',
+  Logout = '/six-cities/logout',
 }
 
 export enum AuthorizationStatus {
@@ -86,6 +95,9 @@ export const enum SortOption {
   PriceHighToLow,
   TopRatedFirst
 }
+
+
 export const OFFER_TYPE = ['Apartment', 'Room', 'House', 'Hotel'] as const;
 
 export type OfferType = (typeof OFFER_TYPE)[number];
+

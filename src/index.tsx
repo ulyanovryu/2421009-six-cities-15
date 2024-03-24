@@ -10,6 +10,13 @@ import {CITIES} from './const.ts';
 import offersList from './mocks/offers.ts';
 import reviewsListData from './mocks/reviews.ts';
 import ratingsList from './mocks/rating.ts';
+import {ToastContainer} from 'react-toastify';
+import {fetchOffersAction} from './store/thunks/api.ts';
+
+
+store.dispatch(fetchOffersAction());
+//store.dispatch(checkAuthAction());
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -18,6 +25,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+      <ToastContainer />
       <App
         offersList={offersList}
         citiesList={CITIES}
