@@ -1,6 +1,6 @@
 //import {Cities} from './types/cities.ts';
 
-export const BACKEND_URL = 'https://15.design.htmlacademy.pro';
+export const BACKEND_URL = 'https://15.design.htmlacademy.pro/six-cities';
 export const REQUEST_TIMEOUT = 5000;
 
 import {City} from './types/cities.ts';
@@ -17,9 +17,11 @@ export enum AppRoute {
 }
 
 export enum APIRoute {
-  Offers = '/six-cities/offers',
-  Login = '/six-cities/login',
-  Logout = '/six-cities/logout',
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
+  Favorite = '/favorite',
+  Comments = '/comments',
 }
 
 export enum AuthorizationStatus {
@@ -96,6 +98,12 @@ export const enum SortOption {
   TopRatedFirst
 }
 
+export const enum RequestStatus {
+  Idle,
+  Loading,
+  Success,
+  Failed
+}
 
 export const OFFER_TYPE = ['Apartment', 'Room', 'House', 'Hotel'] as const;
 
