@@ -4,26 +4,17 @@ import {AppRoute, ImgPath} from '../../const.ts';
 import getLayoutParams from './utils.ts';
 import HeaderLogin from '../header-login';
 import HeaderProfile from '../header-profile';
-import Loading from '../loading';
-import {useAppSelector} from '../../hooks';
-import {offersSelectors} from '../../store/slices/offers.ts';
+
 
 function Layout (): JSX.Element {
 
   const {pathname} = useLocation();
   const {pageClass, showFooter, showHeaderUserInfo} = getLayoutParams(pathname as AppRoute);
-  const isOffersDataLoading = useAppSelector(offersSelectors.isOffersDataLoading);
+
 
   return (
 
     <div className={pageClass}>
-
-      {
-        isOffersDataLoading ?
-          <Loading /> :
-          ''
-      }
-
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

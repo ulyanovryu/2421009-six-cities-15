@@ -13,8 +13,9 @@ import SortingForm from '../../components/sorting-form';
 import Map from '../../components/map';
 import {offersSelectors} from '../../store/slices/offers.ts';
 
-import {SortOption} from '../../const.ts';
+import {RequestStatus, SortOption} from '../../const.ts';
 import classNames from 'classnames';
+import Loading from '../../components/loading';
 
 type MainScreenProps = {
   city: CityName;
@@ -39,6 +40,8 @@ function MainScreen ({city, citiesList}: MainScreenProps): JSX.Element {
 
   const cityOffersCount = currentOffersByCity.length;
 
+  const statusOffersDataLoading = useAppSelector(offersSelectors.status);
+
   let sortedOffers = currentOffersByCity;
   if (activeSort === SortOption.PriceLowToHigh) {
     sortedOffers = currentOffersByCity.toSorted((a, b) => a.price - b.price);
@@ -50,6 +53,11 @@ function MainScreen ({city, citiesList}: MainScreenProps): JSX.Element {
 
   return (
     <main className={classNames('page__main page__main--index', {'page__main--index-empty' : (cityOffersCount === 0)})}>
+      {
+        statusOffersDataLoading === RequestStatus.Loading ?
+          <Loading /> :
+          ''
+      }
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
@@ -87,8 +95,6 @@ function MainScreen ({city, citiesList}: MainScreenProps): JSX.Element {
                 <div className="cities__right-section"></div>
               </>
           }
-
-
         </div>
       </div>
     </main>
