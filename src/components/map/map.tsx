@@ -2,7 +2,7 @@ import {useRef, useEffect} from 'react';
 import leaflet, {Icon, Marker, LayerGroup} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map';
-import {Offers, Offer} from '../../types/offers.ts';
+import {Offers, OfferList} from '../../types/offers.ts';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
 import {Nullable} from 'vitest';
 import {City} from '../../types/cities.ts';
@@ -22,7 +22,7 @@ const currentCustomIcon = new Icon({
 type MapProps = {
   offers: Offers;
   className: string;
-  selectedPoint: Nullable<Offer>;
+  selectedPoint: Nullable<OfferList>;
   selectedCity: City;
 };
 function Map ({offers, className, selectedPoint, selectedCity}: MapProps): JSX.Element {

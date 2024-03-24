@@ -1,4 +1,4 @@
-import {Offer, OffersListTemplate} from '../../types/offers.ts';
+import {OfferList, OffersListTemplate} from '../../types/offers.ts';
 
 import {Link} from 'react-router-dom';
 import {upperString} from '../../utils/utils.ts';
@@ -6,7 +6,7 @@ import {useActionCreators} from '../../hooks';
 import {offersActions} from '../../store/slices/offers.ts';
 
 type OfferProps = {
-  offerParams: Offer;
+  offerParams: OfferList;
   offersListTemplate: OffersListTemplate;
 }
 

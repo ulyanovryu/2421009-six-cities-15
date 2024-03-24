@@ -1,4 +1,4 @@
-import {Offer, Offers, OffersListTemplate} from '../../types/offers.ts';
+import {OfferList, Offers, OffersListTemplate} from '../../types/offers.ts';
 
 import OfferCard from '../offer-card';
 
@@ -11,7 +11,7 @@ function OffersList ({offersList, offersListTemplate}: OffersParams): JSX.Elemen
   return (
     <>
       {
-        offersList.map((offer: Offer): JSX.Element => (
+        offersList.map((offer: OfferList): JSX.Element => (
           <OfferCard
             key={offer.id}
             offerParams={offer}
