@@ -1,7 +1,7 @@
 import {useParams} from 'react-router-dom';
 
 import {AuthorizationStatus, DEFAULT_CITY,} from '../../const.ts';
-import {Offers, Offer} from '../../types/offers.ts';
+import {Offer} from '../../types/offers.ts';
 import {Cities} from '../../types/cities.ts';
 import {ReviewsType} from '../../types/reviews.ts';
 
@@ -43,16 +43,16 @@ function GoogListItem ({good}:GoogsType): JSX.Element {
 
 type OfferScreenProps = {
   citiesList: Cities;
-  offersList: Offers;
   reviewsList: ReviewsType;
   ratingsList: Ratings;
 };
 
-function OfferScreen({citiesList, offersList, reviewsList, ratingsList}: OfferScreenProps): JSX.Element {
+function OfferScreen({citiesList, reviewsList, ratingsList}: OfferScreenProps): JSX.Element {
 
   const {name:activeCity} = DEFAULT_CITY;
 
   const activeId = useAppSelector(offersSelectors.activeId);
+  const offersList = useAppSelector(offersSelectors.offers);
   const activeOffer = (offersList.filter((offer) => offer.id === activeId)).shift();
 
   const authorizationStatus = getAuthorizationStatus();
