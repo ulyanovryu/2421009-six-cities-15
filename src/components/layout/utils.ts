@@ -1,22 +1,22 @@
-import {AppRoute} from '../../const.ts';
+import {AppRoute, CITIES} from '../../const.ts';
 
 const getLayoutParams = (pathname: AppRoute) => {
   let pageClass: string = 'page';
   let showFooter: boolean = false;
   let showHeaderUserInfo : boolean = true;
 
-  switch (pathname) {
-    case '/' :
-      pageClass = 'page page--gray page--main';
-      break;
-    case '/favorites' :
-      pageClass = 'page';
-      showFooter = true;
-      break;
-    case '/login' :
-      pageClass = 'page page--gray page--login';
-      showHeaderUserInfo = false;
-      break;
+  const cities = CITIES.map((city) => (`/${city.id}`));
+
+  if (pathname === AppRoute.Root) {
+    pageClass = 'page page--gray page--main';
+  } else if (pathname === AppRoute.Favorites) {
+    pageClass = 'page';
+    showFooter = true;
+  } else if (pathname === AppRoute.Login) {
+    pageClass = 'page page--gray page--login';
+    showHeaderUserInfo = false;
+  } else if (cities.includes(pathname)) {
+    pageClass = 'page page--gray page--main';
   }
 
   return {pageClass, showFooter, showHeaderUserInfo};
