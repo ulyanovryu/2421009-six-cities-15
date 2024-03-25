@@ -16,6 +16,7 @@ function OffersList ({offersList, offersListTemplate}: OffersParams): JSX.Elemen
             key={offer.id}
             offerParams={offer}
             offersListTemplate={offersListTemplate}
+            hovered
           />
         ))
       }

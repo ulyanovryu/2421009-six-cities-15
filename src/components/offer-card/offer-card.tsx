@@ -8,7 +8,7 @@ import {offersActions} from '../../store/slices/offers.ts';
 type OfferProps = {
   offerParams: OfferList;
   offersListTemplate: OffersListTemplate;
-}
+} & {hovered?: boolean}
 
 type OffelListClassesType = {
   'article' : string;
@@ -36,7 +36,7 @@ const offerListClasses = (template:string): OffelListClassesType => {
   return classNames;
 };
 
-function OfferCard({offerParams, offersListTemplate}: OfferProps): JSX.Element {
+function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.Element {
 
   const {setActiveId} = useActionCreators(offersActions);
 
@@ -48,18 +48,15 @@ function OfferCard({offerParams, offersListTemplate}: OfferProps): JSX.Element {
   const bookmarkState : string = !isFavorite ? 'To bookmarks' : 'In bookmarks';
   const upperType = upperString(type);
 
-  const mouseOverHandler = () => {
-    setActiveId(offerParams.id);
-  };
-
-  const mouseOutHandler = () => {
-    //setActiveId();
-  };
-
   const classesTemplate = offerListClasses(offersListTemplate);
 
   return (
-    <article className={classesTemplate.article} onMouseEnter={mouseOverHandler} onMouseOut={mouseOutHandler}>
+    <article
+      className={classesTemplate.article}
+      data-id={id}
+      onMouseEnter={() => hovered && setActiveId(id)}
+      onMouseOut={() => hovered && setActiveId(undefined)}
+    >
       {
         isPremium ?
           <div className="place-card__mark">

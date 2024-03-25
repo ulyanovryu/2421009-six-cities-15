@@ -1,20 +1,22 @@
 import {useParams} from 'react-router-dom';
 
-import {AuthorizationStatus, DEFAULT_CITY,} from '../../const.ts';
-import {Offer} from '../../types/offers.ts';
+import {DEFAULT_CITY, RequestStatus,} from '../../const.ts';
 import {Cities} from '../../types/cities.ts';
-import {ReviewsType} from '../../types/reviews.ts';
 
-import getAuthorizationStatus, {upperString, getActiveCityParams} from '../../utils/utils.ts';
+import {getActiveCityParams, upperString} from '../../utils/utils.ts';
 import Page404Screen from '../page404-screen';
 import Reviews from '../../components/reviews';
 import OffersList from '../../components/offers-list';
 import {Ratings} from '../../types/rating.ts';
 import Map from '../../components/map';
-// import {useState} from 'react';
-// import {Nullable} from 'vitest';
-import {useAppSelector} from '../../hooks';
+
+import {useActionCreators, useAppSelector} from '../../hooks';
+import {offerActions, offerSelectors} from '../../store/slices/offer.ts';
+import {reviewsActions, reviewsSelectors} from '../../store/slices/reviews.ts';
+import {useEffect} from 'react';
+import Loading from '../../components/loading';
 import {offersSelectors} from '../../store/slices/offers.ts';
+import {useAuth} from '../../hooks/user-authorization.ts';
 
 type OfferGalleryImagesType = {
   src: string;
@@ -43,24 +45,35 @@ function GoogListItem ({good}:GoogsType): JSX.Element {
 
 type OfferScreenProps = {
   citiesList: Cities;
-  reviewsList: ReviewsType;
   ratingsList: Ratings;
 };
 
-function OfferScreen({citiesList, reviewsList, ratingsList}: OfferScreenProps): JSX.Element {
+function OfferScreen({citiesList, ratingsList}: OfferScreenProps): JSX.Element {
 
   const {name:activeCity} = DEFAULT_CITY;
+
+  const currentOffer = useAppSelector(offerSelectors.offer);
+  const status = useAppSelector(offerSelectors.status);
+  const nearByOffers = useAppSelector(offerSelectors.nearby);
+  const reviews = useAppSelector(reviewsSelectors.reviews);
+
+  const {fetchOfferAction, fetchNearByAction} = useActionCreators(offerActions);
+  const {fetchCommentsAction} = useActionCreators(reviewsActions);
+
+  const {id} = useParams();
+
+  useEffect(() => {
+    Promise.all([fetchOfferAction(id as string), fetchNearByAction(id as string), fetchCommentsAction(id as string)]);
+  }, [fetchOfferAction, fetchNearByAction, fetchCommentsAction, id]);
+
 
   const activeId = useAppSelector(offersSelectors.activeId);
   const offersList = useAppSelector(offersSelectors.offers);
   const activeOffer = (offersList.filter((offer) => offer.id === activeId)).shift();
 
-  const authorizationStatus = getAuthorizationStatus();
-  const {id} = useParams();
-  const currentOffer: Offer | undefined = offersList.find((offer: Offer) => offer.id === id);
-  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+  const isAuth = useAuth();
 
-  if (currentOffer === null || currentOffer === undefined || id === undefined) {
+  if (status === RequestStatus.Failed || currentOffer === null || currentOffer === undefined || id === undefined) {
     return <Page404Screen />;
   }
 
@@ -71,6 +84,11 @@ function OfferScreen({citiesList, reviewsList, ratingsList}: OfferScreenProps): 
 
   return (
     <main className="page__main page__main--offer">
+      {
+        status === RequestStatus.Loading ?
+          <Loading /> :
+          ''
+      }
       <section className="offer">
         {
           currentOffer.images !== undefined ?
@@ -159,18 +177,18 @@ function OfferScreen({citiesList, reviewsList, ratingsList}: OfferScreenProps): 
               <div className="offer__description">{currentOffer.description}</div>
             </div>
             <section className="offer__reviews reviews">
-              <Reviews reviewsListData={reviewsList} offerId={id} isAuth={isAuth} ratingsList={ratingsList} />
+              <Reviews reviewsListData={reviews} isAuth={isAuth} ratingsList={ratingsList} />
             </section>
           </div>
         </div>
-        <Map offers={offersList.slice(0,3)} className={'offer__map map'} selectedPoint={activeOffer} selectedCity={activeCityParams} />
+        <Map offers={nearByOffers} className={'offer__map map'} selectedPoint={activeOffer} selectedCity={activeCityParams} />
       </section>
       <div className="container">
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
             <OffersList
-              offersList={offersList.slice(0,3)}
+              offersList={nearByOffers}
               offersListTemplate="offerScreen"
             />
           </div>
