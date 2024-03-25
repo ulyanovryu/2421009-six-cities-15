@@ -2,7 +2,8 @@ import {useMemo} from 'react';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import type {State, AppDispatch} from '../types/state';
 import type {ActionCreatorsMapObject, AsyncThunk} from '@reduxjs/toolkit';
-import {bindActionCreators} from '@reduxjs/toolkit';
+import {bindActionCreators, createAsyncThunk} from '@reduxjs/toolkit';
+import {AxiosInstance} from 'axios';
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 
@@ -21,3 +22,10 @@ type BoundActions<Actions extends ActionCreatorsMapObject> = {
 
 type BoundAsyncThunk<Thunk extends AsyncThunk<any, any, any>> = (...args:Parameters<Thunk>) =>
   ReturnType<ReturnType<Thunk>>;
+
+export const createAppAsyncThunk = createAsyncThunk.withTypes<{
+  state: State;
+  dispatch: AppDispatch;
+  rejectValue: string;
+  extra: AxiosInstance;
+}>();
