@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom';
 
 import {DEFAULT_CITY} from '../../const.ts';
 import {FormEvent, useRef} from 'react';
-import {loginAction} from '../../store/thunks/api.ts';
+import {loginAction} from '../../store/thunks/auth.ts';
 import {useAppDispatch} from '../../hooks';
 
 function LoginScreen (): JSX.Element {

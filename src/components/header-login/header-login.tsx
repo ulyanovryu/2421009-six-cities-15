@@ -1,12 +1,11 @@
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute} from '../../const';
 import {Link} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import {authorizationSelectors} from '../../store/slices/auth.ts';
-import {logoutAction} from '../../store/thunks/api.ts';
+import {useAppDispatch} from '../../hooks';
+import {logoutAction} from '../../store/thunks/auth.ts';
+import {useAuth} from '../../hooks/user-authorization.ts';
 
 function HeaderLogin(): JSX.Element {
 
-  const authorizationStatus = useAppSelector(authorizationSelectors.authorizationStatus);
   const dispatch = useAppDispatch();
 
   const handlerSignOut = () => {
@@ -14,7 +13,7 @@ function HeaderLogin(): JSX.Element {
   };
 
   return (
-    authorizationStatus === AuthorizationStatus.Auth
+    useAuth()
       ?
       <li className="header__nav-item">
         <Link to={AppRoute.Root} className="header__nav-link" onClick={handlerSignOut}>

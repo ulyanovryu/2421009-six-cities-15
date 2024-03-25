@@ -11,7 +11,7 @@ function ReviewsList ({reviews}: ReviewsProps): JSX.Element {
     <ul className="reviews__list">
       {
         reviews.map((review: Review) => (
-          <ReviewList key={review.date} review={review} />
+          <ReviewList key={review.id} review={review} />
         ))
       }
     </ul>

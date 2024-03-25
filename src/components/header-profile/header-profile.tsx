@@ -1,15 +1,15 @@
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute} from '../../const';
 import {Link} from 'react-router-dom';
 import {useAppSelector} from '../../hooks';
-import {authorizationSelectors} from '../../store/slices/auth.ts';
+import {userSelectors} from '../../store/slices/user.ts';
+import {useAuth} from '../../hooks/user-authorization.ts';
 
 function HeaderProfile(): JSX.Element {
 
-  const authorizationStatus = useAppSelector(authorizationSelectors.authorizationStatus);
-  const {email, avatarUrl} = useAppSelector(authorizationSelectors.user);
+  const {email, avatarUrl} = useAppSelector(userSelectors.user);
 
   return (
-    authorizationStatus === AuthorizationStatus.Auth
+    useAuth()
       ?
       <li className="header__nav-item user">
         <Link to={AppRoute.Favorites} className="header__nav-link header__nav-link--profile">
