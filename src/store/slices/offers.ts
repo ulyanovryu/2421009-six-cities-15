@@ -2,46 +2,57 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 // import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 // import {CITIES} from '../../const.ts';
 // import {CityName} from '../../types/cities.ts';
-import {Offers, Offer} from '../../types/offers.ts';
+import {OfferList, Offers} from '../../types/offers.ts';
+import {fetchOffersAction} from '../thunks/offers.ts';
+import {RequestStatus} from '../../const.ts';
 
 interface OffersState {
  // city: CityName;
-  activeId?: Offer['id'];
+  activeId?: OfferList['id'];
   offers: Offers;
-  isOffersDataLoading: boolean;
+  status: RequestStatus;
 }
 
 const initialState: OffersState = {
   //city: CITIES[0].name,
   activeId: undefined,
   offers: [],
-  isOffersDataLoading: false,
+  status: RequestStatus.Idle,
 };
-
 
 const offersSlice = createSlice({
   initialState,
   name: 'offers',
+  extraReducers(builder) {
+    builder
+      .addCase(fetchOffersAction.pending, (state) => {
+        state.status = RequestStatus.Loading;
+      })
+      .addCase(fetchOffersAction.fulfilled, (state, action) => {
+        state.status = RequestStatus.Success;
+        state.offers = action.payload;
+      })
+      .addCase(fetchOffersAction.rejected, (state) => {
+        state.status = RequestStatus.Failed;
+      });
+  },
   reducers: {
-    setActiveId: (state, action: PayloadAction<Offer['id'] | undefined>) => {
+    setActiveId: (state, action: PayloadAction<OfferList['id'] | undefined>) => {
       state.activeId = action.payload;
     },
     setOffers: (state, action: PayloadAction<Offers>) => {
       state.offers = action.payload;
-    },
-    setOffersDataLoading: (state, action: PayloadAction<boolean>) => {
-      state.isOffersDataLoading = action.payload;
-    },
+    }
   },
   selectors: {
     //city: (state:OffersState) => state.city,
     activeId: (state:OffersState) => state.activeId,
     offers: (state:OffersState) => state.offers,
-    isOffersDataLoading: (state:OffersState) => state.isOffersDataLoading,
+    status: (state:OffersState) => state.status,
   }
 });
 
-const offersActions = offersSlice.actions;
+const offersActions = {...offersSlice.actions, fetchOffersAction};
 const offersSelectors = {
   ...offersSlice.selectors,
   // cityOffers: createSelector(offersSlice.selectors.offers, offersSlice.selectors.city, (allOffers, city) =>
