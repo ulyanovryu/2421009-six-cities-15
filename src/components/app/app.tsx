@@ -5,7 +5,6 @@ import {AppRoute, DEFAULT_CITY} from '../../const';
 
 import {Cities} from '../../types/cities.ts';
 import {Offers} from '../../types/offers.ts';
-import {ReviewsType} from '../../types/reviews.ts';
 import {Ratings} from '../../types/rating.ts';
 
 import Layout from '../../components/layout';
@@ -16,6 +15,9 @@ import LoginScreen from '../../pages/login-screen';
 import OfferScreen from '../../pages/offer-screen';
 import FavoritesScreen from '../../pages/favorites-screen';
 import Page404Screen from '../../pages/page404-screen';
+import {offersActions} from '../../store/slices/offers.ts';
+import {useActionCreators} from '../../hooks';
+import {useEffect} from 'react';
 // import Loading from '../loading';
 // import {offersSelectors} from '../../store/slices/offers.ts';
 // import {useAppSelector} from '../../hooks';
@@ -23,11 +25,20 @@ import Page404Screen from '../../pages/page404-screen';
 type AppProps = {
   citiesList: Cities;
   offersList: Offers;
-  reviewsListData: ReviewsType;
   ratingsList: Ratings;
 }
 
-function App({citiesList, offersList, reviewsListData, ratingsList}: AppProps): JSX.Element {
+function App({citiesList, offersList, ratingsList}: AppProps): JSX.Element {
+
+  const {fetchOffersAction} = useActionCreators(offersActions);
+
+  useEffect(() => {
+    fetchOffersAction()
+      .unwrap()
+      .then (() => {
+      })
+      .catch();
+  });
 
   //const authorizationStatus = getAuthorizationStatus();
   //const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
@@ -72,7 +83,6 @@ function App({citiesList, offersList, reviewsListData, ratingsList}: AppProps): 
             <Route path={AppRoute.Offer} element={
               <OfferScreen
                 citiesList={citiesList}
-                reviewsList={reviewsListData}
                 ratingsList={ratingsList}
               />
             }
