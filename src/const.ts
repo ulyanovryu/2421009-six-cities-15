@@ -105,6 +105,11 @@ export const enum RequestStatus {
   Failed
 }
 
+export const enum FavoritesStatus {
+  Added = 1,
+  Removed = 0
+}
+
 export const OFFER_TYPE = ['Apartment', 'Room', 'House', 'Hotel'] as const;
 
 export type OfferType = (typeof OFFER_TYPE)[number];
