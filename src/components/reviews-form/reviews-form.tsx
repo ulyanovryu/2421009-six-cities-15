@@ -1,6 +1,9 @@
-import {Fragment, ReactEventHandler, useState} from 'react';
+import {ChangeEvent, Fragment, ReactEventHandler, useState} from 'react';
 
 import {Ratings, Rating} from '../../types/rating.ts';
+import {useActionCreators, useAppSelector} from '../../hooks';
+import {reviewsActions} from '../../store/slices/reviews.ts';
+import {offerSelectors} from '../../store/slices/offer.ts';
 
 type THandleFormChange = ReactEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 type ReviewsFormProps = {
@@ -9,14 +12,26 @@ type ReviewsFormProps = {
 
 function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
 
+  const currentOffer = useAppSelector(offerSelectors.offer);
+  const {addCommentAction} = useActionCreators(reviewsActions);
+
   const [review, setReview] = useState({rating: 0, review: ''});
   const handleFormChange: THandleFormChange = (event) => {
     const {name, value} = event.currentTarget;
     setReview({...review, [name]:value});
   };
 
+  if (currentOffer === null || currentOffer === undefined) {
+    return <>&nbsp;</>;
+  }
+
+  const handleCommentFormSubmit = (evt: ChangeEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    addCommentAction({body:{comment: review.review, rating: parseInt(String(review.rating), 10)}, offerId: currentOffer.id});
+  };
+
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" action="#" method="post" onSubmit={handleCommentFormSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {ratingsList.map(({value, title}: Rating) => (
