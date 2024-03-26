@@ -4,26 +4,24 @@ import {HelmetProvider} from 'react-helmet-async';
 import {useEffect} from 'react';
 
 import {AppRoute, DEFAULT_CITY} from '../../const';
+import {useActionCreators} from '../../hooks';
+import {getToken} from '../../services/token.ts';
+
 import {Cities} from '../../types/cities.ts';
 import {Offers} from '../../types/offers.ts';
-
 import {Ratings} from '../../types/rating.ts';
 
 import Layout from '../../components/layout';
-import PrivateRoute from '../../components/private-route';
+
 import MainScreen from '../../pages/main-screen';
 import LoginScreen from '../../pages/login-screen';
 import OfferScreen from '../../pages/offer-screen';
 import FavoritesScreen from '../../pages/favorites-screen';
 import Page404Screen from '../../pages/page404-screen';
-import {useActionCreators} from '../../hooks';
-import {getToken} from '../../services/token.ts';
+import ProtectedRoute from '../protected-route';
 
 import {offersActions} from '../../store/slices/offers.ts';
 import {userActions} from '../../store/slices/user.ts';
-// import Loading from '../loading';
-// import {offersSelectors} from '../../store/slices/offers.ts';
-// import {useAppSelector} from '../../hooks';
 
 type AppProps = {
   citiesList: Cities;
@@ -50,8 +48,6 @@ function App({citiesList, offersList, ratingsList}: AppProps): JSX.Element {
       checkAuthAction();
     }
   }, [token, checkAuthAction]);
-  //const authorizationStatus = getAuthorizationStatus();
-  //const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
   return (
     <HelmetProvider>
@@ -79,15 +75,15 @@ function App({citiesList, offersList, ratingsList}: AppProps): JSX.Element {
             ))}
 
             <Route path={AppRoute.Login} element={(
-              <PrivateRoute isReverse>
+              <ProtectedRoute onlyUnAuth>
                 <LoginScreen />
-              </PrivateRoute>
+              </ProtectedRoute>
             )}
             />
             <Route path={AppRoute.Favorites} element={
-              <PrivateRoute>
+              <ProtectedRoute>
                 <FavoritesScreen offersList={offersList} citiesList={citiesList} />
-              </PrivateRoute>
+              </ProtectedRoute>
             }
             />
             <Route path={AppRoute.Offer} element={
