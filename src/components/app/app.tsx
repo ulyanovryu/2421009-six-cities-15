@@ -1,23 +1,26 @@
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
 
-import {AppRoute, DEFAULT_CITY} from '../../const';
+import {useEffect} from 'react';
 
+import {AppRoute, DEFAULT_CITY} from '../../const';
 import {Cities} from '../../types/cities.ts';
 import {Offers} from '../../types/offers.ts';
+
 import {Ratings} from '../../types/rating.ts';
 
 import Layout from '../../components/layout';
-
 import PrivateRoute from '../../components/private-route';
 import MainScreen from '../../pages/main-screen';
 import LoginScreen from '../../pages/login-screen';
 import OfferScreen from '../../pages/offer-screen';
 import FavoritesScreen from '../../pages/favorites-screen';
 import Page404Screen from '../../pages/page404-screen';
-import {offersActions} from '../../store/slices/offers.ts';
 import {useActionCreators} from '../../hooks';
-import {useEffect} from 'react';
+import {getToken} from '../../services/token.ts';
+
+import {offersActions} from '../../store/slices/offers.ts';
+import {userActions} from '../../store/slices/user.ts';
 // import Loading from '../loading';
 // import {offersSelectors} from '../../store/slices/offers.ts';
 // import {useAppSelector} from '../../hooks';
@@ -31,6 +34,8 @@ type AppProps = {
 function App({citiesList, offersList, ratingsList}: AppProps): JSX.Element {
 
   const {fetchOffersAction} = useActionCreators(offersActions);
+  const {checkAuthAction} = useActionCreators(userActions);
+  const token = getToken();
 
   useEffect(() => {
     fetchOffersAction()
@@ -40,6 +45,11 @@ function App({citiesList, offersList, ratingsList}: AppProps): JSX.Element {
       .catch();
   });
 
+  useEffect(() => {
+    if (token) {
+      checkAuthAction();
+    }
+  }, [token, checkAuthAction]);
   //const authorizationStatus = getAuthorizationStatus();
   //const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 

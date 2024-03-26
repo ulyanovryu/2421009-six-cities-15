@@ -4,8 +4,8 @@ import {NavLink} from 'react-router-dom';
 
 import {DEFAULT_CITY} from '../../const.ts';
 import {FormEvent, useRef} from 'react';
-import {loginAction} from '../../store/thunks/auth.ts';
-import {useAppDispatch} from '../../hooks';
+import {useActionCreators} from '../../hooks';
+import {userActions} from '../../store/slices/user.ts';
 
 function LoginScreen (): JSX.Element {
 
@@ -14,16 +14,16 @@ function LoginScreen (): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
-  const dispatch = useAppDispatch();
+  const {loginAction} = useActionCreators(userActions);
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     if (loginRef.current !== null && passwordRef.current !== null) {
-      dispatch(loginAction({
+      loginAction({
         login: loginRef.current.value,
         password: passwordRef.current.value
-      }));
+      });
     }
   };
 

@@ -1,15 +1,16 @@
 import {AppRoute} from '../../const';
 import {Link} from 'react-router-dom';
-import {useAppDispatch} from '../../hooks';
-import {logoutAction} from '../../store/thunks/auth.ts';
+import {useActionCreators} from '../../hooks';
+
 import {useAuth} from '../../hooks/user-authorization.ts';
+import {userActions} from '../../store/slices/user.ts';
 
 function HeaderLogin(): JSX.Element {
 
-  const dispatch = useAppDispatch();
+  const {logoutAction} = useActionCreators(userActions);
 
   const handlerSignOut = () => {
-    dispatch(logoutAction());
+    logoutAction();
   };
 
   return (
