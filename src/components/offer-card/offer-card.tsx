@@ -1,42 +1,18 @@
-import {Offer, OffersListTemplate} from '../../types/offers.ts';
+import {OfferList, OffersListTemplate} from '../../types/offers.ts';
 
 import {Link} from 'react-router-dom';
 import {upperString} from '../../utils/utils.ts';
 import {useActionCreators} from '../../hooks';
 import {offersActions} from '../../store/slices/offers.ts';
+import FavoriteButton from '../favorite-button';
+import {cardParams} from './utils.ts';
 
 type OfferProps = {
-  offerParams: Offer;
+  offerParams: OfferList;
   offersListTemplate: OffersListTemplate;
-}
+} & {hovered?: boolean}
 
-type OffelListClassesType = {
-  'article' : string;
-  'image' : string;
-}
-
-const offerListClasses = (template:string): OffelListClassesType => {
-
-  let classNames: OffelListClassesType = {'article' : '', 'image' : ''};
-
-  switch (template) {
-    case 'mainScreen':
-      classNames = {'article' : 'cities__card place-card', 'image' : 'cities__image-wrapper place-card__image-wrapper'};
-      break;
-    case 'offerScreen':
-      classNames = {'article' : 'near-places__card place-card', 'image' : 'near-places__image-wrapper place-card__image-wrapper'};
-      break;
-    case 'favoriteScreen':
-      classNames = {'article' : 'favorites__card place-card', 'image' : 'favorites__image-wrapper place-card__image-wrapper'};
-      break;
-    default :
-      classNames = {'article' : 'place-card', 'image' : 'place-card__image-wrapper'};
-  }
-
-  return classNames;
-};
-
-function OfferCard({offerParams, offersListTemplate}: OfferProps): JSX.Element {
+function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.Element {
 
   const {setActiveId} = useActionCreators(offersActions);
 
@@ -44,22 +20,18 @@ function OfferCard({offerParams, offersListTemplate}: OfferProps): JSX.Element {
 
   const ratingWidth : number = 20 * rating;
   const linkDetail : string = `/offer/${id}`;
-  const bookmarkClass : string = !isFavorite ? 'place-card__bookmark-button button' : 'place-card__bookmark-button place-card__bookmark-button--active button';
-  const bookmarkState : string = !isFavorite ? 'To bookmarks' : 'In bookmarks';
+
   const upperType = upperString(type);
 
-  const mouseOverHandler = () => {
-    setActiveId(offerParams.id);
-  };
-
-  const mouseOutHandler = () => {
-    //setActiveId();
-  };
-
-  const classesTemplate = offerListClasses(offersListTemplate);
+  const {classNames, width, height} = cardParams(offersListTemplate);
 
   return (
-    <article className={classesTemplate.article} onMouseEnter={mouseOverHandler} onMouseOut={mouseOutHandler}>
+    <article
+      className={classNames.article}
+      data-id={id}
+      onMouseEnter={() => hovered && setActiveId(id)}
+      onMouseOut={() => hovered && setActiveId(undefined)}
+    >
       {
         isPremium ?
           <div className="place-card__mark">
@@ -67,9 +39,9 @@ function OfferCard({offerParams, offersListTemplate}: OfferProps): JSX.Element {
           </div>
           : null
       }
-      <div className={classesTemplate.image}>
+      <div className={classNames.image}>
         <Link to={linkDetail}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt={title} />
+          <img className="place-card__image" src={previewImage} width={width} height={height} alt={title} />
         </Link>
       </div>
       <div className="place-card__info">
@@ -78,12 +50,7 @@ function OfferCard({offerParams, offersListTemplate}: OfferProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={bookmarkClass} type="button">
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">{bookmarkState}</span>
-          </button>
+          <FavoriteButton offerId={id} isFavorite={isFavorite} width={18} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

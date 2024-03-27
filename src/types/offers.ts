@@ -1,4 +1,4 @@
-export type Offer = {
+export type OfferList = {
   id: string;
   title: string;
   type: string;
@@ -20,25 +20,21 @@ export type Offer = {
   isPremium: boolean;
   rating: number;
   previewImage: string;
-  description?: string;
-  bedrooms?: number;
-  goods?: string[];
-  host?: {
+};
+
+export type OfferDetail = OfferList & {
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: {
     name: string;
     avatarUrl: string;
     isPro: boolean;
   };
-  images?: string[];
-  maxAdults?: number;
-};
+  images: string[];
+  maxAdults: number;
+}
 
-// "description": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
-// "bedrooms": 3,
-// "goods": [
-// "Heating"
-// ],
-
-export type Offers = Offer[];
-
+export type Offers = OfferList[];
 
 export type OffersListTemplate = 'mainScreen' | 'favoriteScreen' | 'offerScreen';

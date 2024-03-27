@@ -1,36 +1,51 @@
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
 
+import {useEffect} from 'react';
+
 import {AppRoute, DEFAULT_CITY} from '../../const';
+import {useActionCreators} from '../../hooks';
+import {getToken} from '../../services/token.ts';
 
 import {Cities} from '../../types/cities.ts';
-import {Offers} from '../../types/offers.ts';
-import {ReviewsType} from '../../types/reviews.ts';
 import {Ratings} from '../../types/rating.ts';
 
 import Layout from '../../components/layout';
 
-import PrivateRoute from '../../components/private-route';
 import MainScreen from '../../pages/main-screen';
 import LoginScreen from '../../pages/login-screen';
 import OfferScreen from '../../pages/offer-screen';
 import FavoritesScreen from '../../pages/favorites-screen';
 import Page404Screen from '../../pages/page404-screen';
-// import Loading from '../loading';
-// import {offersSelectors} from '../../store/slices/offers.ts';
-// import {useAppSelector} from '../../hooks';
+import ProtectedRoute from '../protected-route';
+
+import {offersActions} from '../../store/slices/offers.ts';
+import {userActions} from '../../store/slices/user.ts';
 
 type AppProps = {
   citiesList: Cities;
-  offersList: Offers;
-  reviewsListData: ReviewsType;
   ratingsList: Ratings;
 }
 
-function App({citiesList, offersList, reviewsListData, ratingsList}: AppProps): JSX.Element {
+function App({citiesList, ratingsList}: AppProps): JSX.Element {
 
-  //const authorizationStatus = getAuthorizationStatus();
-  //const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const {fetchOffersAction} = useActionCreators(offersActions);
+  const {checkAuthAction} = useActionCreators(userActions);
+  const token = getToken();
+
+  useEffect(() => {
+    fetchOffersAction()
+      .unwrap()
+      .then (() => {
+      })
+      .catch();
+  });
+
+  useEffect(() => {
+    if (token) {
+      checkAuthAction();
+    }
+  }, [token, checkAuthAction]);
 
   return (
     <HelmetProvider>
@@ -58,21 +73,20 @@ function App({citiesList, offersList, reviewsListData, ratingsList}: AppProps): 
             ))}
 
             <Route path={AppRoute.Login} element={(
-              <PrivateRoute isReverse>
+              <ProtectedRoute onlyUnAuth>
                 <LoginScreen />
-              </PrivateRoute>
+              </ProtectedRoute>
             )}
             />
             <Route path={AppRoute.Favorites} element={
-              <PrivateRoute>
-                <FavoritesScreen offersList={offersList} citiesList={citiesList} />
-              </PrivateRoute>
+              <ProtectedRoute>
+                <FavoritesScreen />
+              </ProtectedRoute>
             }
             />
             <Route path={AppRoute.Offer} element={
               <OfferScreen
                 citiesList={citiesList}
-                reviewsList={reviewsListData}
                 ratingsList={ratingsList}
               />
             }
