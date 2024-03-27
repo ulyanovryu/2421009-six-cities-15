@@ -5,37 +5,12 @@ import {upperString} from '../../utils/utils.ts';
 import {useActionCreators} from '../../hooks';
 import {offersActions} from '../../store/slices/offers.ts';
 import FavoriteButton from '../favorite-button';
+import {cardParams} from './utils.ts';
 
 type OfferProps = {
   offerParams: OfferList;
   offersListTemplate: OffersListTemplate;
 } & {hovered?: boolean}
-
-type OffelListClassesType = {
-  'article' : string;
-  'image' : string;
-}
-
-const offerListClasses = (template:string): OffelListClassesType => {
-
-  let classNames: OffelListClassesType = {'article' : '', 'image' : ''};
-
-  switch (template) {
-    case 'mainScreen':
-      classNames = {'article' : 'cities__card place-card', 'image' : 'cities__image-wrapper place-card__image-wrapper'};
-      break;
-    case 'offerScreen':
-      classNames = {'article' : 'near-places__card place-card', 'image' : 'near-places__image-wrapper place-card__image-wrapper'};
-      break;
-    case 'favoriteScreen':
-      classNames = {'article' : 'favorites__card place-card', 'image' : 'favorites__image-wrapper place-card__image-wrapper'};
-      break;
-    default :
-      classNames = {'article' : 'place-card', 'image' : 'place-card__image-wrapper'};
-  }
-
-  return classNames;
-};
 
 function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.Element {
 
@@ -48,11 +23,11 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
 
   const upperType = upperString(type);
 
-  const classesTemplate = offerListClasses(offersListTemplate);
+  const {classNames, width, height} = cardParams(offersListTemplate);
 
   return (
     <article
-      className={classesTemplate.article}
+      className={classNames.article}
       data-id={id}
       onMouseEnter={() => hovered && setActiveId(id)}
       onMouseOut={() => hovered && setActiveId(undefined)}
@@ -64,9 +39,9 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
           </div>
           : null
       }
-      <div className={classesTemplate.image}>
+      <div className={classNames.image}>
         <Link to={linkDetail}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt={title} />
+          <img className="place-card__image" src={previewImage} width={width} height={height} alt={title} />
         </Link>
       </div>
       <div className="place-card__info">

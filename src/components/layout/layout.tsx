@@ -1,16 +1,16 @@
 
 import {NavLink, useLocation, Outlet, Link} from 'react-router-dom';
 import {AppRoute, ImgPath} from '../../const.ts';
-import getLayoutParams from './utils.ts';
+
 import HeaderLogin from '../header-login';
 import HeaderProfile from '../header-profile';
+import useLayoutParams from '../../hooks/use-layout-params.ts';
 
 
 function Layout (): JSX.Element {
 
   const {pathname} = useLocation();
-  const {pageClass, showFooter, showHeaderUserInfo} = getLayoutParams(pathname as AppRoute);
-
+  const {pageClass, showFooter, showHeaderUserInfo} = useLayoutParams(pathname as AppRoute);
 
   return (
 
