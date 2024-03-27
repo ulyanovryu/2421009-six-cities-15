@@ -8,7 +8,6 @@ import {useActionCreators} from '../../hooks';
 import {getToken} from '../../services/token.ts';
 
 import {Cities} from '../../types/cities.ts';
-import {Offers} from '../../types/offers.ts';
 import {Ratings} from '../../types/rating.ts';
 
 import Layout from '../../components/layout';
@@ -25,11 +24,10 @@ import {userActions} from '../../store/slices/user.ts';
 
 type AppProps = {
   citiesList: Cities;
-  offersList: Offers;
   ratingsList: Ratings;
 }
 
-function App({citiesList, offersList, ratingsList}: AppProps): JSX.Element {
+function App({citiesList, ratingsList}: AppProps): JSX.Element {
 
   const {fetchOffersAction} = useActionCreators(offersActions);
   const {checkAuthAction} = useActionCreators(userActions);
@@ -82,7 +80,7 @@ function App({citiesList, offersList, ratingsList}: AppProps): JSX.Element {
             />
             <Route path={AppRoute.Favorites} element={
               <ProtectedRoute>
-                <FavoritesScreen offersList={offersList} citiesList={citiesList} />
+                <FavoritesScreen />
               </ProtectedRoute>
             }
             />

@@ -7,7 +7,6 @@ import './polyfills';
 import {store} from './store';
 
 import {CITIES} from './const.ts';
-import offersList from './mocks/offers.ts';
 import ratingsList from './mocks/rating.ts';
 import {ToastContainer} from 'react-toastify';
 
@@ -20,7 +19,6 @@ root.render(
     <Provider store={store}>
       <ToastContainer />
       <App
-        offersList={offersList}
         citiesList={CITIES}
         ratingsList={ratingsList}
       />
