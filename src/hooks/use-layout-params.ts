@@ -24,6 +24,6 @@ function useLayoutParams (pathname: AppRoute) {
   }
 
   return {pageClass, showFooter, showHeaderUserInfo};
-};
+}
 
 export default useLayoutParams;
