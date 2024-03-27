@@ -17,6 +17,7 @@ import {useEffect} from 'react';
 import Loading from '../../components/loading';
 import {offersSelectors} from '../../store/slices/offers.ts';
 import {useAuth} from '../../hooks/user-authorization.ts';
+import FavoriteButton from '../../components/favorite-button';
 
 type OfferGalleryImagesType = {
   src: string;
@@ -112,12 +113,7 @@ function OfferScreen({citiesList, ratingsList}: OfferScreenProps): JSX.Element {
             }
             <div className="offer__name-wrapper">
               <h1 className="offer__name">{currentOffer.title}</h1>
-              <button className="offer__bookmark-button button" type="button">
-                <svg className="offer__bookmark-icon" width="31" height="33">
-                  <use xlinkHref="#icon-bookmark"></use>
-                </svg>
-                <span className="visually-hidden">To bookmarks</span>
-              </button>
+              <FavoriteButton bemBlock={'offer'} isFavorite={currentOffer.isFavorite} offerId={id} width={31} />
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
