@@ -110,6 +110,14 @@ export const enum FavoritesStatus {
   Removed = 0
 }
 
+export enum StoreSlices {
+  Offers = 'OFFERS',
+  Offer = 'OFFER',
+  Favorites = 'FAVORITES',
+  Reviews = 'REVIEWS',
+  User = 'USER'
+}
+
 export const OFFER_TYPE = ['Apartment', 'Room', 'House', 'Hotel'] as const;
 
 export type OfferType = (typeof OFFER_TYPE)[number];

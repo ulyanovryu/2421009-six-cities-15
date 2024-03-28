@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {RequestStatus} from '../../const.ts';
+import {RequestStatus, StoreSlices} from '../../const.ts';
 import {ReviewsType} from '../../types/reviews.ts';
 import {fetchCommentsAction, addCommentAction} from '../thunks/comments.ts';
 
@@ -16,7 +16,7 @@ const initialState: ReviewsState = {
 
 const reviewsSlice = createSlice({
   initialState,
-  name: 'reviews',
+  name: StoreSlices.Reviews,
   extraReducers(builder) {
     builder
       .addCase(fetchCommentsAction.pending, (state) => {

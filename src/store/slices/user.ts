@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-import {AuthorizationStatus, RequestStatus} from '../../const.ts';
+import {AuthorizationStatus, RequestStatus, StoreSlices} from '../../const.ts';
 import {User} from '../../types/user.ts';
 import {checkAuthAction, loginAction, logoutAction} from '../thunks/auth.ts';
 
@@ -36,7 +36,7 @@ function proccessFailed(state: UserState) {
 
 const userSlice = createSlice({
   initialState,
-  name: 'user',
+  name: StoreSlices.User,
   extraReducers(builder) {
     builder
       .addCase(checkAuthAction.pending, proccessLoading)
