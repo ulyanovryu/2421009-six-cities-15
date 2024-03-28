@@ -32,9 +32,6 @@ function Map ({offers, className, selectedPoint, selectedCity}: MapProps): JSX.E
   const map = useMap(mapRef, selectedCity);
   const markerLayer = useRef<LayerGroup>(leaflet.layerGroup());
 
-  // console.log(selectedPoint);
-  // console.log(selectedCity);
-
   useEffect(() => {
     if (map) {
       map.setView([selectedCity.location.latitude, selectedCity.location.longitude], selectedCity.location.zoom);
