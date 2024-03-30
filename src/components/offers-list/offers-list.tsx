@@ -1,7 +1,7 @@
 import {memo} from 'react';
 
 import {OfferList, Offers, OffersListTemplate} from '../../types/offers.ts';
-import OfferCard from '../offer-card';
+import MemorizedOfferCard from '../offer-card';
 
 type OffersParams = {
   offersList: Offers;
@@ -13,7 +13,7 @@ function OffersList ({offersList, offersListTemplate}: OffersParams): JSX.Elemen
     <>
       {
         offersList.map((offer: OfferList): JSX.Element => (
-          <OfferCard
+          <MemorizedOfferCard
             key={offer.id}
             offerParams={offer}
             offersListTemplate={offersListTemplate}
@@ -25,4 +25,6 @@ function OffersList ({offersList, offersListTemplate}: OffersParams): JSX.Elemen
   );
 }
 
-export default memo(OffersList);
+const MemorizedOffersList = memo(OffersList);
+
+export default MemorizedOffersList;

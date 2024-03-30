@@ -1,17 +1,18 @@
-import {City} from '../../types/cities.ts';
-import CityList from '../city-list';
-import {CITIES} from '../../const.ts';
 import {memo} from 'react';
-
+import {City} from '../../types/cities.ts';
+import {CITIES} from '../../const.ts';
+import MemorizedCityList from '../city-list';
 
 function CitiesList (): JSX.Element {
   return (
     <ul className="locations__list tabs__list">
       {CITIES.map((city:City) => (
-        <CityList city={city} key={city.id} />
+        <MemorizedCityList city={city} key={city.id} />
       ))}
     </ul>
   );
 }
 
-export default memo(CitiesList);
+const MemorizedCitiesList = memo(CitiesList);
+
+export default MemorizedCitiesList;

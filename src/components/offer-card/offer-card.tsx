@@ -1,12 +1,12 @@
 import {memo, useCallback} from 'react';
 import {Link} from 'react-router-dom';
 
-import {OfferList, OffersListTemplate} from '../../types/offers.ts';
-import {upperString} from '../../utils/utils.ts';
 import {useActionCreators} from '../../hooks';
+import {OfferList, OffersListTemplate} from '../../types/offers.ts';
 import {offersActions} from '../../store/slices/offers.ts';
-import FavoriteButton from '../favorite-button';
 import {cardParams, handleMouseEnter, handleMouseOut} from './utils.ts';
+import {upperString} from '../../utils/utils.ts';
+import MemorizedFavoriteButton from '../favorite-button';
 
 type OfferProps = {
   offerParams: OfferList;
@@ -26,8 +26,8 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
 
   const {classNames, width, height} = cardParams(offersListTemplate);
 
-  const memorizedHandleMouseEnter = useCallback(() => handleMouseEnter(hovered, id, setActiveId), [setActiveId]);
-  const memorizedHandleMouseOut = useCallback(() => handleMouseOut(hovered, setActiveId), [setActiveId]);
+  const memorizedHandleMouseEnter = useCallback(() => handleMouseEnter(hovered, id, setActiveId), [hovered, id, setActiveId]);
+  const memorizedHandleMouseOut = useCallback(() => handleMouseOut(hovered, setActiveId), [hovered, setActiveId]);
 
   return (
     <article
@@ -54,7 +54,7 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <FavoriteButton offerId={id} isFavorite={isFavorite} width={18} />
+          <MemorizedFavoriteButton offerId={id} isFavorite={isFavorite} width={18} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
@@ -71,4 +71,6 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
   );
 }
 
-export default memo(OfferCard);
+const MemorizedOfferCard = memo(OfferCard);
+
+export default MemorizedOfferCard;

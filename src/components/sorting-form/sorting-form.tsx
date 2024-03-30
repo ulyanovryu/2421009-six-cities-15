@@ -60,4 +60,6 @@ function SortingForm ({current, setter}: SortingProps): JSX.Element {
   );
 }
 
-export default memo(SortingForm);
+const MemorizedSortingForm = memo(SortingForm);
+
+export default MemorizedSortingForm;

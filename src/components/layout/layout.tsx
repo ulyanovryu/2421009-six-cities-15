@@ -2,8 +2,8 @@
 import {NavLink, useLocation, Outlet, Link} from 'react-router-dom';
 import {AppRoute, ImgPath} from '../../const.ts';
 
-import HeaderLogin from '../header-login';
-import HeaderProfile from '../header-profile';
+import MemorizedHeaderLogin from '../header-login';
+import MemorizedHeaderProfile from '../header-profile';
 import useLayoutParams from '../../hooks/use-layout-params.ts';
 
 
@@ -28,8 +28,8 @@ function Layout (): JSX.Element {
                 {
                   showHeaderUserInfo ? (
                     <>
-                      <HeaderProfile />
-                      <HeaderLogin />
+                      <MemorizedHeaderProfile />
+                      <MemorizedHeaderLogin />
                     </>
                   ) : null
                 }

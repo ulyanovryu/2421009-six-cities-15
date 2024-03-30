@@ -1,10 +1,11 @@
-import {AppRoute} from '../../const';
+import {memo} from 'react';
 import {Link} from 'react-router-dom';
+
+import {AppRoute} from '../../const';
 import {useAppSelector} from '../../hooks';
 import {useFavoriteCount} from '../../hooks/use-favorite-count.ts';
-import {userSelectors} from '../../store/slices/user.ts';
 import {useAuth} from '../../hooks/user-authorization.ts';
-import {memo} from "react";
+import {userSelectors} from '../../store/slices/user.ts';
 
 function HeaderProfile(): JSX.Element {
 
@@ -27,4 +28,6 @@ function HeaderProfile(): JSX.Element {
   );
 }
 
-export default memo(HeaderProfile);
+const MemorizedHeaderProfile = memo(HeaderProfile);
+
+export default MemorizedHeaderProfile;

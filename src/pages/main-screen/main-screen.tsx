@@ -7,15 +7,15 @@ import {getActiveCityParams, plural} from '../../utils/utils.ts';
 
 import {useAppSelector} from '../../hooks';
 
-import CitiesList from '../../components/cities-list';
-import OffersList from '../../components/offers-list';
-import SortingForm from '../../components/sorting-form';
+import MemorizedCitiesList from '../../components/cities-list';
+import MemorizedOffersList from '../../components/offers-list';
+import MemorizedSortingForm from '../../components/sorting-form';
 import Map from '../../components/map';
 import {offersSelectors} from '../../store/slices/offers.ts';
 
 import {CITIES, RequestStatus, SortOption} from '../../const.ts';
 import classNames from 'classnames';
-import Loading from '../../components/loading';
+import MemorizedLoading from '../../components/loading';
 import sortOffers from './utils.ts';
 
 type MainScreenProps = {
@@ -47,13 +47,13 @@ function MainScreen ({city}: MainScreenProps): JSX.Element {
     <main className={classNames('page__main page__main--index', {'page__main--index-empty' : (cityOffersCount === 0)})}>
       {
         statusOffersDataLoading === RequestStatus.Loading ?
-          <Loading /> :
+          <MemorizedLoading /> :
           ''
       }
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
-          <CitiesList />
+          <MemorizedCitiesList />
         </section>
       </div>
       <div className="cities">
@@ -64,9 +64,9 @@ function MainScreen ({city}: MainScreenProps): JSX.Element {
                 <section className="cities__places places">
                   <h2 className="visually-hidden">Places</h2>
                   <b className="places__found">{cityOffersCount} {plural(cityOffersCount, ['place', 'places', 'places'])} to stay in {city}</b>
-                  <SortingForm current={activeSort} setter={setActiveSort} />
+                  <MemorizedSortingForm current={activeSort} setter={setActiveSort} />
                   <div className="cities__places-list places__list tabs__content">
-                    <OffersList
+                    <MemorizedOffersList
                       offersList={sortedOffers}
                       offersListTemplate="mainScreen"
                     />

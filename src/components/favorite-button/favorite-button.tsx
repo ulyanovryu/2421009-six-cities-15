@@ -1,10 +1,10 @@
+import {memo, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import classNames from 'classnames';
-import {useActionCreators} from '../../hooks';
-import {favoritesActions} from '../../store/slices/favorites.ts';
-import {memo, useState} from 'react';
-import {useAuth} from '../../hooks/user-authorization.ts';
 import {AppRoute} from '../../const.ts';
+import {useActionCreators} from '../../hooks';
+import {useAuth} from '../../hooks/user-authorization.ts';
+import {favoritesActions} from '../../store/slices/favorites.ts';
 
 type FavoriteButtonProps = {
   bemBlock?: 'offer' | 'place-card';
@@ -56,4 +56,6 @@ function FavoriteButton ({bemBlock = 'place-card', isFavorite = false, offerId, 
   );
 }
 
-export default memo(FavoriteButton);
+const MemorizedFavoriteButton = memo(FavoriteButton);
+
+export default MemorizedFavoriteButton;

@@ -19,4 +19,6 @@ function CityList ({city}: CityProps): JSX.Element {
   );
 }
 
-export default memo(CityList);
+const MemorizedCityList = memo(CityList);
+
+export default MemorizedCityList;

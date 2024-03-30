@@ -38,4 +38,6 @@ function ReviewList ({review}: ReviewProps):JSX.Element {
   );
 }
 
-export default memo(ReviewList);
+const MemorizedReviewList = memo(ReviewList);
+
+export default MemorizedReviewList;

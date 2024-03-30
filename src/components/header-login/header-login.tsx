@@ -31,5 +31,6 @@ function HeaderLogin(): JSX.Element {
       </li>
   );
 }
+const MemorizedHeaderLogin = memo(HeaderLogin);
 
-export default memo(HeaderLogin);
+export default MemorizedHeaderLogin;

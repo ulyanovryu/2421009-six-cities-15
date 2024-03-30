@@ -1,8 +1,8 @@
 import {useAppSelector} from '../../hooks';
-import {favoritesSelectors} from '../../store/slices/favorites.ts';
-
-import FavoritesList from '../../components/favorites-list';
 import classNames from 'classnames';
+
+import {favoritesSelectors} from '../../store/slices/favorites.ts';
+import MemorizedFavoritesList from '../../components/favorites-list';
 
 function FavoritesScreen(): JSX.Element {
 
@@ -16,7 +16,7 @@ function FavoritesScreen(): JSX.Element {
           hasFavorites ?
             <section className="favorites">
               <h1 className="favorites__title">Saved listing</h1>
-              <FavoritesList offers={favorites} />
+              <MemorizedFavoritesList offers={favorites} />
             </section>
             :
             <section className="favorites favorites--empty">

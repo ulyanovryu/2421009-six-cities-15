@@ -4,8 +4,8 @@ import {CITIES, DEFAULT_CITY, RequestStatus,} from '../../const.ts';
 
 import {getActiveCityParams, upperString} from '../../utils/utils.ts';
 import Page404Screen from '../page404-screen';
-import Reviews from '../../components/reviews';
-import OffersList from '../../components/offers-list';
+import MemorizedReviews from '../../components/reviews';
+import MemorizedOffersList from '../../components/offers-list';
 import {Ratings} from '../../types/rating.ts';
 import Map from '../../components/map';
 
@@ -13,10 +13,10 @@ import {useActionCreators, useAppSelector} from '../../hooks';
 import {offerActions, offerSelectors} from '../../store/slices/offer.ts';
 import {reviewsActions, reviewsSelectors} from '../../store/slices/reviews.ts';
 import {useEffect} from 'react';
-import Loading from '../../components/loading';
+import MemorizedLoading from '../../components/loading';
 import {offersSelectors} from '../../store/slices/offers.ts';
 import {useAuth} from '../../hooks/user-authorization.ts';
-import FavoriteButton from '../../components/favorite-button';
+import MemorizedFavoriteButton from '../../components/favorite-button';
 import {MemorizedOfferGallery, MemorizedGoodListItem} from './utils.tsx';
 
 type OfferScreenProps = {
@@ -61,7 +61,7 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
     <main className="page__main page__main--offer">
       {
         status === RequestStatus.Loading ?
-          <Loading /> :
+          <MemorizedLoading /> :
           ''
       }
       <section className="offer">
@@ -87,7 +87,7 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
             }
             <div className="offer__name-wrapper">
               <h1 className="offer__name">{currentOffer.title}</h1>
-              <FavoriteButton bemBlock={'offer'} isFavorite={currentOffer.isFavorite} offerId={id} width={31} />
+              <MemorizedFavoriteButton bemBlock={'offer'} isFavorite={currentOffer.isFavorite} offerId={id} width={31} />
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
@@ -147,7 +147,7 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
               <div className="offer__description">{currentOffer.description}</div>
             </div>
             <section className="offer__reviews reviews">
-              <Reviews reviewsListData={reviews} isAuth={isAuth} ratingsList={ratingsList} />
+              <MemorizedReviews reviewsListData={reviews} isAuth={isAuth} ratingsList={ratingsList} />
             </section>
           </div>
         </div>
@@ -157,7 +157,7 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            <OffersList
+            <MemorizedOffersList
               offersList={nearByOffers}
               offersListTemplate="offerScreen"
             />

@@ -15,4 +15,6 @@ function Loading (): JSX.Element {
   );
 }
 
-export default memo(Loading);
+const MemorizedLoading = memo(Loading);
+
+export default MemorizedLoading;

@@ -77,4 +77,6 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
   );
 }
 
-export default memo(ReviewsForm);
+const MemorizedReviewsForm = memo(ReviewsForm);
+
+export default MemorizedReviewsForm;
