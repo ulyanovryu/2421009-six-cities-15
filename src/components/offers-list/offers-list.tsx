@@ -1,5 +1,6 @@
-import {OfferList, Offers, OffersListTemplate} from '../../types/offers.ts';
+import {memo} from 'react';
 
+import {OfferList, Offers, OffersListTemplate} from '../../types/offers.ts';
 import OfferCard from '../offer-card';
 
 type OffersParams = {
@@ -24,4 +25,4 @@ function OffersList ({offersList, offersListTemplate}: OffersParams): JSX.Elemen
   );
 }
 
-export default OffersList;
+export default memo(OffersList);
