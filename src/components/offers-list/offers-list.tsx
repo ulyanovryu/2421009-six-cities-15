@@ -1,6 +1,7 @@
-import {OfferList, Offers, OffersListTemplate} from '../../types/offers.ts';
+import {memo} from 'react';
 
-import OfferCard from '../offer-card';
+import {OfferList, Offers, OffersListTemplate} from '../../types/offers.ts';
+import MemorizedOfferCard from '../offer-card';
 
 type OffersParams = {
   offersList: Offers;
@@ -12,7 +13,7 @@ function OffersList ({offersList, offersListTemplate}: OffersParams): JSX.Elemen
     <>
       {
         offersList.map((offer: OfferList): JSX.Element => (
-          <OfferCard
+          <MemorizedOfferCard
             key={offer.id}
             offerParams={offer}
             offersListTemplate={offersListTemplate}
@@ -24,4 +25,6 @@ function OffersList ({offersList, offersListTemplate}: OffersParams): JSX.Elemen
   );
 }
 
-export default OffersList;
+const MemorizedOffersList = memo(OffersList);
+
+export default MemorizedOffersList;

@@ -1,8 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
-
+import {RequestStatus, StoreSlices} from '../../const.ts';
 import {OfferDetail, Offers} from '../../types/offers.ts';
 import {fetchNearByAction, fetchOfferAction} from '../thunks/offers.ts';
-import {RequestStatus} from '../../const.ts';
 
 interface OfferState {
   offer: OfferDetail | null;
@@ -18,7 +17,7 @@ const initialState: OfferState = {
 
 const offerSlice = createSlice({
   initialState,
-  name: 'offer',
+  name: StoreSlices.Offer,
   extraReducers(builder) {
     builder
       .addCase(fetchOfferAction.pending, (state) => {
@@ -36,12 +35,6 @@ const offerSlice = createSlice({
       });
   },
   reducers: {
-    // setNearBy: (state, action: PayloadAction<OfferList['id'] | undefined>) => {
-    //   state.activeId = action.payload;
-    // },
-    // setOffer: (state, action: PayloadAction<OfferDetail>) => {
-    //   state.offer = action.payload;
-    // }
     clear(state) {
       state.offer = null;
       state.nearby = [];
@@ -57,16 +50,6 @@ const offerSlice = createSlice({
 const offerActions = {...offerSlice.actions, fetchOfferAction, fetchNearByAction};
 const offerSelectors = {
   ...offerSlice.selectors,
-  // cityOffers: createSelector(offersSlice.selectors.offers, offersSlice.selectors.city, (allOffers, city) =>
-  //   allOffers.filter((offer) => offer.city.name === city),
-  // ),
-  // activeOffer: createSelector(offersSlice.selectors.offers, offersSlice.selectors.activeId, (allOffers, id) =>
-  //   allOffers.filter((offer) => {
-  //     if (offer.id === id) {
-  //       return offer;
-  //     }
-  //   }),
-  // ),
 };
 
 export {offerActions, offerSelectors, offerSlice};

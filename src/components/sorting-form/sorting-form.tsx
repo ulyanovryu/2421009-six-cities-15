@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {memo, useEffect} from 'react';
 import {useBoolean} from '../../hooks/boolean.ts';
 import classNames from 'classnames';
 import {SORT_OPTIONS, SortOption} from '../../const.ts';
@@ -60,4 +60,6 @@ function SortingForm ({current, setter}: SortingProps): JSX.Element {
   );
 }
 
-export default SortingForm;
+const MemorizedSortingForm = memo(SortingForm);
+
+export default MemorizedSortingForm;

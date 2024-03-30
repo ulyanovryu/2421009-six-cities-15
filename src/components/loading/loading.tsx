@@ -1,3 +1,5 @@
+import {memo} from 'react';
+
 function Loading (): JSX.Element {
   return (
     <div className="lds-roller">
@@ -13,4 +15,6 @@ function Loading (): JSX.Element {
   );
 }
 
-export default Loading;
+const MemorizedLoading = memo(Loading);
+
+export default MemorizedLoading;

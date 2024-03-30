@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {FavoritesStatus, RequestStatus} from '../../const.ts';
+import {FavoritesStatus, RequestStatus, StoreSlices} from '../../const.ts';
 import {Offers} from '../../types/offers.ts';
 import {changeFavoriteAction, fetchFavoritesAction} from '../thunks/favorites.ts';
 
@@ -16,7 +16,7 @@ const initialState: FavoritesState = {
 
 const favoritesSlice = createSlice({
   initialState,
-  name: 'favorites',
+  name: StoreSlices.Favorites,
   extraReducers(builder) {
     builder
       .addCase(fetchFavoritesAction.pending, (state) => {

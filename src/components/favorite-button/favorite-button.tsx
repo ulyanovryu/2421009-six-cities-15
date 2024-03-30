@@ -1,8 +1,10 @@
+import {memo, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import classNames from 'classnames';
+import {AppRoute} from '../../const.ts';
 import {useActionCreators} from '../../hooks';
+import {useAuth} from '../../hooks/user-authorization.ts';
 import {favoritesActions} from '../../store/slices/favorites.ts';
-import {useState} from 'react';
-
 
 type FavoriteButtonProps = {
   bemBlock?: 'offer' | 'place-card';
@@ -18,7 +20,7 @@ const enum Default {
 function FavoriteButton ({bemBlock = 'place-card', isFavorite = false, offerId, width = 18}: FavoriteButtonProps): JSX.Element {
 
   const [favorite, setFavorite] = useState(isFavorite);
-
+  const navigate = useNavigate();
   const favoriteLabel = `${favorite ? 'In' : 'To'} bookmaks`;
   const buttonClass = `${bemBlock}__bookmark-button`;
   const favoriteClass = classNames(
@@ -30,13 +32,18 @@ function FavoriteButton ({bemBlock = 'place-card', isFavorite = false, offerId, 
 
   const height = width * Default.HeightCoefficient;
   const {changeFavoriteAction} = useActionCreators(favoritesActions);
+  const isAuth = useAuth();
 
   const handleClick = () => {
-    changeFavoriteAction({
-      offerId,
-      status: Number(!favorite)
-    });
-    setFavorite(!favorite);
+    if (isAuth) {
+      changeFavoriteAction({
+        offerId,
+        status: Number(!favorite)
+      });
+      setFavorite(!favorite);
+    } else {
+      navigate(AppRoute.Login);
+    }
   };
 
   return (
@@ -49,4 +56,6 @@ function FavoriteButton ({bemBlock = 'place-card', isFavorite = false, offerId, 
   );
 }
 
-export default FavoriteButton;
+const MemorizedFavoriteButton = memo(FavoriteButton);
+
+export default MemorizedFavoriteButton;

@@ -1,5 +1,6 @@
 import {Review} from '../../types/reviews.ts';
 import {upperString} from '../../utils/utils.ts';
+import {memo} from 'react';
 
 type ReviewProps = {
   review: Review;
@@ -37,4 +38,6 @@ function ReviewList ({review}: ReviewProps):JSX.Element {
   );
 }
 
-export default ReviewList;
+const MemorizedReviewList = memo(ReviewList);
+
+export default MemorizedReviewList;

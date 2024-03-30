@@ -1,4 +1,4 @@
-import {ChangeEvent, Fragment, ReactEventHandler, useState} from 'react';
+import {ChangeEvent, Fragment, memo, ReactEventHandler, useState} from 'react';
 
 import {Ratings, Rating} from '../../types/rating.ts';
 import {useActionCreators, useAppSelector} from '../../hooks';
@@ -77,4 +77,6 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
   );
 }
 
-export default ReviewsForm;
+const MemorizedReviewsForm = memo(ReviewsForm);
+
+export default MemorizedReviewsForm;

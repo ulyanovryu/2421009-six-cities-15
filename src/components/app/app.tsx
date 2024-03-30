@@ -3,11 +3,10 @@ import {HelmetProvider} from 'react-helmet-async';
 
 import {useEffect} from 'react';
 
-import {AppRoute, DEFAULT_CITY} from '../../const';
+import {AppRoute, CITIES, DEFAULT_CITY} from '../../const';
 import {useActionCreators} from '../../hooks';
 import {getToken} from '../../services/token.ts';
 
-import {Cities} from '../../types/cities.ts';
 import {Ratings} from '../../types/rating.ts';
 
 import Layout from '../../components/layout';
@@ -23,11 +22,10 @@ import {offersActions} from '../../store/slices/offers.ts';
 import {userActions} from '../../store/slices/user.ts';
 
 type AppProps = {
-  citiesList: Cities;
   ratingsList: Ratings;
 }
 
-function App({citiesList, ratingsList}: AppProps): JSX.Element {
+function App({ratingsList}: AppProps): JSX.Element {
 
   const {fetchOffersAction} = useActionCreators(offersActions);
   const {checkAuthAction} = useActionCreators(userActions);
@@ -58,7 +56,7 @@ function App({citiesList, ratingsList}: AppProps): JSX.Element {
             }
             />
 
-            {citiesList.map((city) => (
+            {CITIES.map((city) => (
               <Route
                 index
                 key={city.id}
@@ -66,7 +64,6 @@ function App({citiesList, ratingsList}: AppProps): JSX.Element {
                 element={
                   <MainScreen
                     city={city.name}
-                    citiesList={citiesList}
                   />
                 }
               />
@@ -86,7 +83,6 @@ function App({citiesList, ratingsList}: AppProps): JSX.Element {
             />
             <Route path={AppRoute.Offer} element={
               <OfferScreen
-                citiesList={citiesList}
                 ratingsList={ratingsList}
               />
             }

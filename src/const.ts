@@ -43,7 +43,7 @@ export const CITIES = [
     'location': {
       'latitude': 48.856663,
       'longitude': 2.351556,
-      'zoom': 8
+      'zoom': 13
     }
   },{
     'name' : 'Cologne',
@@ -51,7 +51,7 @@ export const CITIES = [
     'location': {
       'latitude': 50.930779,
       'longitude': 6.938399,
-      'zoom': 8
+      'zoom': 13
     }
   },{
     'name' : 'Brussels',
@@ -59,7 +59,7 @@ export const CITIES = [
     'location': {
       'latitude': 50.854283,
       'longitude': 4.352131,
-      'zoom': 8
+      'zoom': 13
     }
   },{
     'name' : 'Amsterdam',
@@ -67,15 +67,15 @@ export const CITIES = [
     'location': {
       'latitude': 52.373057,
       'longitude': 4.892557,
-      'zoom': 8
+      'zoom': 13
     }
   },{
     'name' : 'Hamburg',
     'id' : 'hamburg',
     'location': {
-      'latitude': 53.567103,
-      'longitude': 9.941934,
-      'zoom': 8
+      'latitude': 53.553103,
+      'longitude': 9.995934,
+      'zoom': 13
     }
   },{
     'name' : 'Dusseldorf',
@@ -83,7 +83,7 @@ export const CITIES = [
     'location': {
       'latitude': 51.230569,
       'longitude': 6.787428,
-      'zoom': 8
+      'zoom': 13
     }
   },
 ] as const;
@@ -108,6 +108,14 @@ export const enum RequestStatus {
 export const enum FavoritesStatus {
   Added = 1,
   Removed = 0
+}
+
+export enum StoreSlices {
+  Offers = 'OFFERS',
+  Offer = 'OFFER',
+  Favorites = 'FAVORITES',
+  Reviews = 'REVIEWS',
+  User = 'USER'
 }
 
 export const OFFER_TYPE = ['Apartment', 'Room', 'House', 'Hotel'] as const;

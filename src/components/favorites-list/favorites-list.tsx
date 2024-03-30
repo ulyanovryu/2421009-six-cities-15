@@ -1,8 +1,8 @@
 
 import {Offers} from '../../types/offers.ts';
-import {Fragment} from 'react';
+import {Fragment, memo} from 'react';
 import {NavLink} from 'react-router-dom';
-import OffersList from '../offers-list';
+import MemorizedOffersList from '../offers-list';
 import {CITIES} from '../../const.ts';
 
 type FavoritesListProps = {
@@ -41,7 +41,7 @@ function FavoritesList ({offers}: FavoritesListProps): JSX.Element {
                 </div>
               </div>
               <div className="favorites__places">
-                <OffersList
+                <MemorizedOffersList
                   offersList={offersByCity[city] as Offers}
                   offersListTemplate="favoriteScreen"
                 />
@@ -54,4 +54,6 @@ function FavoritesList ({offers}: FavoritesListProps): JSX.Element {
   );
 }
 
-export default FavoritesList;
+const MemorizedFavoritesList = memo(FavoritesList);
+
+export default MemorizedFavoritesList;

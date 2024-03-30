@@ -1,39 +1,38 @@
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
 
 import {Offers} from '../../types/offers.ts';
-import {Cities, CityName} from '../../types/cities.ts';
+import {CityName} from '../../types/cities.ts';
 
 import {getActiveCityParams, plural} from '../../utils/utils.ts';
 
 import {useAppSelector} from '../../hooks';
 
-import CitiesList from '../../components/cities-list';
-import OffersList from '../../components/offers-list';
-import SortingForm from '../../components/sorting-form';
+import MemorizedCitiesList from '../../components/cities-list';
+import MemorizedOffersList from '../../components/offers-list';
+import MemorizedSortingForm from '../../components/sorting-form';
 import Map from '../../components/map';
 import {offersSelectors} from '../../store/slices/offers.ts';
 
-import {RequestStatus, SortOption} from '../../const.ts';
+import {CITIES, RequestStatus, SortOption} from '../../const.ts';
 import classNames from 'classnames';
-import Loading from '../../components/loading';
+import MemorizedLoading from '../../components/loading';
+import sortOffers from './utils.ts';
 
 type MainScreenProps = {
   city: CityName;
-  citiesList: Cities;
 }
 
-function MainScreen ({city, citiesList}: MainScreenProps): JSX.Element {
+function MainScreen ({city}: MainScreenProps): JSX.Element {
 
   const [activeSort, setActiveSort] = useState(SortOption.Popular);
 
-  const activeCityParams = getActiveCityParams(citiesList, city);
+  const activeCityParams = getActiveCityParams(CITIES, city);
   const offers:Offers = useAppSelector(offersSelectors.offers);
 
-  const offersByCity = Object.groupBy(offers, (offer) => offer.city.name);
-
-  const currentOffersByCity:Offers = offersByCity[city] || [];
-
-  //const [activeOffer, setActiveOffer] = useState<Nullable<Offer>>(null);
+  const currentOffersByCity:Offers = useMemo(() => {
+    const offersByCity = Object.groupBy(offers, (offer) => offer.city.name);
+    return offersByCity[city] || [];
+  }, [offers, city]);
 
   const activeId = useAppSelector(offersSelectors.activeId);
   const activeOffer = (offers.filter((offer) => offer.id === activeId)).shift();
@@ -42,26 +41,19 @@ function MainScreen ({city, citiesList}: MainScreenProps): JSX.Element {
 
   const statusOffersDataLoading = useAppSelector(offersSelectors.status);
 
-  let sortedOffers = currentOffersByCity;
-  if (activeSort === SortOption.PriceLowToHigh) {
-    sortedOffers = currentOffersByCity.toSorted((a, b) => a.price - b.price);
-  } else if (activeSort === SortOption.PriceHighToLow) {
-    sortedOffers = currentOffersByCity.toSorted((a, b) => b.price - a.price);
-  } else if (activeSort === SortOption.TopRatedFirst) {
-    sortedOffers = [...currentOffersByCity].sort((a, b) => b.rating - a.rating);
-  }
+  const sortedOffers = useMemo(() => sortOffers(activeSort, currentOffersByCity), [activeSort, currentOffersByCity]);
 
   return (
     <main className={classNames('page__main page__main--index', {'page__main--index-empty' : (cityOffersCount === 0)})}>
       {
         statusOffersDataLoading === RequestStatus.Loading ?
-          <Loading /> :
+          <MemorizedLoading /> :
           ''
       }
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
-          <CitiesList citiesList={citiesList} />
+          <MemorizedCitiesList />
         </section>
       </div>
       <div className="cities">
@@ -72,9 +64,9 @@ function MainScreen ({city, citiesList}: MainScreenProps): JSX.Element {
                 <section className="cities__places places">
                   <h2 className="visually-hidden">Places</h2>
                   <b className="places__found">{cityOffersCount} {plural(cityOffersCount, ['place', 'places', 'places'])} to stay in {city}</b>
-                  <SortingForm current={activeSort} setter={setActiveSort} />
+                  <MemorizedSortingForm current={activeSort} setter={setActiveSort} />
                   <div className="cities__places-list places__list tabs__content">
-                    <OffersList
+                    <MemorizedOffersList
                       offersList={sortedOffers}
                       offersListTemplate="mainScreen"
                     />
