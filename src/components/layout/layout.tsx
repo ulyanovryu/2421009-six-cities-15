@@ -5,12 +5,13 @@ import {AppRoute, ImgPath} from '../../const.ts';
 import MemorizedHeaderLogin from '../header-login';
 import MemorizedHeaderProfile from '../header-profile';
 import useLayoutParams from '../../hooks/use-layout-params.ts';
-
+import {useAuth} from '../../hooks/user-authorization.ts';
 
 function Layout (): JSX.Element {
 
   const {pathname} = useLocation();
   const {pageClass, showFooter, showHeaderUserInfo} = useLayoutParams(pathname as AppRoute);
+  const isAuth = useAuth();
 
   return (
 
@@ -28,7 +29,7 @@ function Layout (): JSX.Element {
                 {
                   showHeaderUserInfo ? (
                     <>
-                      <MemorizedHeaderProfile />
+                      {isAuth && <MemorizedHeaderProfile />}
                       <MemorizedHeaderLogin />
                     </>
                   ) : null
