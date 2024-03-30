@@ -1,7 +1,7 @@
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
 
 import {Offers} from '../../types/offers.ts';
-import {Cities, CityName} from '../../types/cities.ts';
+import {CityName} from '../../types/cities.ts';
 
 import {getActiveCityParams, plural} from '../../utils/utils.ts';
 
@@ -13,20 +13,20 @@ import SortingForm from '../../components/sorting-form';
 import Map from '../../components/map';
 import {offersSelectors} from '../../store/slices/offers.ts';
 
-import {RequestStatus, SortOption} from '../../const.ts';
+import {CITIES, RequestStatus, SortOption} from '../../const.ts';
 import classNames from 'classnames';
 import Loading from '../../components/loading';
+import sortOffers from './utils.ts';
 
 type MainScreenProps = {
   city: CityName;
-  citiesList: Cities;
 }
 
-function MainScreen ({city, citiesList}: MainScreenProps): JSX.Element {
+function MainScreen ({city}: MainScreenProps): JSX.Element {
 
   const [activeSort, setActiveSort] = useState(SortOption.Popular);
 
-  const activeCityParams = getActiveCityParams(citiesList, city);
+  const activeCityParams = getActiveCityParams(CITIES, city);
   const offers:Offers = useAppSelector(offersSelectors.offers);
 
   const offersByCity = Object.groupBy(offers, (offer) => offer.city.name);
@@ -40,14 +40,7 @@ function MainScreen ({city, citiesList}: MainScreenProps): JSX.Element {
 
   const statusOffersDataLoading = useAppSelector(offersSelectors.status);
 
-  let sortedOffers = currentOffersByCity;
-  if (activeSort === SortOption.PriceLowToHigh) {
-    sortedOffers = currentOffersByCity.toSorted((a, b) => a.price - b.price);
-  } else if (activeSort === SortOption.PriceHighToLow) {
-    sortedOffers = currentOffersByCity.toSorted((a, b) => b.price - a.price);
-  } else if (activeSort === SortOption.TopRatedFirst) {
-    sortedOffers = [...currentOffersByCity].sort((a, b) => b.rating - a.rating);
-  }
+  const sortedOffers = useMemo(() => sortOffers(activeSort, currentOffersByCity), [activeSort, currentOffersByCity]);
 
   return (
     <main className={classNames('page__main page__main--index', {'page__main--index-empty' : (cityOffersCount === 0)})}>
@@ -59,7 +52,7 @@ function MainScreen ({city, citiesList}: MainScreenProps): JSX.Element {
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
-          <CitiesList citiesList={citiesList} />
+          <CitiesList />
         </section>
       </div>
       <div className="cities">
