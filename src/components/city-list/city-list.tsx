@@ -1,6 +1,7 @@
 import {NavLink} from 'react-router-dom';
 import {City} from '../../types/cities.ts';
 import * as classNames from 'classnames';
+import {memo} from 'react';
 
 type CityProps = {
   city: City;
@@ -18,4 +19,4 @@ function CityList ({city}: CityProps): JSX.Element {
   );
 }
 
-export default CityList;
+export default memo(CityList);

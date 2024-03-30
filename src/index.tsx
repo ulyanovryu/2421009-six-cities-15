@@ -6,7 +6,6 @@ import {Provider} from 'react-redux';
 import './polyfills';
 import {store} from './store';
 
-import {CITIES} from './const.ts';
 import ratingsList from './mocks/rating.ts';
 import {ToastContainer} from 'react-toastify';
 
@@ -19,7 +18,6 @@ root.render(
     <Provider store={store}>
       <ToastContainer />
       <App
-        citiesList={CITIES}
         ratingsList={ratingsList}
       />
     </Provider>

@@ -1,7 +1,6 @@
 import {useParams} from 'react-router-dom';
 
-import {DEFAULT_CITY, RequestStatus,} from '../../const.ts';
-import {Cities} from '../../types/cities.ts';
+import {CITIES, DEFAULT_CITY, RequestStatus,} from '../../const.ts';
 
 import {getActiveCityParams, upperString} from '../../utils/utils.ts';
 import Page404Screen from '../page404-screen';
@@ -18,38 +17,13 @@ import Loading from '../../components/loading';
 import {offersSelectors} from '../../store/slices/offers.ts';
 import {useAuth} from '../../hooks/user-authorization.ts';
 import FavoriteButton from '../../components/favorite-button';
-
-type OfferGalleryImagesType = {
-  src: string;
-  alt: string;
-}
-
-type GoogsType = {
-  good: string;
-}
-
-function OfferGallery ({src, alt}: OfferGalleryImagesType): JSX.Element {
-  return (
-    <div className="offer__image-wrapper">
-      <img className="offer__image" src={src} alt={alt} />
-    </div>
-  );
-}
-
-function GoogListItem ({good}:GoogsType): JSX.Element {
-  return (
-    <li className="offer__inside-item">
-      {good}
-    </li>
-  );
-}
+import {MemorizedOfferGallery, MemorizedGoodListItem} from './utils.tsx';
 
 type OfferScreenProps = {
-  citiesList: Cities;
   ratingsList: Ratings;
 };
 
-function OfferScreen({citiesList, ratingsList}: OfferScreenProps): JSX.Element {
+function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
 
   const {name:activeCity} = DEFAULT_CITY;
 
@@ -78,7 +52,7 @@ function OfferScreen({citiesList, ratingsList}: OfferScreenProps): JSX.Element {
     return <Page404Screen />;
   }
 
-  const activeCityParams = getActiveCityParams(citiesList, activeCity);
+  const activeCityParams = getActiveCityParams(CITIES, activeCity);
 
   const ratingStarsStyle = currentOffer.rating * 20;
   const upperType = upperString(currentOffer.type);
@@ -96,7 +70,7 @@ function OfferScreen({citiesList, ratingsList}: OfferScreenProps): JSX.Element {
             <div className="offer__gallery-container container">
               <div className="offer__gallery">
                 {currentOffer.images.map((image) => (
-                  <OfferGallery key={image} src={image} alt={currentOffer.title} />
+                  <MemorizedOfferGallery key={image} src={image} alt={currentOffer.title} />
                 ))}
               </div>
             </div>
@@ -150,7 +124,7 @@ function OfferScreen({citiesList, ratingsList}: OfferScreenProps): JSX.Element {
                   <ul className="offer__inside-list">
                     {
                       currentOffer.goods.map((good) => (
-                        <GoogListItem good={good} key={good} />
+                        <MemorizedGoodListItem good={good} key={good} />
                       ))
                     }
                   </ul>

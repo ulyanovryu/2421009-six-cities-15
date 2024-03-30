@@ -1,17 +1,17 @@
-import {Cities, City} from '../../types/cities.ts';
+import {City} from '../../types/cities.ts';
 import CityList from '../city-list';
+import {CITIES} from '../../const.ts';
+import {memo} from 'react';
 
-type CitiesOffersListProps = {
-  citiesList: Cities;
-}
-function CitiesList ({citiesList}: CitiesOffersListProps): JSX.Element {
+
+function CitiesList (): JSX.Element {
   return (
     <ul className="locations__list tabs__list">
-      {citiesList.map((city:City) => (
+      {CITIES.map((city:City) => (
         <CityList city={city} key={city.id} />
       ))}
     </ul>
   );
 }
 
-export default CitiesList;
+export default memo(CitiesList);
