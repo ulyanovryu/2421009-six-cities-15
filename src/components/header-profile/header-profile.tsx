@@ -4,6 +4,7 @@ import {useAppSelector} from '../../hooks';
 import {useFavoriteCount} from '../../hooks/use-favorite-count.ts';
 import {userSelectors} from '../../store/slices/user.ts';
 import {useAuth} from '../../hooks/user-authorization.ts';
+import {memo} from "react";
 
 function HeaderProfile(): JSX.Element {
 
@@ -26,4 +27,4 @@ function HeaderProfile(): JSX.Element {
   );
 }
 
-export default HeaderProfile;
+export default memo(HeaderProfile);

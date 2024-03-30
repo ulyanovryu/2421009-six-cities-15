@@ -1,6 +1,6 @@
 
 import {Offers} from '../../types/offers.ts';
-import {Fragment} from 'react';
+import {Fragment, memo} from 'react';
 import {NavLink} from 'react-router-dom';
 import OffersList from '../offers-list';
 import {CITIES} from '../../const.ts';
@@ -54,4 +54,4 @@ function FavoritesList ({offers}: FavoritesListProps): JSX.Element {
   );
 }
 
-export default FavoritesList;
+export default memo(FavoritesList);

@@ -4,6 +4,7 @@ import {useActionCreators} from '../../hooks';
 
 import {useAuth} from '../../hooks/user-authorization.ts';
 import {userActions} from '../../store/slices/user.ts';
+import {memo} from 'react';
 
 function HeaderLogin(): JSX.Element {
 
@@ -31,4 +32,4 @@ function HeaderLogin(): JSX.Element {
   );
 }
 
-export default HeaderLogin;
+export default memo(HeaderLogin);

@@ -1,6 +1,7 @@
 import {Review, ReviewsType} from '../../types/reviews.ts';
 
 import ReviewList from '../review-list';
+import {memo} from 'react';
 
 type ReviewsProps = {
   reviews: ReviewsType;
@@ -18,4 +19,4 @@ function ReviewsList ({reviews}: ReviewsProps): JSX.Element {
   );
 }
 
-export default ReviewsList;
+export default memo(ReviewsList);

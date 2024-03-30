@@ -3,6 +3,7 @@ import {Ratings} from '../../types/rating.ts';
 
 import ReviewsForm from '../reviews-form';
 import ReviewsList from '../reviews-list';
+import {memo} from "react";
 
 type ReviewsProps = {
   isAuth: boolean;
@@ -27,4 +28,4 @@ function Reviews ({isAuth, reviewsListData, ratingsList}: ReviewsProps):JSX.Elem
   );
 }
 
-export default Reviews;
+export default memo(Reviews);

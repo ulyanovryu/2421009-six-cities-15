@@ -1,11 +1,12 @@
-import {OfferList, OffersListTemplate} from '../../types/offers.ts';
-
+import {memo, useCallback} from 'react';
 import {Link} from 'react-router-dom';
+
+import {OfferList, OffersListTemplate} from '../../types/offers.ts';
 import {upperString} from '../../utils/utils.ts';
 import {useActionCreators} from '../../hooks';
 import {offersActions} from '../../store/slices/offers.ts';
 import FavoriteButton from '../favorite-button';
-import {cardParams} from './utils.ts';
+import {cardParams, handleMouseEnter, handleMouseOut} from './utils.ts';
 
 type OfferProps = {
   offerParams: OfferList;
@@ -25,12 +26,15 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
 
   const {classNames, width, height} = cardParams(offersListTemplate);
 
+  const memorizedHandleMouseEnter = useCallback(() => handleMouseEnter(hovered, id, setActiveId), [setActiveId]);
+  const memorizedHandleMouseOut = useCallback(() => handleMouseOut(hovered, setActiveId), [setActiveId]);
+
   return (
     <article
       className={classNames.article}
       data-id={id}
-      onMouseEnter={() => hovered && setActiveId(id)}
-      onMouseOut={() => hovered && setActiveId(undefined)}
+      onMouseEnter={memorizedHandleMouseEnter}
+      onMouseOut={memorizedHandleMouseOut}
     >
       {
         isPremium ?
@@ -67,4 +71,4 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
   );
 }
 
-export default OfferCard;
+export default memo(OfferCard);
