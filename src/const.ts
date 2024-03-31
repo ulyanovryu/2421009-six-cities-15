@@ -124,6 +124,8 @@ export enum MaxCountLimit {
   OfferNearby = 3,
 }
 
+export const PASSWORD_VALID_ERROR = 'Password must contain at least one letter and one number';
+
 export const OFFER_TYPE = ['Apartment', 'Room', 'House', 'Hotel'] as const;
 
 export type OfferType = (typeof OFFER_TYPE)[number];
