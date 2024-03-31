@@ -5,23 +5,10 @@ type OfferGalleriesType = {
   images: string[];
   title: string;
 }
-type OfferGalleryImagesType = {
-  src: string;
-  alt: string;
-}
 
-type GoogsType = {
-  good: string;
+type OfferGoodsType = {
+  goods: string[];
 }
-
-function OfferGallery ({src, alt}: OfferGalleryImagesType): JSX.Element {
-  return (
-    <div className="offer__image-wrapper">
-      <img className="offer__image" src={src} alt={alt} />
-    </div>
-  );
-}
-const MemorizedOfferGallery = memo(OfferGallery);
 
 function OfferGalleries ({images, title}: OfferGalleriesType): JSX.Element | null {
 
@@ -33,7 +20,9 @@ function OfferGalleries ({images, title}: OfferGalleriesType): JSX.Element | nul
       <div className="offer__gallery-container container">
         <div className="offer__gallery">
           {imagesLimit.map((image) => (
-            <MemorizedOfferGallery key={image} src={image} alt={title} />
+            <div className="offer__image-wrapper" key={image}>
+              <img className="offer__image" src={image} alt={title} />
+            </div>
           ))}
         </div>
       </div>
@@ -42,12 +31,23 @@ function OfferGalleries ({images, title}: OfferGalleriesType): JSX.Element | nul
 }
 const MemorizedOfferGalleries = memo(OfferGalleries);
 
-function GoodListItem ({good}:GoogsType): JSX.Element {
+function GoodsListItem ({goods}:OfferGoodsType): JSX.Element | null {
   return (
-    <li className="offer__inside-item">{good}</li>
+    goods !== undefined && goods.length > 0 ?
+      <div className="offer__inside">
+        <h2 className="offer__inside-title">What&apos;s inside</h2>
+        <ul className="offer__inside-list">
+          {
+            goods.map((good) => (
+              <li className="offer__inside-item" key={good}>{good}</li>
+            ))
+          }
+        </ul>
+      </div>
+      : null
   );
 }
 
-const MemorizedGoodListItem = memo(GoodListItem);
+const MemorizedGoodsList = memo(GoodsListItem);
 
-export {MemorizedOfferGalleries, MemorizedGoodListItem};
+export {MemorizedOfferGalleries, MemorizedGoodsList};

@@ -17,7 +17,7 @@ import MemorizedLoading from '../../components/loading';
 import {offersSelectors} from '../../store/slices/offers.ts';
 import {useAuth} from '../../hooks/user-authorization.ts';
 import MemorizedFavoriteButton from '../../components/favorite-button';
-import {MemorizedOfferGalleries, MemorizedGoodListItem} from './utils.tsx';
+import {MemorizedOfferGalleries, MemorizedGoodsList} from './utils.tsx';
 import {CityName} from '../../types/cities.ts';
 
 type OfferScreenProps = {
@@ -112,20 +112,7 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
               <b className="offer__price-value">&euro;{currentOffer.price}</b>
               <span className="offer__price-text">&nbsp;night</span>
             </div>
-            {
-              currentOffer.goods !== undefined && currentOffer.goods.length > 0 ?
-                <div className="offer__inside">
-                  <h2 className="offer__inside-title">What&apos;s inside</h2>
-                  <ul className="offer__inside-list">
-                    {
-                      currentOffer.goods.map((good) => (
-                        <MemorizedGoodListItem good={good} key={good} />
-                      ))
-                    }
-                  </ul>
-                </div>
-                : null
-            }
+            {<MemorizedGoodsList goods={currentOffer.goods} />}
             <div className="offer__host">
               <h2 className="offer__host-title">Meet the host</h2>
               {
