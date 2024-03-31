@@ -19,6 +19,7 @@ import {useAuth} from '../../hooks/user-authorization.ts';
 import MemorizedFavoriteButton from '../../components/favorite-button';
 import {MemorizedOfferGalleries, MemorizedGoodsList} from './utils.tsx';
 import {CityName} from '../../types/cities.ts';
+import classNames from 'classnames';
 
 type OfferScreenProps = {
   ratingsList: Ratings;
@@ -55,7 +56,7 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
 
   const activeCityParams = getActiveCityParams(CITIES, activeCity as CityName);
 
-  const ratingStarsStyle = currentOffer.rating * 20;
+  const ratingStarsStyle = Math.round(currentOffer.rating) * 20;
   const upperType = upperString(currentOffer.type);
 
   const nearByOffersList = nearByOffers.slice(0, MaxCountLimit.OfferNearby);
@@ -118,11 +119,11 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
               {
                 currentOffer.host !== undefined ?
                   <div className="offer__host-user user">
-                    <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                    <div className={classNames('offer__avatar-wrapper', 'user__avatar-wrapper', {'offer__avatar-wrapper--pro' : currentOffer.host.isPro})}>
                       <img className="offer__avatar user__avatar" src={currentOffer.host.avatarUrl} width="74" height="74" alt={currentOffer.host.name} />
                     </div>
                     <span className="offer__user-name">{currentOffer.host.name}</span>
-                    <span className="offer__user-status">{currentOffer.host.isPro ? 'Pro' : null}</span>
+                    {currentOffer.isPremium ? <span className="offer__user-status">{currentOffer.host.isPro ? 'Pro' : null}</span> : null}
                   </div>
                   : null
               }

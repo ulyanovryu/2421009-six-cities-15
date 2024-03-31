@@ -19,7 +19,7 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
 
   const {id, isPremium, isFavorite, title, price, rating, type, previewImage} = offerParams;
 
-  const ratingWidth : number = 20 * rating;
+  const ratingWidth : number = 20 * Math.round(rating);
   const linkDetail : string = `/offer/${id}`;
 
   const upperType = upperString(type);
