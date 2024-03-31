@@ -118,6 +118,12 @@ export enum StoreSlices {
   User = 'USER'
 }
 
+export enum MaxCountLimit {
+  OfferImages = 6,
+  Comments = 10,
+  OfferNearby = 3,
+}
+
 export const OFFER_TYPE = ['Apartment', 'Room', 'House', 'Hotel'] as const;
 
 export type OfferType = (typeof OFFER_TYPE)[number];

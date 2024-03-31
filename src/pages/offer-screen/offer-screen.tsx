@@ -1,6 +1,6 @@
 import {useParams} from 'react-router-dom';
 
-import {CITIES, DEFAULT_CITY, RequestStatus,} from '../../const.ts';
+import {CITIES, MaxCountLimit, RequestStatus,} from '../../const.ts';
 
 import {getActiveCityParams, upperString} from '../../utils/utils.ts';
 import Page404Screen from '../page404-screen';
@@ -17,20 +17,15 @@ import MemorizedLoading from '../../components/loading';
 import {offersSelectors} from '../../store/slices/offers.ts';
 import {useAuth} from '../../hooks/user-authorization.ts';
 import MemorizedFavoriteButton from '../../components/favorite-button';
-import {MemorizedOfferGallery, MemorizedGoodListItem} from './utils.tsx';
+import {MemorizedOfferGalleries, MemorizedGoodsList} from './utils.tsx';
+import {CityName} from '../../types/cities.ts';
+import classNames from 'classnames';
 
 type OfferScreenProps = {
   ratingsList: Ratings;
 };
 
 function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
-
-  const {name:activeCity} = DEFAULT_CITY;
-
-  const currentOffer = useAppSelector(offerSelectors.offer);
-  const status = useAppSelector(offerSelectors.status);
-  const nearByOffers = useAppSelector(offerSelectors.nearby);
-  const reviews = useAppSelector(reviewsSelectors.reviews);
 
   const {fetchOfferAction, fetchNearByAction} = useActionCreators(offerActions);
   const {fetchCommentsAction} = useActionCreators(reviewsActions);
@@ -42,7 +37,12 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
   }, [fetchOfferAction, fetchNearByAction, fetchCommentsAction, id]);
 
 
-  const activeId = useAppSelector(offersSelectors.activeId);
+  const currentOffer = useAppSelector(offerSelectors.offer);
+  const status = useAppSelector(offerSelectors.status);
+  const nearByOffers = useAppSelector(offerSelectors.nearby);
+  const reviews = useAppSelector(reviewsSelectors.reviews);
+
+  const activeId = id;
   const offersList = useAppSelector(offersSelectors.offers);
   const activeOffer = (offersList.filter((offer) => offer.id === activeId)).shift();
 
@@ -52,10 +52,15 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
     return <Page404Screen />;
   }
 
-  const activeCityParams = getActiveCityParams(CITIES, activeCity);
+  const {city:{name:activeCity}} = currentOffer;
 
-  const ratingStarsStyle = currentOffer.rating * 20;
+  const activeCityParams = getActiveCityParams(CITIES, activeCity as CityName);
+
+  const ratingStarsStyle = Math.round(currentOffer.rating) * 20;
   const upperType = upperString(currentOffer.type);
+
+  const nearByOffersList = nearByOffers.slice(0, MaxCountLimit.OfferNearby);
+  const nearByOffersMap = activeOffer !== undefined ? [...nearByOffersList, activeOffer] : nearByOffersList;
 
   return (
     <main className="page__main page__main--offer">
@@ -65,17 +70,8 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
           ''
       }
       <section className="offer">
-        {
-          currentOffer.images !== undefined ?
-            <div className="offer__gallery-container container">
-              <div className="offer__gallery">
-                {currentOffer.images.map((image) => (
-                  <MemorizedOfferGallery key={image} src={image} alt={currentOffer.title} />
-                ))}
-              </div>
-            </div>
-            : null
-        }
+        {<MemorizedOfferGalleries images={currentOffer.images} title={currentOffer.title}/>}
+
         <div className="offer__container container">
           <div className="offer__wrapper">
             {
@@ -117,30 +113,17 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
               <b className="offer__price-value">&euro;{currentOffer.price}</b>
               <span className="offer__price-text">&nbsp;night</span>
             </div>
-            {
-              currentOffer.goods !== undefined && currentOffer.goods.length > 0 ?
-                <div className="offer__inside">
-                  <h2 className="offer__inside-title">What&apos;s inside</h2>
-                  <ul className="offer__inside-list">
-                    {
-                      currentOffer.goods.map((good) => (
-                        <MemorizedGoodListItem good={good} key={good} />
-                      ))
-                    }
-                  </ul>
-                </div>
-                : null
-            }
+            {<MemorizedGoodsList goods={currentOffer.goods} />}
             <div className="offer__host">
               <h2 className="offer__host-title">Meet the host</h2>
               {
                 currentOffer.host !== undefined ?
                   <div className="offer__host-user user">
-                    <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                    <div className={classNames('offer__avatar-wrapper', 'user__avatar-wrapper', {'offer__avatar-wrapper--pro' : currentOffer.host.isPro})}>
                       <img className="offer__avatar user__avatar" src={currentOffer.host.avatarUrl} width="74" height="74" alt={currentOffer.host.name} />
                     </div>
                     <span className="offer__user-name">{currentOffer.host.name}</span>
-                    <span className="offer__user-status">{currentOffer.host.isPro ? 'Pro' : null}</span>
+                    {currentOffer.isPremium ? <span className="offer__user-status">{currentOffer.host.isPro ? 'Pro' : null}</span> : null}
                   </div>
                   : null
               }
@@ -151,14 +134,14 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
             </section>
           </div>
         </div>
-        <Map offers={nearByOffers} className={'offer__map map'} selectedPoint={activeOffer} selectedCity={activeCityParams} />
+        <Map offers={nearByOffersMap} className={'offer__map map'} selectedPoint={activeOffer} selectedCity={activeCityParams} />
       </section>
       <div className="container">
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
             <MemorizedOffersList
-              offersList={nearByOffers}
+              offersList={nearByOffersList}
               offersListTemplate="offerScreen"
             />
           </div>

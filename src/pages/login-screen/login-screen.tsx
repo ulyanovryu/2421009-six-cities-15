@@ -2,14 +2,12 @@ import {Helmet} from 'react-helmet-async';
 
 import {NavLink} from 'react-router-dom';
 
-import {DEFAULT_CITY} from '../../const.ts';
+import {CITIES} from '../../const.ts';
 import {FormEvent, useRef} from 'react';
 import {useActionCreators} from '../../hooks';
 import {userActions} from '../../store/slices/user.ts';
 
 function LoginScreen (): JSX.Element {
-
-  const defaultCityParams = DEFAULT_CITY;
 
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
@@ -26,6 +24,9 @@ function LoginScreen (): JSX.Element {
       });
     }
   };
+
+  const randomCityIndex = Math.floor(Math.random() * 6);
+  const randomCity = CITIES[randomCityIndex];
 
   return (
 
@@ -65,8 +66,8 @@ function LoginScreen (): JSX.Element {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <NavLink to={`/${defaultCityParams.id}`} className={'locations__item-link'}>
-              <span>{defaultCityParams.name}</span>
+            <NavLink to={`/${randomCity.id}`} className={'locations__item-link'}>
+              <span>{randomCity.name}</span>
             </NavLink>
           </div>
         </section>

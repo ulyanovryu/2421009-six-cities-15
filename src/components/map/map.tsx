@@ -34,14 +34,11 @@ function Map ({offers, className, selectedPoint, selectedCity}: MapProps): JSX.E
 
   useEffect(() => {
     if (map) {
+
       map.setView([selectedCity.location.latitude, selectedCity.location.longitude], selectedCity.location.zoom);
       markerLayer.current.clearLayers();
       markerLayer.current.addTo(map);
-    }
-  }, [map, selectedCity]);
 
-  useEffect(() => {
-    if (map) {
       //const markerLayer = leaflet.layerGroup().addTo(map);
       offers.forEach((point) => {
         const marker = new Marker({
@@ -62,7 +59,7 @@ function Map ({offers, className, selectedPoint, selectedCity}: MapProps): JSX.E
         // map.removeLayer(markerLayer.current);
       };
     }
-  }, [map, offers, selectedPoint]);
+  }, [map, offers, selectedCity, selectedPoint]);
 
   return <section style={{height: '600px'}} className={className} ref={mapRef}></section>;
 }
