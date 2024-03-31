@@ -69,6 +69,7 @@ function MainScreen ({city}: MainScreenProps): JSX.Element {
                     <MemorizedOffersList
                       offersList={sortedOffers}
                       offersListTemplate="mainScreen"
+                      hovered
                     />
                   </div>
                 </section>
