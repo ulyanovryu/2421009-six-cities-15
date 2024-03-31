@@ -2,20 +2,26 @@ import {Review, ReviewsType} from '../../types/reviews.ts';
 
 import MemorizedReviewList from '../review-list';
 import {memo} from 'react';
+import {MaxCountLimit} from '../../const.ts';
 
 type ReviewsProps = {
   reviews: ReviewsType;
 }
 
-function ReviewsList ({reviews}: ReviewsProps): JSX.Element {
+function ReviewsList ({reviews}: ReviewsProps): JSX.Element | null {
+
+  const reviewsLimit = reviews !== undefined ? reviews.slice(0, MaxCountLimit.Comments) : [];
+  const reviewsCount = reviewsLimit.length;
+
   return (
-    <ul className="reviews__list">
-      {
-        reviews.map((review: Review) => (
-          <MemorizedReviewList key={review.id} review={review} />
-        ))
-      }
-    </ul>
+    reviewsCount > 0 ?
+      <ul className="reviews__list">
+        {
+          reviewsLimit.map((review: Review) => (
+            <MemorizedReviewList key={review.id} review={review} />
+          ))
+        }
+      </ul> : null
   );
 }
 

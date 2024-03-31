@@ -1,5 +1,10 @@
 import {memo} from 'react';
+import {MaxCountLimit} from '../../const.ts';
 
+type OfferGalleriesType = {
+  images: string[];
+  title: string;
+}
 type OfferGalleryImagesType = {
   src: string;
   alt: string;
@@ -18,7 +23,24 @@ function OfferGallery ({src, alt}: OfferGalleryImagesType): JSX.Element {
 }
 const MemorizedOfferGallery = memo(OfferGallery);
 
-//export default memo(OfferGallery);
+function OfferGalleries ({images, title}: OfferGalleriesType): JSX.Element | null {
+
+  const imagesLimit = images !== undefined ? images.slice(0, MaxCountLimit.OfferImages) : [];
+  const imagesCount = imagesLimit.length;
+
+  return (
+    imagesCount > 0 ?
+      <div className="offer__gallery-container container">
+        <div className="offer__gallery">
+          {imagesLimit.map((image) => (
+            <MemorizedOfferGallery key={image} src={image} alt={title} />
+          ))}
+        </div>
+      </div>
+      : null
+  );
+}
+const MemorizedOfferGalleries = memo(OfferGalleries);
 
 function GoodListItem ({good}:GoogsType): JSX.Element {
   return (
@@ -28,4 +50,4 @@ function GoodListItem ({good}:GoogsType): JSX.Element {
 
 const MemorizedGoodListItem = memo(GoodListItem);
 
-export {MemorizedOfferGallery, MemorizedGoodListItem};
+export {MemorizedOfferGalleries, MemorizedGoodListItem};
