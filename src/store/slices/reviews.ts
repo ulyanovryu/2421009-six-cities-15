@@ -1,18 +1,20 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import {RequestStatus, StoreSlices} from '../../const.ts';
-import {ReviewsType} from '../../types/reviews.ts';
+import {ReviewsType,} from '../../types/reviews.ts';
 import {fetchCommentsAction, addCommentAction} from '../thunks/comments.ts';
 import {sortComments} from '../../utils/utils.ts';
 
 interface ReviewsState {
   reviews: ReviewsType;
   status: RequestStatus;
+  posting: RequestStatus;
 }
 
 const initialState: ReviewsState = {
   reviews: [],
   status: RequestStatus.Idle,
+  posting: RequestStatus.Idle,
 };
 
 const reviewsSlice = createSlice({
@@ -32,20 +34,21 @@ const reviewsSlice = createSlice({
         state.status = RequestStatus.Failed;
       })
       .addCase(addCommentAction.fulfilled, (state, action) => {
-        state.status = RequestStatus.Success;
         state.reviews.unshift(action.payload);
+        state.posting = RequestStatus.Success;
       })
       .addCase(addCommentAction.pending, (state) => {
-        state.status = RequestStatus.Loading;
+        state.posting = RequestStatus.Loading;
       })
       .addCase(addCommentAction.rejected, (state) => {
-        state.status = RequestStatus.Failed;
+        state.posting = RequestStatus.Failed;
       });
   },
   reducers: {},
   selectors: {
     reviews: (state:ReviewsState) => state.reviews,
     status: (state:ReviewsState) => state.status,
+    posting: (state:ReviewsState) => state.posting,
   }
 });
 
