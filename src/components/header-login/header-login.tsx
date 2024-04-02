@@ -18,7 +18,7 @@ function HeaderLogin(): JSX.Element {
     useAuth()
       ?
       <li className="header__nav-item">
-        <Link to={AppRoute.Root} className="header__nav-link" onClick={handlerSignOut}>
+        <Link to={'#'} className="header__nav-link" onClick={handlerSignOut}>
           <span className="header__signout">Sign out</span>
         </Link>
       </li>
