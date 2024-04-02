@@ -4,7 +4,8 @@ import {Rating, Ratings} from '../../types/rating.ts';
 import {useActionCreators, useAppSelector} from '../../hooks';
 import {reviewsActions, reviewsSelectors} from '../../store/slices/reviews.ts';
 import {offerSelectors} from '../../store/slices/offer.ts';
-import {RequestStatus} from '../../const.ts';
+import {RequestStatus, ReviewsParams} from '../../const.ts';
+import {toast} from 'react-toastify';
 
 type THandleFormChange = ReactEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 type ReviewsFormProps = {
@@ -19,7 +20,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
   const initialState = {rating: 0, review: ''};
   const [review, setReview] = useState(initialState);
   const [send, setSend] = useState(false);
-  const handleFormChange: THandleFormChange = (event) => {
+  const handleFormElementChange: THandleFormChange = (event) => {
     const {name, value} = event.currentTarget;
     setReview({...review, [name]:value});
   };
@@ -34,10 +35,11 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
       setSend(false);
     } else if (posting === RequestStatus.Failed) {
       setSend(false);
+      toast.warn(ReviewsParams.NoticeOfBadSending);
     }
   }
 
-  const handleCommentFormSubmit = (evt: ChangeEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (evt: ChangeEvent<HTMLFormElement>) => {
     evt.preventDefault();
     if (posting !== RequestStatus.Loading) {
       addCommentAction({body:{comment: review.review, rating: parseInt(String(review.rating), 10)}, offerId: currentOffer.id});
@@ -46,7 +48,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
   };
 
   return (
-    <form className="reviews__form form" action="#" method="post" onSubmit={handleCommentFormSubmit}>
+    <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {ratingsList.map(({value, title}: Rating) => (
@@ -59,7 +61,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
               checked={value === Number(review.rating)}
               type="radio"
               disabled={posting === RequestStatus.Loading}
-              onChange={handleFormChange}
+              onChange={handleFormElementChange}
             />
             <label htmlFor={`${value}-stars`} className="reviews__rating-label form__rating-label" title={title}>
               <svg className="form__star-image" width="37" height="33">
@@ -76,7 +78,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
         value={review.review}
         disabled={posting === RequestStatus.Loading}
         placeholder="Tell how was your stay, what you like and what can be improved"
-        onChange={handleFormChange}
+        onChange={handleFormElementChange}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -87,7 +89,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={review.review.length < 50 || review.review.length > 300 || review.rating === 0 || posting === RequestStatus.Loading}
+          disabled={review.review.length < ReviewsParams.MinReviewLength || review.review.length > ReviewsParams.MaxReviewLength || review.rating === 0 || posting === RequestStatus.Loading}
         >Submit
         </button>
       </div>

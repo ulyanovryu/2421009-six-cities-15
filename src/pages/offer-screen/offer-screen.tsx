@@ -2,7 +2,7 @@ import {useParams} from 'react-router-dom';
 
 import {CITIES, MaxCountLimit, RequestStatus,} from '../../const.ts';
 
-import {getActiveCityParams, upperString} from '../../utils/utils.ts';
+import {getActiveCityParams, getUpperString} from '../../utils/utils.ts';
 import Page404Screen from '../page404-screen';
 import MemorizedReviews from '../../components/reviews';
 import MemorizedOffersList from '../../components/offers-list';
@@ -57,7 +57,7 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
   const activeCityParams = getActiveCityParams(CITIES, activeCity as CityName);
 
   const ratingStarsStyle = Math.round(currentOffer.rating) * 20;
-  const upperType = upperString(currentOffer.type);
+  const upperType = getUpperString(currentOffer.type);
 
   const nearByOffersList = nearByOffers.slice(0, MaxCountLimit.OfferNearby);
   const nearByOffersMap = activeOffer !== undefined ? [...nearByOffersList, activeOffer] : nearByOffersList;

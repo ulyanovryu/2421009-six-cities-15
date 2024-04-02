@@ -124,6 +124,12 @@ export enum MaxCountLimit {
   OfferNearby = 3,
 }
 
+export const ReviewsParams = {
+  MinReviewLength: 50,
+  MaxReviewLength: 300,
+  NoticeOfBadSending: 'No comment was posted. Please try sending later or contact your administrator.'
+} as const;
+
 export const PASSWORD_VALID_ERROR = 'Password must contain at least one letter and one number';
 
 export const OFFER_TYPE = ['Apartment', 'Room', 'House', 'Hotel'] as const;
