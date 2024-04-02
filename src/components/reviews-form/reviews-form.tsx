@@ -35,7 +35,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
     }
     if (reviewStatus === RequestStatus.Success) {
       setReview(initialState);
-      evt.target.reset();
+      evt.currentTarget.reset();
     }
   };
 
@@ -50,6 +50,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
               name="rating"
               value={value}
               id={`${value}-stars`}
+              checked={value === Number(review.rating)}
               type="radio"
               disabled={reviewStatus === RequestStatus.Loading}
               onChange={handleFormChange}

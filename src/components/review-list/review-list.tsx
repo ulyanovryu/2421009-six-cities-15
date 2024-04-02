@@ -8,7 +8,7 @@ type ReviewProps = {
 
 const formatDate = (date: string): string => {
   const dateObj = new Date(date);
-  return `${upperString(dateObj.toLocaleString('default', { month: 'long' }))} ${dateObj.getFullYear()}`;
+  return `${upperString(dateObj.toLocaleString('en-US', { month: 'long' }))} ${dateObj.getFullYear()}`;
 };
 
 function ReviewList ({review}: ReviewProps):JSX.Element {

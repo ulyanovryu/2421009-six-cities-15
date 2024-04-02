@@ -3,6 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {RequestStatus, StoreSlices} from '../../const.ts';
 import {ReviewsType} from '../../types/reviews.ts';
 import {fetchCommentsAction, addCommentAction} from '../thunks/comments.ts';
+import {sortComments} from '../../utils/utils.ts';
 
 interface ReviewsState {
   reviews: ReviewsType;
@@ -25,13 +26,14 @@ const reviewsSlice = createSlice({
       .addCase(fetchCommentsAction.fulfilled, (state, action) => {
         state.status = RequestStatus.Success;
         state.reviews = action.payload;
+        state.reviews.sort(sortComments);
       })
       .addCase(fetchCommentsAction.rejected, (state) => {
         state.status = RequestStatus.Failed;
       })
       .addCase(addCommentAction.fulfilled, (state, action) => {
-        state.reviews.push(action.payload);
         state.status = RequestStatus.Success;
+        state.reviews.unshift(action.payload);
       })
       .addCase(addCommentAction.pending, (state) => {
         state.status = RequestStatus.Loading;
