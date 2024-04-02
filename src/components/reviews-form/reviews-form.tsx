@@ -2,8 +2,9 @@ import {ChangeEvent, Fragment, memo, ReactEventHandler, useState} from 'react';
 
 import {Ratings, Rating} from '../../types/rating.ts';
 import {useActionCreators, useAppSelector} from '../../hooks';
-import {reviewsActions} from '../../store/slices/reviews.ts';
+import {reviewsActions, reviewsSelectors} from '../../store/slices/reviews.ts';
 import {offerSelectors} from '../../store/slices/offer.ts';
+import {RequestStatus} from '../../const.ts';
 
 type THandleFormChange = ReactEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 type ReviewsFormProps = {
@@ -13,9 +14,10 @@ type ReviewsFormProps = {
 function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
 
   const currentOffer = useAppSelector(offerSelectors.offer);
+  const reviewStatus = useAppSelector(reviewsSelectors.status);
   const {addCommentAction} = useActionCreators(reviewsActions);
-
-  const [review, setReview] = useState({rating: 0, review: ''});
+  const initialState = {rating: 0, review: ''};
+  const [review, setReview] = useState(initialState);
   const handleFormChange: THandleFormChange = (event) => {
     const {name, value} = event.currentTarget;
     setReview({...review, [name]:value});
@@ -27,7 +29,14 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
 
   const handleCommentFormSubmit = (evt: ChangeEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    addCommentAction({body:{comment: review.review, rating: parseInt(String(review.rating), 10)}, offerId: currentOffer.id});
+
+    if (reviewStatus !== RequestStatus.Loading) {
+      addCommentAction({body:{comment: review.review, rating: parseInt(String(review.rating), 10)}, offerId: currentOffer.id});
+    }
+    if (reviewStatus === RequestStatus.Success) {
+      setReview(initialState);
+      evt.target.reset();
+    }
   };
 
   return (
@@ -42,6 +51,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
               value={value}
               id={`${value}-stars`}
               type="radio"
+              disabled={reviewStatus === RequestStatus.Loading}
               onChange={handleFormChange}
             />
             <label htmlFor={`${value}-stars`} className="reviews__rating-label form__rating-label" title={title}>
@@ -57,6 +67,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
         id="review"
         name="review"
         value={review.review}
+        disabled={reviewStatus === RequestStatus.Loading}
         placeholder="Tell how was your stay, what you like and what can be improved"
         onChange={handleFormChange}
       >
@@ -69,7 +80,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={review.review.length < 50 || review.rating === 0}
+          disabled={review.review.length < 50 || review.review.length > 300 || review.rating === 0 || reviewStatus === RequestStatus.Loading}
         >Submit
         </button>
       </div>

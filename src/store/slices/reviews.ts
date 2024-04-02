@@ -31,6 +31,7 @@ const reviewsSlice = createSlice({
       })
       .addCase(addCommentAction.fulfilled, (state, action) => {
         state.reviews.push(action.payload);
+        state.status = RequestStatus.Success;
       })
       .addCase(addCommentAction.pending, (state) => {
         state.status = RequestStatus.Loading;
