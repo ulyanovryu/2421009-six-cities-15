@@ -1,5 +1,6 @@
 import {AuthorizationStatus, DEFAULT_CITY} from '../const.ts';
 import {Cities, City, CityName} from '../types/cities.ts';
+import {Review} from '../types/reviews.ts';
 
 const getAuthorizationStatus = () => AuthorizationStatus.Auth;
 export default getAuthorizationStatus;
@@ -13,6 +14,16 @@ export const getActiveCityParams = (cities: Cities, activeCity: CityName): City 
     }
   }
   return DEFAULT_CITY;
+};
+
+export const sortComments = (a: Review, b: Review) => {
+  if (a.date > b.date) {
+    return -1;
+  }
+  if (a.date < b.date) {
+    return 1;
+  }
+  return 0;
 };
 
 // export const getObjectByKeys = (): object => {

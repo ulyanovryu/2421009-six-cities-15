@@ -1,9 +1,10 @@
 import {ChangeEvent, Fragment, memo, ReactEventHandler, useState} from 'react';
 
-import {Ratings, Rating} from '../../types/rating.ts';
+import {Rating, Ratings} from '../../types/rating.ts';
 import {useActionCreators, useAppSelector} from '../../hooks';
-import {reviewsActions} from '../../store/slices/reviews.ts';
+import {reviewsActions, reviewsSelectors} from '../../store/slices/reviews.ts';
 import {offerSelectors} from '../../store/slices/offer.ts';
+import {RequestStatus} from '../../const.ts';
 
 type THandleFormChange = ReactEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 type ReviewsFormProps = {
@@ -13,9 +14,11 @@ type ReviewsFormProps = {
 function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
 
   const currentOffer = useAppSelector(offerSelectors.offer);
+  const posting = useAppSelector(reviewsSelectors.posting);
   const {addCommentAction} = useActionCreators(reviewsActions);
-
-  const [review, setReview] = useState({rating: 0, review: ''});
+  const initialState = {rating: 0, review: ''};
+  const [review, setReview] = useState(initialState);
+  const [send, setSend] = useState(false);
   const handleFormChange: THandleFormChange = (event) => {
     const {name, value} = event.currentTarget;
     setReview({...review, [name]:value});
@@ -25,9 +28,21 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
     return <>&nbsp;</>;
   }
 
+  if (send === true) {
+    if (posting === RequestStatus.Success) {
+      setReview(initialState);
+      setSend(false);
+    } else if (posting === RequestStatus.Failed) {
+      setSend(false);
+    }
+  }
+
   const handleCommentFormSubmit = (evt: ChangeEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    addCommentAction({body:{comment: review.review, rating: parseInt(String(review.rating), 10)}, offerId: currentOffer.id});
+    if (posting !== RequestStatus.Loading) {
+      addCommentAction({body:{comment: review.review, rating: parseInt(String(review.rating), 10)}, offerId: currentOffer.id});
+      setSend(true);
+    }
   };
 
   return (
@@ -41,7 +56,9 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
               name="rating"
               value={value}
               id={`${value}-stars`}
+              checked={value === Number(review.rating)}
               type="radio"
+              disabled={posting === RequestStatus.Loading}
               onChange={handleFormChange}
             />
             <label htmlFor={`${value}-stars`} className="reviews__rating-label form__rating-label" title={title}>
@@ -57,6 +74,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
         id="review"
         name="review"
         value={review.review}
+        disabled={posting === RequestStatus.Loading}
         placeholder="Tell how was your stay, what you like and what can be improved"
         onChange={handleFormChange}
       >
@@ -69,7 +87,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={review.review.length < 50 || review.rating === 0}
+          disabled={review.review.length < 50 || review.review.length > 300 || review.rating === 0 || posting === RequestStatus.Loading}
         >Submit
         </button>
       </div>
