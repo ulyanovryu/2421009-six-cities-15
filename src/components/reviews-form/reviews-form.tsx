@@ -1,18 +1,15 @@
 import {ChangeEvent, Fragment, memo, ReactEventHandler, useState} from 'react';
 
-import {Rating, Ratings} from '../../types/rating.ts';
+import {Rating} from '../../types/rating.ts';
 import {useActionCreators, useAppSelector} from '../../hooks';
 import {reviewsActions, reviewsSelectors} from '../../store/slices/reviews.ts';
 import {offerSelectors} from '../../store/slices/offer.ts';
-import {RequestStatus, ReviewsParams} from '../../const.ts';
+import {RATINGS, RequestStatus, ReviewsParams} from '../../const.ts';
 import {toast} from 'react-toastify';
 
 type THandleFormChange = ReactEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-type ReviewsFormProps = {
-  ratingsList: Ratings;
-}
 
-function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
+function ReviewsForm (): JSX.Element {
 
   const currentOffer = useAppSelector(offerSelectors.offer);
   const posting = useAppSelector(reviewsSelectors.posting);
@@ -51,7 +48,7 @@ function ReviewsForm ({ratingsList}:ReviewsFormProps): JSX.Element {
     <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        {ratingsList.map(({value, title}: Rating) => (
+        {RATINGS.map(({value, title}: Rating) => (
           <Fragment key={value}>
             <input
               className="form__rating-input visually-hidden"

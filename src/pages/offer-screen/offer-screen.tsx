@@ -6,7 +6,7 @@ import {getActiveCityParams, getUpperString} from '../../utils/utils.ts';
 import Page404Screen from '../page404-screen';
 import MemorizedReviews from '../../components/reviews';
 import MemorizedOffersList from '../../components/offers-list';
-import {Ratings} from '../../types/rating.ts';
+
 import Map from '../../components/map';
 
 import {useActionCreators, useAppSelector} from '../../hooks';
@@ -21,11 +21,7 @@ import {MemorizedOfferGalleries, MemorizedGoodsList} from './utils.tsx';
 import {CityName} from '../../types/cities.ts';
 import classNames from 'classnames';
 
-type OfferScreenProps = {
-  ratingsList: Ratings;
-};
-
-function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
+function OfferScreen(): JSX.Element {
 
   const {fetchOfferAction, fetchNearByAction} = useActionCreators(offerActions);
   const {fetchCommentsAction} = useActionCreators(reviewsActions);
@@ -130,7 +126,7 @@ function OfferScreen({ratingsList}: OfferScreenProps): JSX.Element {
               <div className="offer__description">{currentOffer.description}</div>
             </div>
             <section className="offer__reviews reviews">
-              <MemorizedReviews reviewsListData={reviews} isAuth={isAuth} ratingsList={ratingsList} />
+              <MemorizedReviews reviewsListData={reviews} isAuth={isAuth} />
             </section>
           </div>
         </div>
