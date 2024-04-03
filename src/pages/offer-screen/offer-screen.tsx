@@ -2,7 +2,7 @@ import {useParams} from 'react-router-dom';
 
 import {CITIES, MaxCountLimit, RequestStatus,} from '../../const.ts';
 
-import {getActiveCityParams, getUpperString} from '../../utils/utils.ts';
+import {getActiveCityParams, getPlural, getUpperString} from '../../utils/utils.ts';
 import Page404Screen from '../page404-screen';
 import MemorizedReviews from '../../components/reviews';
 import MemorizedOffersList from '../../components/offers-list';
@@ -93,14 +93,14 @@ function OfferScreen(): JSX.Element {
               {
                 currentOffer.bedrooms !== undefined ?
                   <li className="offer__feature offer__feature--bedrooms">
-                    {currentOffer.bedrooms} Bedrooms
+                    {currentOffer.bedrooms} {getPlural(currentOffer.bedrooms, ['Bedroom', 'Bedrooms', 'Bedrooms'])}
                   </li>
                   : null
               }
               {
                 currentOffer.maxAdults !== undefined ?
                   <li className="offer__feature offer__feature--adults">
-                    Max {currentOffer.maxAdults} adults
+                    Max {currentOffer.maxAdults} {getPlural(currentOffer.maxAdults, ['adult', 'adults', 'adults'])}
                   </li>
                   : null
               }
