@@ -29,7 +29,9 @@ function OfferScreen(): JSX.Element {
   const {id} = useParams();
 
   useEffect(() => {
-    Promise.all([fetchOfferAction(id as string), fetchNearByAction(id as string), fetchCommentsAction(id as string)]);
+    fetchOfferAction(id as string);
+    fetchNearByAction(id as string);
+    fetchCommentsAction(id as string);
   }, [fetchOfferAction, fetchNearByAction, fetchCommentsAction, id]);
 
 
@@ -71,15 +73,15 @@ function OfferScreen(): JSX.Element {
         <div className="offer__container container">
           <div className="offer__wrapper">
             {
-              currentOffer.isPremium ?
+              currentOffer.isPremium && (
                 <div className="offer__mark">
                   <span>Premium</span>
                 </div>
-                : null
+              )
             }
             <div className="offer__name-wrapper">
               <h1 className="offer__name">{currentOffer.title}</h1>
-              <MemorizedFavoriteButton bemBlock={'offer'} isFavorite={currentOffer.isFavorite} offerId={id} width={31} />
+              <MemorizedFavoriteButton bemBlock={'offer'} isFavorite={currentOffer.isFavorite} offerId={id} />
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
@@ -91,18 +93,18 @@ function OfferScreen(): JSX.Element {
             <ul className="offer__features">
               <li className="offer__feature offer__feature--entire">{upperType}</li>
               {
-                currentOffer.bedrooms !== undefined ?
+                currentOffer.bedrooms !== undefined && (
                   <li className="offer__feature offer__feature--bedrooms">
                     {currentOffer.bedrooms} {getPlural(currentOffer.bedrooms, ['Bedroom', 'Bedrooms', 'Bedrooms'])}
                   </li>
-                  : null
+                )
               }
               {
-                currentOffer.maxAdults !== undefined ?
+                currentOffer.maxAdults !== undefined && (
                   <li className="offer__feature offer__feature--adults">
                     Max {currentOffer.maxAdults} {getPlural(currentOffer.maxAdults, ['adult', 'adults', 'adults'])}
                   </li>
-                  : null
+                )
               }
             </ul>
             <div className="offer__price">
@@ -113,15 +115,15 @@ function OfferScreen(): JSX.Element {
             <div className="offer__host">
               <h2 className="offer__host-title">Meet the host</h2>
               {
-                currentOffer.host !== undefined ?
+                currentOffer.host !== undefined && (
                   <div className="offer__host-user user">
                     <div className={classNames('offer__avatar-wrapper', 'user__avatar-wrapper', {'offer__avatar-wrapper--pro' : currentOffer.host.isPro})}>
                       <img className="offer__avatar user__avatar" src={currentOffer.host.avatarUrl} width="74" height="74" alt={currentOffer.host.name} />
                     </div>
                     <span className="offer__user-name">{currentOffer.host.name}</span>
-                    {currentOffer.isPremium ? <span className="offer__user-status">{currentOffer.host.isPro ? 'Pro' : null}</span> : null}
+                    {currentOffer.isPremium && <span className="offer__user-status">{currentOffer.host.isPro && 'Pro'}</span>}
                   </div>
-                  : null
+                )
               }
               <div className="offer__description">{currentOffer.description}</div>
             </div>

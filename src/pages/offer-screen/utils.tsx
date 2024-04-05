@@ -10,13 +10,13 @@ type OfferGoodsType = {
   goods: string[];
 }
 
-function OfferGalleries ({images, title}: OfferGalleriesType): JSX.Element | null {
+function OfferGalleries ({images, title}: OfferGalleriesType) {
 
   const imagesLimit = images !== undefined ? images.slice(0, MaxCountLimit.OfferImages) : [];
   const imagesCount = imagesLimit.length;
 
   return (
-    imagesCount > 0 ?
+    imagesCount > 0 && (
       <div className="offer__gallery-container container">
         <div className="offer__gallery">
           {imagesLimit.map((image) => (
@@ -26,14 +26,14 @@ function OfferGalleries ({images, title}: OfferGalleriesType): JSX.Element | nul
           ))}
         </div>
       </div>
-      : null
+    )
   );
 }
 const MemorizedOfferGalleries = memo(OfferGalleries);
 
-function GoodsListItem ({goods}:OfferGoodsType): JSX.Element | null {
+function GoodsListItem ({goods}:OfferGoodsType) {
   return (
-    goods !== undefined && goods.length > 0 ?
+    goods !== undefined && goods.length > 0 && (
       <div className="offer__inside">
         <h2 className="offer__inside-title">What&apos;s inside</h2>
         <ul className="offer__inside-list">
@@ -44,7 +44,7 @@ function GoodsListItem ({goods}:OfferGoodsType): JSX.Element | null {
           }
         </ul>
       </div>
-      : null
+    )
   );
 }
 

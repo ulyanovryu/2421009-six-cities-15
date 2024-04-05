@@ -10,7 +10,7 @@ import {useAuth} from '../../hooks/user-authorization.ts';
 function Layout (): JSX.Element {
 
   const {pathname} = useLocation();
-  const {pageClass, showFooter, showHeaderUserInfo} = useLayoutParams(pathname as AppRoute);
+  const {pageClass, isShownFooter, isShownHeaderUserInfo} = useLayoutParams(pathname as AppRoute);
   const isAuth = useAuth();
 
   return (
@@ -20,19 +20,23 @@ function Layout (): JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <NavLink to={AppRoute.Root} title={AppRoute.Root} className={({ isActive }) => `header__logo-link${ isActive ? ' header__logo-link--active' : ''}`}>
+              <NavLink
+                to={AppRoute.Root}
+                title={AppRoute.Root}
+                className={({ isActive }) => `header__logo-link${ isActive ? ' header__logo-link--active' : ''}`}
+              >
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </NavLink >{' '}
+              </NavLink >
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
                 {
-                  showHeaderUserInfo ? (
+                  isShownHeaderUserInfo && (
                     <>
                       {isAuth && <MemorizedHeaderProfile />}
                       <MemorizedHeaderLogin />
                     </>
-                  ) : null
+                  )
                 }
               </ul>
             </nav>
@@ -41,13 +45,13 @@ function Layout (): JSX.Element {
       </header>
       <Outlet />
       {
-        showFooter ? (
+        isShownFooter && (
           <footer className="footer container">
             <Link to={AppRoute.Root} className="footer__logo-link">
               <img className="footer__logo" src={ImgPath.Logo} alt="6 cities logo" width="64" height="33" />
             </Link>
           </footer>
-        ) : null
+        )
       }
     </div>
   );

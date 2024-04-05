@@ -37,11 +37,11 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
       onMouseOut={memorizedHandleMouseOut}
     >
       {
-        isPremium ?
+        isPremium && (
           <div className="place-card__mark">
             <span>Premium</span>
           </div>
-          : null
+        )
       }
       <div className={classNames.image}>
         <Link to={linkDetail}>
@@ -54,7 +54,7 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <MemorizedFavoriteButton offerId={id} isFavorite={isFavorite} width={18} />
+          <MemorizedFavoriteButton offerId={id} isFavorite={isFavorite} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

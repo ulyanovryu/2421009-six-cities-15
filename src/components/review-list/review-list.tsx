@@ -22,7 +22,7 @@ function ReviewList ({review}: ReviewProps):JSX.Element {
           <img className="reviews__avatar user__avatar" src={review.user.avatarUrl} width="54" height="54" alt={review.user.name} />
         </div>
         <span className="reviews__user-name">{review.user.name}</span>
-        <span className="reviews__user-status">{review.user.isPro ? 'Pro' : null}</span>
+        <span className="reviews__user-status">{review.user.isPro && 'Pro'}</span>
       </div>
       <div className="reviews__info">
         <div className="reviews__rating rating">
