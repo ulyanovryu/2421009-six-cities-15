@@ -6,6 +6,9 @@ import {random, datatype, address, lorem, name, internet} from 'faker';
 // import { State } from '../types/state';
 import {OfferDetail} from '../types/offers.ts';
 import {FavoritesStatus} from '../const.ts';
+import {Review} from '../types/reviews.ts';
+import {User} from '../types/user.ts';
+import {Auth} from '../types/auth.ts';
 
 // export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>;
 
@@ -45,6 +48,39 @@ export const makeFakeOffer = (isFavorite: FavoritesStatus): OfferDetail => ({
   ],
   'maxAdults': datatype.number(100)
 } as OfferDetail);
+
+export const makeFakeReview = (): Review => ({
+  'id': random.word(),
+  'date': datatype.string(),
+  'user': {
+    'name': name.firstName(),
+    'avatarUrl': internet.avatar(),
+    'isPro': datatype.boolean()
+  },
+  'comment': lorem.paragraph(1),
+  'rating': datatype.number(5)
+} as Review);
+
+export const makeFakeComment = () => ({
+  'body' : {
+    'comment' : lorem.paragraph(1),
+    'rating' : datatype.number(5)
+  },
+  'offerId' : random.word(),
+});
+
+export const makeFakeUser = (): User => ({
+  'name' : name.firstName(),
+  'email' : internet.email(),
+  'avatarUrl' : internet.avatar(),
+  'isPro' : false,
+  'token' : datatype.string(),
+});
+
+export const makeFakeLoginData = (): Auth => ({
+  'login' : internet.email(),
+  'password' : internet.password(),
+});
 
 // export const makeFakeArtistQuestion = (): QuestionArtist => ({
 //   type: GameType.Artist,

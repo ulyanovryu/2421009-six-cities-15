@@ -46,13 +46,7 @@ const userSlice = createSlice({
       .addCase(loginAction.fulfilled, proccessSuccess)
       .addCase(loginAction.rejected, proccessFailed)
       .addCase(logoutAction.fulfilled, (state) => {
-        state.user = {
-          'name' : '',
-          'email' : '',
-          'avatarUrl' : '',
-          'isPro' : false,
-          'token' : '',
-        };
+        state.user = initialState.user;
         state.status = AuthorizationStatus.NoAuth;
       });
   },

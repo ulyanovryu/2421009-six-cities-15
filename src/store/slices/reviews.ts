@@ -33,12 +33,12 @@ const reviewsSlice = createSlice({
       .addCase(fetchCommentsAction.rejected, (state) => {
         state.status = RequestStatus.Failed;
       })
+      .addCase(addCommentAction.pending, (state) => {
+        state.posting = RequestStatus.Loading;
+      })
       .addCase(addCommentAction.fulfilled, (state, action) => {
         state.reviews.unshift(action.payload);
         state.posting = RequestStatus.Success;
-      })
-      .addCase(addCommentAction.pending, (state) => {
-        state.posting = RequestStatus.Loading;
       })
       .addCase(addCommentAction.rejected, (state) => {
         state.posting = RequestStatus.Failed;
