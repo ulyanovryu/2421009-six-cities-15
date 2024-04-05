@@ -1,6 +1,6 @@
 import {useParams} from 'react-router-dom';
 
-import {CITIES, MaxCountLimit, RequestStatus,} from '../../const.ts';
+import {CITIES, MaxCountLimit, RATING_MULTIPLIER, RequestStatus,} from '../../const.ts';
 
 import {getActiveCityParams, getPlural, getUpperString} from '../../utils/utils.ts';
 import Page404Screen from '../page404-screen';
@@ -14,7 +14,6 @@ import {offerActions, offerSelectors} from '../../store/slices/offer.ts';
 import {reviewsActions, reviewsSelectors} from '../../store/slices/reviews.ts';
 import {useEffect} from 'react';
 import MemorizedLoading from '../../components/loading';
-import {offersSelectors} from '../../store/slices/offers.ts';
 import {useAuth} from '../../hooks/user-authorization.ts';
 import MemorizedFavoriteButton from '../../components/favorite-button';
 import {MemorizedOfferGalleries, MemorizedGoodsList} from './utils.tsx';
@@ -34,38 +33,29 @@ function OfferScreen(): JSX.Element {
     fetchCommentsAction(id as string);
   }, [fetchOfferAction, fetchNearByAction, fetchCommentsAction, id]);
 
-
   const currentOffer = useAppSelector(offerSelectors.offer);
   const status = useAppSelector(offerSelectors.status);
   const nearByOffers = useAppSelector(offerSelectors.nearby);
   const reviews = useAppSelector(reviewsSelectors.reviews);
-
-  const offersList = useAppSelector(offersSelectors.offers);
-  const activeOffer = (offersList.filter((offer) => offer.id === id)).shift();
-
   const isAuth = useAuth();
 
-  if (status === RequestStatus.Failed || currentOffer === null || currentOffer === undefined || id === undefined) {
+  if (status === RequestStatus.Failed) {
     return <Page404Screen />;
   }
 
+  if (status === RequestStatus.Loading || currentOffer === null || currentOffer === undefined || id === undefined) {
+    return <MemorizedLoading />;
+  }
+
   const {city:{name:activeCity}} = currentOffer;
-
   const activeCityParams = getActiveCityParams(CITIES, activeCity as CityName);
-
-  const ratingStarsStyle = Math.round(currentOffer.rating) * 20;
+  const ratingStarsStyle = Math.round(currentOffer.rating) * RATING_MULTIPLIER;
   const upperType = getUpperString(currentOffer.type);
-
   const nearByOffersList = nearByOffers.slice(0, MaxCountLimit.OfferNearby);
-  const nearByOffersMap = activeOffer !== undefined ? [...nearByOffersList, activeOffer] : nearByOffersList;
+  const nearByOffersMap = currentOffer !== undefined ? [...nearByOffersList, currentOffer] : nearByOffersList;
 
   return (
     <main className="page__main page__main--offer">
-      {
-        status === RequestStatus.Loading ?
-          <MemorizedLoading /> :
-          ''
-      }
       <section className="offer">
         {<MemorizedOfferGalleries images={currentOffer.images} title={currentOffer.title}/>}
 
@@ -131,7 +121,7 @@ function OfferScreen(): JSX.Element {
             </section>
           </div>
         </div>
-        <Map offers={nearByOffersMap} className={'offer__map map'} selectedPoint={activeOffer} selectedCity={activeCityParams} />
+        <Map offers={nearByOffersMap} className={'offer__map map'} selectedPoint={currentOffer} selectedCity={activeCityParams} />
       </section>
       <div className="container">
         <section className="near-places places">
