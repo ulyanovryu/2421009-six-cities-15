@@ -40,9 +40,8 @@ function OfferScreen(): JSX.Element {
   const nearByOffers = useAppSelector(offerSelectors.nearby);
   const reviews = useAppSelector(reviewsSelectors.reviews);
 
-  const activeId = id;
   const offersList = useAppSelector(offersSelectors.offers);
-  const activeOffer = (offersList.filter((offer) => offer.id === activeId)).shift();
+  const activeOffer = (offersList.filter((offer) => offer.id === id)).shift();
 
   const isAuth = useAuth();
 

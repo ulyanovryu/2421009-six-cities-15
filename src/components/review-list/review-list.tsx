@@ -1,6 +1,7 @@
 import {Review} from '../../types/reviews.ts';
 import {getUpperString} from '../../utils/utils.ts';
 import {memo} from 'react';
+import {RATING_MULTIPLIER} from '../../const.ts';
 
 type ReviewProps = {
   review: Review;
@@ -13,7 +14,7 @@ const formatDate = (date: string): string => {
 
 function ReviewList ({review}: ReviewProps):JSX.Element {
 
-  const ratingStarsStyle = review.rating * 20;
+  const ratingStarsStyle = review.rating * RATING_MULTIPLIER;
 
   return (
     <li className="reviews__item">

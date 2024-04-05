@@ -1,9 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import {RequestStatus, StoreSlices} from '../../const.ts';
-import {ReviewsType,} from '../../types/reviews.ts';
+import {Review, ReviewsType,} from '../../types/reviews.ts';
 import {fetchCommentsAction, addCommentAction} from '../thunks/comments.ts';
-import {sortComments} from '../../utils/utils.ts';
 
 interface ReviewsState {
   reviews: ReviewsType;
@@ -15,6 +14,16 @@ const initialState: ReviewsState = {
   reviews: [],
   status: RequestStatus.Idle,
   posting: RequestStatus.Idle,
+};
+
+const sortComments = (a: Review, b: Review) => {
+  if (a.date > b.date) {
+    return -1;
+  }
+  if (a.date < b.date) {
+    return 1;
+  }
+  return 0;
 };
 
 const reviewsSlice = createSlice({

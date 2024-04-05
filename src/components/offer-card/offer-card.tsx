@@ -7,11 +7,13 @@ import {offersActions} from '../../store/slices/offers.ts';
 import {getCardParams, handleMouseEnter, handleMouseOut} from './utils.ts';
 import {getUpperString} from '../../utils/utils.ts';
 import MemorizedFavoriteButton from '../favorite-button';
+import {RATING_MULTIPLIER} from '../../const.ts';
 
 type OfferProps = {
   offerParams: OfferList;
   offersListTemplate: OffersListTemplate;
-} & {hovered?: boolean}
+  hovered?: boolean;
+}
 
 function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.Element {
 
@@ -19,7 +21,7 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
 
   const {id, isPremium, isFavorite, title, price, rating, type, previewImage} = offerParams;
 
-  const ratingWidth : number = 20 * Math.round(rating);
+  const ratingWidth : number = RATING_MULTIPLIER * Math.round(rating);
   const linkDetail : string = `/offer/${id}`;
 
   const upperType = getUpperString(type);
