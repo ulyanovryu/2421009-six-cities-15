@@ -1,13 +1,9 @@
-import {memo} from 'react';
 import {MaxCountLimit} from '../../const.ts';
+import {memo} from 'react';
 
 type OfferGalleriesType = {
   images: string[];
   title: string;
-}
-
-type OfferGoodsType = {
-  goods: string[];
 }
 
 function OfferGalleries ({images, title}: OfferGalleriesType) {
@@ -29,25 +25,6 @@ function OfferGalleries ({images, title}: OfferGalleriesType) {
     )
   );
 }
+
 const MemorizedOfferGalleries = memo(OfferGalleries);
-
-function GoodsListItem ({goods}:OfferGoodsType) {
-  return (
-    goods !== undefined && goods.length > 0 && (
-      <div className="offer__inside">
-        <h2 className="offer__inside-title">What&apos;s inside</h2>
-        <ul className="offer__inside-list">
-          {
-            goods.map((good) => (
-              <li className="offer__inside-item" key={good}>{good}</li>
-            ))
-          }
-        </ul>
-      </div>
-    )
-  );
-}
-
-const MemorizedGoodsList = memo(GoodsListItem);
-
-export {MemorizedOfferGalleries, MemorizedGoodsList};
+export default MemorizedOfferGalleries;
