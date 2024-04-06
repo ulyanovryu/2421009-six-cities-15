@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 import {AuthorizationStatus, RequestStatus, StoreSlices} from '../../const.ts';
 import {User} from '../../types/user.ts';
@@ -65,6 +65,7 @@ const userActions = {...userSlice.actions, checkAuthAction, loginAction, logoutA
 
 const userSelectors = {
   ...userSlice.selectors,
+  isAuth: createSelector(userSlice.selectors.status, (status) => status === AuthorizationStatus.Auth)
 };
 
 export {userActions, userSlice, userSelectors};

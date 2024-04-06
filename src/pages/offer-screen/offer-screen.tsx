@@ -1,22 +1,24 @@
+import {useEffect} from 'react';
 import {useParams} from 'react-router-dom';
+import {useActionCreators, useAppSelector} from '../../hooks';
+import {useAuth} from '../../hooks/user-authorization.ts';
 
 import {CITIES, MaxCountLimit, RATING_MULTIPLIER, RequestStatus,} from '../../const.ts';
 
 import {getActiveCityParams, getPlural, getUpperString} from '../../utils/utils.ts';
 import Page404Screen from '../page404-screen';
-import MemorizedReviews from '../../components/reviews';
-import MemorizedOffersList from '../../components/offers-list';
 
-import Map from '../../components/map';
-
-import {useActionCreators, useAppSelector} from '../../hooks';
 import {offerActions, offerSelectors} from '../../store/slices/offer.ts';
 import {reviewsActions, reviewsSelectors} from '../../store/slices/reviews.ts';
-import {useEffect} from 'react';
+
+import MemorizedReviews from '../../components/reviews';
+import MemorizedOffersList from '../../components/offers-list';
+import Map from '../../components/map';
 import MemorizedLoading from '../../components/loading';
-import {useAuth} from '../../hooks/user-authorization.ts';
 import MemorizedFavoriteButton from '../../components/favorite-button';
-import {MemorizedOfferGalleries, MemorizedGoodsList} from './utils.tsx';
+import MemorizedOfferGalleries from '../../components/offer-galleries';
+import MemorizedOfferGoodsList from '../../components/offer-goods-list';
+
 import {CityName} from '../../types/cities.ts';
 import classNames from 'classnames';
 
@@ -100,7 +102,7 @@ function OfferScreen(): JSX.Element {
               <b className="offer__price-value">&euro;{currentOffer.price}</b>
               <span className="offer__price-text">&nbsp;night</span>
             </div>
-            {<MemorizedGoodsList goods={currentOffer.goods} />}
+            {<MemorizedOfferGoodsList goods={currentOffer.goods} />}
             <div className="offer__host">
               <h2 className="offer__host-title">Meet the host</h2>
               {

@@ -1,4 +1,3 @@
-
 import {NavLink, useLocation, Outlet, Link} from 'react-router-dom';
 import {AppRoute, ImgPath} from '../../const.ts';
 
