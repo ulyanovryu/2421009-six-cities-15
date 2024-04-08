@@ -32,16 +32,16 @@ export const getCardParams = (template:string): CardParamsType => {
   return {classNames, width, height};
 };
 
-function handleMouseEnter (id:string, setActiveId: (id: string)=>void, hovered?:boolean):void {
+function handleArticleMouseEnter (id:string, setActiveId: (id: string)=>void, hovered?:boolean):void {
   if (hovered) {
     setActiveId(id);
   }
 }
 
-function handleMouseOut (setActiveId: ()=>void, hovered?:boolean):void {
+function handleArticleMouseOut (setActiveId: ()=>void, hovered?:boolean):void {
   if (hovered) {
     setActiveId();
   }
 }
 
-export {handleMouseEnter, handleMouseOut};
+export {handleArticleMouseEnter, handleArticleMouseOut};

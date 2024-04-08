@@ -39,7 +39,7 @@ function FavoriteButton ({bemBlock = 'place-card', isFavorite = false, offerId}:
   const {changeFavoriteAction} = useActionCreators(favoritesActions);
   const isAuth = useAuth();
 
-  const handleClick = () => {
+  const handleButtonClick = () => {
     if (isAuth) {
       changeFavoriteAction({
         offerId,
@@ -52,7 +52,7 @@ function FavoriteButton ({bemBlock = 'place-card', isFavorite = false, offerId}:
   };
 
   return (
-    <button className={favoriteClass} onClick={handleClick} type="button">
+    <button className={favoriteClass} onClick={handleButtonClick} type="button">
       <svg className={`${bemBlock}__bookmark-icon`} width={buttonSize[bemBlock].width} height={buttonSize[bemBlock].height}>
         <use xlinkHref="#icon-bookmark"></use>
       </svg>

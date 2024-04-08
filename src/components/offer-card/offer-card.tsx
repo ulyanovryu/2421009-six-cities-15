@@ -4,7 +4,7 @@ import {generatePath, Link} from 'react-router-dom';
 import {useActionCreators} from '../../hooks';
 import {OfferList, OffersListTemplate} from '../../types/offers.ts';
 import {offersActions} from '../../store/slices/offers.ts';
-import {getCardParams, handleMouseEnter, handleMouseOut} from './utils.ts';
+import {getCardParams, handleArticleMouseEnter, handleArticleMouseOut} from './utils.ts';
 import {getUpperString} from '../../utils/utils.ts';
 import MemorizedFavoriteButton from '../favorite-button';
 import {AppRoute, RATING_MULTIPLIER} from '../../const.ts';
@@ -28,8 +28,8 @@ function OfferCard({offerParams, offersListTemplate, hovered}: OfferProps): JSX.
 
   const {classNames, width, height} = getCardParams(offersListTemplate);
 
-  const memorizedHandleMouseEnter = useCallback(() => handleMouseEnter(id, setActiveId, hovered), [id, setActiveId, hovered]);
-  const memorizedHandleMouseOut = useCallback(() => handleMouseOut(setActiveId, hovered), [setActiveId, hovered]);
+  const memorizedHandleMouseEnter = useCallback(() => handleArticleMouseEnter(id, setActiveId, hovered), [id, setActiveId, hovered]);
+  const memorizedHandleMouseOut = useCallback(() => handleArticleMouseOut(setActiveId, hovered), [setActiveId, hovered]);
 
   return (
     <article

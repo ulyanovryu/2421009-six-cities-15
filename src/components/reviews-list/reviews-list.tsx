@@ -15,7 +15,7 @@ function ReviewsList ({reviews}: ReviewsProps) {
 
   return (
     reviewsCount > 0 && (
-      <ul className="reviews__list">
+      <ul className="reviews__list" data-testid="reviews__list">
         {
           reviewsLimit.map((review: Review) => (
             <MemorizedReviewList key={review.id} review={review} />

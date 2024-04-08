@@ -13,7 +13,7 @@ function OfferGalleries ({images, title}: OfferGalleriesType) {
 
   return (
     imagesCount > 0 && (
-      <div className="offer__gallery-container container">
+      <div className="offer__gallery-container container" data-testid="offer__gallery">
         <div className="offer__gallery">
           {imagesLimit.map((image) => (
             <div className="offer__image-wrapper" key={image}>
